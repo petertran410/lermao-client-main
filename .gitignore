@@ -6,6 +6,10 @@
 .pnp.js
 .yarn/install-state.gz
 
+Dockerfile
+docker-compose.yml
+/deploy-fe-synology.sh
+
 # testing
 /coverage
 
@@ -15,6 +19,8 @@
 
 # production
 /build
+
+.env
 
 # misc
 .DS_Store
