@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div>
       <HomeIntro />
-      <HomeProduct />
+      {/* <HomeProduct /> */}
       <HomeContact />
     </div>
   );
