@@ -108,6 +108,11 @@
     copy-to-clipboard "3.3.3"
     framesync "6.1.2"
 
+"@chakra-ui/icons@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.2.4.tgz#fc3f59a7e377d6e4efdbe8ee0a3aec7f29a4ab32"
+  integrity sha512-l5QdBgwrAg3Sc2BRqtNkJpfuLw/pWRDwwT58J6c4PqQT6wzXxyNa8Q0PForu1ltB5qEiFb1kxr/F/HO1EwNa6g==
+
 "@chakra-ui/next-js@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@chakra-ui/next-js/-/next-js-2.4.2.tgz#380d1d4035879847f1b73c7ae358ed0d5c193475"
