@@ -1,69 +1,125 @@
-import { IMG_ALT } from '@/utils/const';
-import { convertSlugURL, formatCurrency } from '@/utils/helper-server';
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+'use client';
+
+import { formatCurrency } from '../../utils/helper-server';
+import { IMG_ALT } from '../../utils/const';
+import { AspectRatio, Box, Flex, Image, Text, Tag } from '@chakra-ui/react';
 import Link from 'next/link';
 
-const ProductItem = (props) => {
-  const { item } = props;
+const FALLBACK_IMAGE = '/images/lermao.png';
 
-  if (!item) {
-    return null;
-  }
+const ProductItem = ({ item }) => {
+  const { id, title, title_en, kiotviet_name, kiotviet_price, imagesUrl, slug, kiotviet_images, price } = item || {};
 
-  const { title, id, price, imagesUrl } = item || {};
+  const productSlug = slug;
+  const showName = title || kiotviet_name || 'Sản phẩm';
+  const displayPrice = price || kiotviet_price;
+
+  const getProductImage = () => {
+    // 1. imagesUrl từ API (đã parse sẵn thành array)
+    if (Array.isArray(imagesUrl) && imagesUrl.length > 0 && imagesUrl[0]) {
+      return imagesUrl[0].replace('http://', 'https://');
+    }
+
+    // 2. Fallback: kiotviet_images
+    if (Array.isArray(kiotviet_images) && kiotviet_images.length > 0 && kiotviet_images[0]) {
+      return kiotviet_images[0].replace('http://', 'https://');
+    }
+
+    // 3. Ảnh mặc định lermao
+    return FALLBACK_IMAGE;
+  };
 
   return (
-    <Link href={`/san-pham/${convertSlugURL(title)}.${id}`} style={{ display: 'block', height: '100%' }}>
-      <Flex
-        h="100%"
-        direction="column"
-        bgColor="#FFF"
-        px="16px"
-        py="24px"
-        gap="16px"
-        justify="space-between"
-        boxShadow="0px 4px 24px 0px #0000000D"
-        borderRadius={16}
-      >
-        <Flex justify="center" flex={1}>
-          <Image
-            src={imagesUrl?.[0]?.replace('http://', 'https://')}
-            alt={IMG_ALT}
-            w="auto"
-            h="200px"
-            fit="cover"
-            borderRadius={8}
+    <Box
+      w="100%"
+      maxW={{ xs: '100%', md: '320px' }}
+      mx="auto"
+      h="100%"
+      borderRadius={16}
+      bgColor="#FFF"
+      overflow="hidden"
+      cursor="pointer"
+      transitionDuration="250ms"
+      border="1px solid #f1f3f4"
+      _hover={{
+        transform: 'translateY(-2px)',
+        boxShadow: '0 4px 12px rgba(13,102,191,0.5)'
+      }}
+      position="relative"
+    >
+      <Link href={`/san-pham/${productSlug}`}>
+        <AspectRatio ratio={1 / 1} w="full">
+          <Box
+            w="full"
+            h="full"
+            bgColor="#FFF"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
             overflow="hidden"
-          />
-        </Flex>
-        <Box h="1px" w="full" bgColor="#E1E2E3" mt="24px" />
-        <Flex align="flex-end" gap="16px">
-          <Flex direction="column" gap="8px" flex={1}>
-            <Text noOfLines={2} fontWeight={700} fontSize={16} h="48px" _hover={{ color: 'text.1' }}>
-              {title}
-            </Text>
-            <Text fontSize={12} color="#EA1D21" _hover={{ color: '#EA1D21' }}>
-              {price ? formatCurrency(price) : 'Liên hệ'}
-            </Text>
+          >
+            <Image
+              src={getProductImage()}
+              alt={showName || IMG_ALT}
+              maxW="full"
+              maxH="full"
+              objectFit="contain"
+              loading="lazy"
+              onError={(e) => {
+                e.target.src = FALLBACK_IMAGE;
+              }}
+            />
+          </Box>
+        </AspectRatio>
+
+        <Flex direction="column" p="12px" gap="6px">
+          <Text
+            fontSize="17px"
+            fontWeight={600}
+            color="#333"
+            align="center"
+            lineHeight="1"
+            minH="32px"
+            display="-webkit-box"
+            style={{
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden'
+            }}
+          >
+            {showName}
+          </Text>
+
+          <Flex justify="center" align="center" mt="6px">
+            {!displayPrice || displayPrice === 0 ? (
+              <Tag colorScheme="blue" size="sm" fontWeight="600">
+                Liên hệ
+              </Tag>
+            ) : (
+              <Text color="#1E96BC" fontSize="16px" fontWeight={700}>
+                {formatCurrency(displayPrice)}
+              </Text>
+            )}
           </Flex>
 
           <Flex
-            align="center"
+            mt="6px"
+            bgColor="#53C1E7"
+            color="white"
+            py="6px"
+            borderRadius="6px"
             justify="center"
-            w="40px"
-            h="40px"
-            border="1px solid #091E28"
-            borderRadius={8}
-            transitionDuration="250ms"
-            _hover={{
-              borderColor: '#00b7e9'
-            }}
+            align="center"
+            _hover={{ bgColor: '#3366ff' }}
+            transitionDuration="200ms"
           >
-            <Image src="/images/arrow-right-black.png" alt={IMG_ALT} w="24px" h="24px" />
+            <Text fontSize="16px" fontWeight="600" color="white">
+              Mua hàng
+            </Text>
           </Flex>
         </Flex>
-      </Flex>
-    </Link>
+      </Link>
+    </Box>
   );
 };
 

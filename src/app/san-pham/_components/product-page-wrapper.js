@@ -165,6 +165,8 @@ const ProductPageWrapper = () => {
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
   const products = processedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
 
+  console.log(products);
+
   const handleSearch = () => {
     const value = searchInputRef.current?.value || '';
     setSearchTerm(value);
