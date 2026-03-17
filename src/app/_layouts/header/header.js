@@ -26,15 +26,15 @@ const Header = () => {
 
   const MENU_LIST = [
     {
-      title: 'Trang chủ',
+      title: 'Trang Chủ',
       href: '/'
     },
     {
-      title: 'Giới thiệu',
+      title: 'Giới Thiệu',
       href: '/gioi-thieu'
     },
     {
-      title: 'Sản phẩm',
+      title: 'Sản Phẩm',
       href: '/san-pham'
     },
     {
@@ -42,11 +42,15 @@ const Header = () => {
       href: '/'
     },
     {
-      title: 'Công thức',
+      title: 'Công Thức',
       href: '/cong-thuc'
     },
     {
-      title: 'Tin tức',
+      title: 'Workshop Pha Chế',
+      href: '/'
+    },
+    {
+      title: 'Tin Tức',
       href: '/tin-tuc'
     },
     {
