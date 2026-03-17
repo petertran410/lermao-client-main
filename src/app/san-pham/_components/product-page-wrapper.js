@@ -34,9 +34,30 @@ import {
   useQueryCategoryHierarchy,
   useQueryAllCategories
 } from '../../../services/category.service';
-import { useTranslation } from '../../../hooks/useTranslation';
 
 const PRODUCTS_PER_PAGE = 15;
+
+const useTranslation = () => ({
+  t: (key) => {
+    const map = {
+      'product.title': 'Tất cả sản phẩm',
+      'product.breadcrumb.title.home': 'Trang chủ',
+      'product.breadcrumb.title.product': 'Sản phẩm',
+      'product.all.product': 'Tất cả danh mục',
+      'product.sorting.name': 'Tên A-Z',
+      'product.sorting.price.low': 'Giá thấp → cao',
+      'product.sorting.price.high': 'Giá cao → thấp',
+      'product.searching.placeholder': 'Tìm kiếm sản phẩm...',
+      'product.searching.name': 'Tìm',
+      'product.not.found': 'Không tìm thấy sản phẩm',
+      'product.reset.search': 'Đặt lại bộ lọc',
+      'category.title': 'Danh mục'
+    };
+    return map[key] || key;
+  },
+  getLocalizedText: (vi, en) => vi,
+  language: 'vi'
+});
 
 const ProductPageWrapper = () => {
   const { getLocalizedText, t } = useTranslation();
@@ -337,9 +358,9 @@ const ProductPageWrapper = () => {
             </Center>
           ) : products.length > 0 ? (
             <>
-              <Text mb={4} color="gray.600" fontSize="sm">
+              {/* <Text mb={4} color="gray.600" fontSize="sm">
                 {totalElements} {t('product.title').toLowerCase()}
-              </Text>
+              </Text> */}
 
               <Grid
                 templateColumns={{
