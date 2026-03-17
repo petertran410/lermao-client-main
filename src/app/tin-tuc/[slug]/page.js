@@ -4,6 +4,7 @@ import TableOfContents from '@/components/toc';
 import { API } from '@/utils/API';
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { convertSlugURL, META_DESCRIPTION, META_KEYWORDS } from '@/utils/helper-server';
+import { serverFetchJSON } from '@/utils/server-fetch';
 import { AspectRatio, Box, Flex, Image, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import Head from 'next/head';
@@ -13,8 +14,13 @@ import Script from 'next/script';
 export async function generateMetadata({ params }) {
   const { slug } = params;
   const id = slug.split('.').pop();
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/api/news/${id}`);
-  const data = await response.json();
+
+  let data = {};
+  try {
+    data = await serverFetchJSON(`/api/news/client/${id}`);
+  } catch (e) {
+    data = {};
+  }
 
   const { title: titleData, imagesUrl } = data || {};
   const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
@@ -27,19 +33,12 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
-      images: [
-        {
-          url: imageUrl,
-          width: 800,
-          height: 600,
-          alt: title
-        }
-      ]
+      images: [{ url: imageUrl, width: 800, height: 600, alt: title }]
     },
     twitter: {
       card: 'summary_large_image',
-      title: title,
-      description: description,
+      title,
+      description,
       images: [imageUrl]
     }
   };

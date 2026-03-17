@@ -9,12 +9,18 @@ import Head from 'next/head';
 import Script from 'next/script';
 import AddCart from './_components/add-cart';
 import ProductImage from './_components/product-image';
+import { serverFetchJSON } from '@/utils/server-fetch';
 
 export async function generateMetadata({ params }) {
   const { slug } = params;
   const id = slug.split('.').pop();
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/api/product/get-by-id/${id}`);
-  const data = await response.json();
+
+  let data = {};
+  try {
+    data = await serverFetchJSON(`/api/product/get-by-id/${id}`);
+  } catch (e) {
+    data = {};
+  }
 
   const { title: titleData, imagesUrl } = data || {};
   const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
@@ -27,19 +33,12 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
-      images: [
-        {
-          url: imageUrl,
-          width: 800,
-          height: 600,
-          alt: title
-        }
-      ]
+      images: [{ url: imageUrl, width: 800, height: 600, alt: title }]
     },
     twitter: {
       card: 'summary_large_image',
-      title: title,
-      description: description,
+      title,
+      description,
       images: [imageUrl]
     }
   };

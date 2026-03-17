@@ -1,72 +1,141 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { CK_TOKEN } from './const';
+import { getAccessToken } from '../services/auth.service';
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_DOMAIN || 'http://localhost:8084';
+const SITE_CODE = 'lermao';
+
+const sanitizeRequestBody = (data) => {
+  if (typeof data !== 'object' || data === null) return data;
+
+  if (Array.isArray(data)) {
+    return data.map((item) => sanitizeRequestBody(item));
+  }
+
+  const sanitized = {};
+  Object.keys(data).forEach((key) => {
+    if (typeof data[key] === 'string') {
+      sanitized[key] = data[key].replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    } else if (Array.isArray(data[key])) {
+      sanitized[key] = data[key].map((item) => sanitizeRequestBody(item));
+    } else if (typeof data[key] === 'object' && data[key] !== null) {
+      sanitized[key] = sanitizeRequestBody(data[key]);
+    } else {
+      sanitized[key] = data[key];
+    }
+  });
+  return sanitized;
+};
+
+const sanitizeResponseData = (data) => {
+  if (typeof data !== 'object' || data === null) return data;
+
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  const sanitized = {};
+  Object.keys(data).forEach((key) => {
+    if (typeof data[key] === 'string') {
+      sanitized[key] = data[key].replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    } else if (Array.isArray(data[key])) {
+      sanitized[key] = data[key];
+    } else if (typeof data[key] === 'object' && data[key] !== null) {
+      sanitized[key] = sanitizeResponseData(data[key]);
+    } else {
+      sanitized[key] = data[key];
+    }
+  });
+  return sanitized;
+};
 
 export const API = {
-  request: (config) => {
-    const { baseUrl = process.env.NEXT_PUBLIC_API_DOMAIN, method = 'GET', url, params, headers } = config;
-    const token = Cookies.get(CK_TOKEN);
-    const requestConfig = {
-      url: `${baseUrl}${url}`,
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : undefined,
-        ...headers
-      },
-      data: ['POST', 'PATCH', 'PUT'].includes(method) ? params : undefined,
-      params: method === 'GET' ? params : undefined,
-      timeout: 20000,
-      timeoutErrorMessage: 'Hệ thống không phản hồi. Vui lòng thử lại sau!'
-    };
+  request: async ({ url, method = 'GET', params = {}, cache = undefined }) => {
+    try {
+      if (!url.startsWith('/api/')) {
+        throw new Error('Invalid API endpoint');
+      }
 
-    return axios(requestConfig)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((e) => {
-        const { status } = e?.response || {};
-        if (status === 401) {
-          Cookies.remove(CK_TOKEN);
-          window.location.reload();
-          return;
+      const config = {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Site-Code': SITE_CODE,
+          Accept: 'application/json'
+        },
+        credentials: 'include'
+      };
+
+      const token = getAccessToken();
+      if (token && typeof token === 'string' && token.length > 10) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      let fullUrl = `${BASE_URL}${url}`;
+
+      if (method === 'GET' && Object.keys(params).length > 0) {
+        const searchParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && typeof key === 'string') {
+            const sanitizedValue = String(value).replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+            searchParams.append(key, sanitizedValue);
+          }
+        });
+        fullUrl += '?' + searchParams.toString();
+      } else if (method !== 'GET' && Object.keys(params).length > 0) {
+        config.body = JSON.stringify(sanitizeRequestBody(params));
+      }
+
+      const response = await fetch(fullUrl, config);
+
+      if (response.status === 401) {
+        const { authService } = await import('../services/auth.service');
+        const refreshResult = await authService.refreshToken();
+
+        if (refreshResult && refreshResult.access_token) {
+          config.headers['Authorization'] = `Bearer ${refreshResult.access_token}`;
+          const retryResponse = await fetch(fullUrl, config);
+
+          if (!retryResponse.ok) {
+            const errorData = await retryResponse.json().catch(() => ({}));
+            throw new Error(errorData.message || `HTTP ${retryResponse.status}`);
+          }
+
+          const data = await retryResponse.json();
+          return sanitizeResponseData(data);
+        } else {
+          if (typeof window !== 'undefined') {
+            window.location.href = '/dang-nhap';
+          }
+          return null;
         }
-        return Promise.reject(e?.response?.data || e);
-      });
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      return sanitizeResponseData(data);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('API Error:', error);
+      }
+      throw error;
+    }
   },
 
-  upload: (config) => {
-    const { headers, file } = config;
+  get: (url, params = {}) => API.request({ url, method: 'GET', params }),
+  post: (url, params = {}) => API.request({ url, method: 'POST', params }),
+  put: (url, params = {}) => API.request({ url, method: 'PUT', params }),
+  patch: (url, params = {}) => API.request({ url, method: 'PATCH', params }),
+  delete: (url, params = {}) => API.request({ url, method: 'DELETE', params })
+};
 
-    const token = Cookies.get(CK_TOKEN);
+export const setAuthFunctions = (getToken, refreshToken) => {
+  console.warn('setAuthFunctions is deprecated.');
+};
 
-    if (!file) {
-      return Promise.resolve(null);
-    }
-
-    const formData = new FormData();
-
-    formData.append('file', file);
-
-    const requestConfig = {
-      url: `${process.env.NEXT_PUBLIC_API_DOMAIN}/upload`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: token ? `Bearer ${token}` : undefined,
-        ...headers
-      },
-      data: formData,
-      timeout: 20000,
-      timeoutErrorMessage: 'Hệ thống không phản hồi. Vui lòng thử lại sau!'
-    };
-
-    return axios(requestConfig)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((e) => {
-        return Promise.reject(e?.response?.data || e);
-      });
-  }
+export const getCurrentToken = () => {
+  return getAccessToken();
 };
