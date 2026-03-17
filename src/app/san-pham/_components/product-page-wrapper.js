@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   Box,
   Container,
@@ -37,76 +37,103 @@ import {
 
 const PRODUCTS_PER_PAGE = 15;
 
-const useTranslation = () => ({
-  t: (key) => {
-    const map = {
-      'product.title': 'Tất cả sản phẩm',
-      'product.breadcrumb.title.home': 'Trang chủ',
-      'product.breadcrumb.title.product': 'Sản phẩm',
-      'product.all.product': 'Tất cả danh mục',
-      'product.sorting.name': 'Tên A-Z',
-      'product.sorting.price.low': 'Giá thấp → cao',
-      'product.sorting.price.high': 'Giá cao → thấp',
-      'product.searching.placeholder': 'Tìm kiếm sản phẩm...',
-      'product.searching.name': 'Tìm',
-      'product.not.found': 'Không tìm thấy sản phẩm',
-      'product.reset.search': 'Đặt lại bộ lọc',
-      'category.title': 'Danh mục'
-    };
-    return map[key] || key;
-  },
-  getLocalizedText: (vi, en) => vi,
-  language: 'vi'
-});
+const t = (key) => {
+  const map = {
+    'product.title': 'Tất cả sản phẩm',
+    'product.breadcrumb.title.home': 'Trang chủ',
+    'product.breadcrumb.title.product': 'Sản phẩm',
+    'product.all.product': 'Tất cả danh mục',
+    'product.sorting.name': 'Tên A-Z',
+    'product.sorting.price.low': 'Giá thấp → cao',
+    'product.sorting.price.high': 'Giá cao → thấp',
+    'product.searching.placeholder': 'Tìm kiếm sản phẩm...',
+    'product.searching.name': 'Tìm',
+    'product.not.found': 'Không tìm thấy sản phẩm',
+    'product.reset.search': 'Đặt lại bộ lọc',
+    'category.title': 'Danh mục'
+  };
+  return map[key] || key;
+};
 
-const ProductPageWrapper = () => {
-  const { getLocalizedText, t } = useTranslation();
+const ProductPageWrapper = ({ categorySlug = [] }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const searchInputRef = useRef(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentSort, setCurrentSort] = useState('name');
 
-  const categoryParam = searchParams.get('category');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [subCategoryId, setSubCategoryId] = useState(null);
 
   const { data: topCategories = [], isLoading: categoriesLoading } = useQueryTopLevelCategories();
   const { data: allCategories = [], isLoading: allCategoriesLoading } = useQueryAllCategories();
 
-  // Đọc category từ URL param
+  // Đọc category từ URL path
   useEffect(() => {
-    if (!categoryParam) {
+    if (!categorySlug || categorySlug.length === 0) {
       setSelectedCategory('all');
       setSubCategoryId(null);
       return;
     }
 
     if (allCategories.length > 0) {
-      const found = allCategories.find((cat) => cat.slug === categoryParam);
-      if (found) {
-        if (!found.parent_id) {
-          setSelectedCategory(found.id.toString());
+      // Tìm category theo slug path
+      const findCategoryBySlugPath = (categories, slugPath) => {
+        const foundCategories = [];
+
+        for (let i = 0; i < slugPath.length; i++) {
+          const currentSlugPath = slugPath.slice(0, i + 1).join('/');
+
+          const found = categories.find((cat) => {
+            const buildPath = (categoryId) => {
+              const c = categories.find((cc) => cc.id === categoryId);
+              if (!c) return '';
+              if (!c.parent_id) return c.slug;
+              const parentPath = buildPath(c.parent_id);
+              return parentPath ? `${parentPath}/${c.slug}` : c.slug;
+            };
+            return buildPath(cat.id) === currentSlugPath;
+          });
+
+          if (found) {
+            foundCategories.push(found);
+          } else {
+            break;
+          }
+        }
+
+        return foundCategories;
+      };
+
+      const foundPath = findCategoryBySlugPath(allCategories, categorySlug);
+
+      if (foundPath.length > 0) {
+        const lastCategory = foundPath[foundPath.length - 1];
+
+        if (!lastCategory.parent_id) {
+          setSelectedCategory(lastCategory.id.toString());
           setSubCategoryId(null);
         } else {
-          let rootCategory = found;
+          let rootCategory = lastCategory;
           while (rootCategory.parent_id) {
             const parent = allCategories.find((c) => c.id === rootCategory.parent_id);
             if (!parent) break;
             rootCategory = parent;
           }
           setSelectedCategory(rootCategory.id.toString());
-          setSubCategoryId(found.id.toString());
+          setSubCategoryId(lastCategory.id.toString());
         }
+      } else {
+        setSelectedCategory('all');
+        setSubCategoryId(null);
       }
     }
-  }, [categoryParam, allCategories]);
+  }, [categorySlug, allCategories]);
 
   const effectiveCategoryId = subCategoryId || selectedCategory;
 
-  const { data: categoryHierarchy, isLoading: hierarchyLoading } = useQueryCategoryHierarchy(selectedCategory);
+  const { data: categoryHierarchy } = useQueryCategoryHierarchy(selectedCategory);
 
   const { data: categoryIds = [], isLoading: pathsLoading } = useQueryCategoryPaths(
     effectiveCategoryId && effectiveCategoryId !== 'all' ? parseInt(effectiveCategoryId) : null
@@ -151,7 +178,6 @@ const ProductPageWrapper = () => {
       case 'price-high':
         sorted.sort((a, b) => (b.price || b.kiotviet_price || 0) - (a.price || a.kiotviet_price || 0));
         break;
-      case 'name':
       default:
         sorted.sort((a, b) => (a.title || a.kiotviet_name || '').localeCompare(b.title || b.kiotviet_name || ''));
         break;
@@ -165,32 +191,28 @@ const ProductPageWrapper = () => {
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
   const products = processedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
 
-  console.log(products);
-
   const handleSearch = () => {
     const value = searchInputRef.current?.value || '';
     setSearchTerm(value);
     setCurrentPage(1);
   };
 
-  const handleCategorySelect = (categoryId) => {
-    const category = allCategories.find((cat) => cat.id === categoryId);
-    if (category) {
-      router.push(`/san-pham?category=${category.slug}`, { scroll: false });
+  // Navigate bằng URL path
+  const handleTopCategoryClick = (categoryId) => {
+    if (categoryId === 'all') {
+      router.push('/san-pham');
+    } else {
+      const category = topCategories.find((cat) => cat.id.toString() === categoryId.toString());
+      if (category) {
+        router.push(`/san-pham/${category.slug}`);
+      }
     }
     setCurrentPage(1);
   };
 
-  const handleTopCategoryClick = (categoryId) => {
-    if (categoryId === 'all') {
-      router.push('/san-pham', { scroll: false });
-    } else {
-      const category = topCategories.find((cat) => cat.id.toString() === categoryId.toString());
-      if (category) {
-        router.push(`/san-pham?category=${category.slug}`, { scroll: false });
-      }
-    }
-    setSubCategoryId(null);
+  const handleSidebarSelect = (url) => {
+    // url từ sidebar có dạng /san-pham/slug1/slug2
+    router.push(url);
     setCurrentPage(1);
   };
 
@@ -201,7 +223,7 @@ const ProductPageWrapper = () => {
       const findName = (children, targetId) => {
         if (!children || !Array.isArray(children)) return null;
         for (const cat of children) {
-          if (cat.id.toString() === targetId.toString()) return getLocalizedText(cat.name, cat.name_en);
+          if (cat.id.toString() === targetId.toString()) return cat.name;
           if (cat.children?.length > 0) {
             const found = findName(cat.children, targetId);
             if (found) return found;
@@ -214,7 +236,7 @@ const ProductPageWrapper = () => {
     }
 
     const cat = topCategories.find((c) => c.id.toString() === selectedCategory.toString());
-    return cat ? getLocalizedText(cat.name, cat.name_en) : t('product.title');
+    return cat ? cat.name : t('product.title');
   };
 
   const getBreadcrumbData = () => {
@@ -223,26 +245,20 @@ const ProductPageWrapper = () => {
       { title: t('product.breadcrumb.title.product'), href: '/san-pham' }
     ];
 
-    if (selectedCategory === 'all') return base;
+    if (!categorySlug || categorySlug.length === 0) return base;
 
-    const rootCat = topCategories.find((c) => c.id.toString() === selectedCategory.toString());
-    if (rootCat) {
-      base.push({
-        title: getLocalizedText(rootCat.name, rootCat.name_en),
-        href: `/san-pham?category=${rootCat.slug}`
-      });
-    }
-
-    if (subCategoryId) {
-      const subCat = allCategories.find((c) => c.id.toString() === subCategoryId.toString());
-      if (subCat) {
+    let currentPath = '';
+    categorySlug.forEach((slug, index) => {
+      currentPath += (index === 0 ? '' : '/') + slug;
+      const category = allCategories.find((cat) => cat.slug === slug);
+      if (category) {
         base.push({
-          title: getLocalizedText(subCat.name, subCat.name_en),
-          href: '#',
-          isActive: true
+          title: category.name,
+          href: index === categorySlug.length - 1 ? '#' : `/san-pham/${currentPath}`,
+          isActive: index === categorySlug.length - 1
         });
       }
-    }
+    });
 
     return base;
   };
@@ -282,7 +298,7 @@ const ProductPageWrapper = () => {
                 _hover={{ bg: 'main.1', color: 'white' }}
                 onClick={() => handleTopCategoryClick(cat.id.toString())}
               >
-                {getLocalizedText(cat.name, cat.name_en)}
+                {cat.name}
               </Button>
             );
           })}
@@ -333,26 +349,18 @@ const ProductPageWrapper = () => {
 
       {/* Layout: Sidebar + Product Grid */}
       <Flex gap={8} align="start">
-        {/* Sidebar */}
         {selectedCategory !== 'all' && (
           <Box display={{ base: 'none', lg: 'block' }} minW="260px" maxW="280px" position="sticky" top="180px">
             <CategorySidebar
               selectedCategory={selectedCategory}
               selectedSubCategory={subCategoryId}
-              onSubCategorySelect={(url) => {
-                // url sẽ là slug path, ta chỉ lấy slug cuối
-                const slugParts = url.replace('/san-pham/', '').split('/');
-                const lastSlug = slugParts[slugParts.length - 1];
-                router.push(`/san-pham?category=${lastSlug}`, { scroll: false });
-                setCurrentPage(1);
-              }}
+              onSubCategorySelect={handleSidebarSelect}
               fullCategories={allCategories}
               fullCategoriesLoading={allCategoriesLoading}
             />
           </Box>
         )}
 
-        {/* Product Grid */}
         <Box flex={1}>
           {isLoading ? (
             <Center py={20}>
@@ -360,10 +368,6 @@ const ProductPageWrapper = () => {
             </Center>
           ) : products.length > 0 ? (
             <>
-              {/* <Text mb={4} color="gray.600" fontSize="sm">
-                {totalElements} {t('product.title').toLowerCase()}
-              </Text> */}
-
               <Grid
                 templateColumns={{
                   base: 'repeat(1, 1fr)',
@@ -381,7 +385,6 @@ const ProductPageWrapper = () => {
                   </GridItem>
                 ))}
               </Grid>
-
               {totalPages > 1 && (
                 <ProductPagination
                   currentPage={currentPage}
