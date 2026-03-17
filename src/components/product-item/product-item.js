@@ -114,7 +114,7 @@ const ProductItem = ({ item }) => {
             transitionDuration="200ms"
           >
             <Text fontSize="16px" fontWeight="600" color="white">
-              Mua hàng
+              Liên Hệ
             </Text>
           </Flex>
         </Flex>
