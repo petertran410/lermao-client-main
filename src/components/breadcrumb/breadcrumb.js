@@ -16,7 +16,7 @@ const Breadcrumb = (props) => {
             <Link href={href}>
               <Text
                 fontWeight={isActive ? 600 : 400}
-                fontSize={isActive ? 13 : 12}
+                fontSize={isActive ? 16 : 14}
                 color={isActive ? '#5FA6BA' : '#6A7074'}
               >
                 {title}

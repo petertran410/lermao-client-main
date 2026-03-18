@@ -52,11 +52,11 @@ const Header = () => {
     {
       title: 'Tin Tức',
       href: '/tin-tuc'
-    },
-    {
-      title: 'Liên hệ',
-      href: '/lien-he'
     }
+    // {
+    //   title: 'Liên hệ',
+    //   href: '/lien-he'
+    // }
   ];
 
   return (
@@ -112,7 +112,7 @@ const Header = () => {
           );
         })}
 
-        <CartHeader />
+        {/* <CartHeader /> */}
       </Flex>
 
       <Flex

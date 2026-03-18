@@ -97,13 +97,13 @@ const Footer = () => {
           <Flex align="flex-start" gap="8px">
             <Image src="/images/phone.png" alt={IMG_ALT} w="24px" h="24px" />
             <ChakraLink
-              href="tel:+84931566676"
+              href="tel:+84973123230"
               color="#FFF"
               fontSize={16}
               fontWeight={400}
               _hover={{ textDecor: 'none', color: '#FFF' }}
             >
-              +84 931 566 676
+              +84 973 123 230
             </ChakraLink>
           </Flex>
 
