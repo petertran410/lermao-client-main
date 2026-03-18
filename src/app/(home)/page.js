@@ -24,7 +24,7 @@ async function fetchProductsByCategory(categoryId) {
 export default async function Home() {
   const [topProducts, bottomProducts] = await Promise.all([
     fetchProductsByCategory(1000073082),
-    fetchProductsByCategory(1000073084)
+    fetchProductsByCategory(1000073086)
   ]);
 
   return (
