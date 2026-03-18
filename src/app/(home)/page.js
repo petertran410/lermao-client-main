@@ -4,6 +4,7 @@ import HomeIntro from './_components/intro';
 import ProductMarquee from './_components/product-marquee';
 import CategoryShowcase from './_components/category-showcase';
 import ReviewCarousel from './_components/review-carousel';
+import ScrollReveal from './_components/scroll-reveal';
 
 export const revalidate = 60;
 
@@ -64,10 +65,22 @@ export default async function Home() {
   return (
     <div>
       <HomeIntro />
-      <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
-      <CategoryShowcase categories={rootCategories} />
-      <ReviewCarousel reviews={reviews} />
-      <HomeContact />
+
+      <ScrollReveal direction="up" delay={0}>
+        <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <CategoryShowcase categories={rootCategories} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <ReviewCarousel reviews={reviews} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.15}>
+        <HomeContact />
+      </ScrollReveal>
     </div>
   );
 }
