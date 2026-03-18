@@ -3,6 +3,7 @@ import HomeContact from './_components/contact';
 import HomeIntro from './_components/intro';
 import ProductMarquee from './_components/product-marquee';
 import CategoryShowcase from './_components/category-showcase';
+import ReviewCarousel from './_components/review-carousel';
 
 export const revalidate = 60;
 
@@ -42,11 +43,22 @@ async function fetchRootCategories() {
   }
 }
 
+async function fetchReviews() {
+  try {
+    const res = await serverFetchJSON('/api/review/client/testimonials');
+    return Array.isArray(res) ? res : [];
+  } catch (e) {
+    console.error('Failed to fetch reviews:', e.message);
+    return [];
+  }
+}
+
 export default async function Home() {
-  const [topProducts, bottomProducts, rootCategories] = await Promise.all([
+  const [topProducts, bottomProducts, rootCategories, reviews] = await Promise.all([
     fetchProductsByCategory(1000073082),
     fetchProductsByCategory(1000073086),
-    fetchRootCategories()
+    fetchRootCategories(),
+    fetchReviews()
   ]);
 
   return (
@@ -54,6 +66,7 @@ export default async function Home() {
       <HomeIntro />
       <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
       <CategoryShowcase categories={rootCategories} />
+      <ReviewCarousel reviews={reviews} />
       <HomeContact />
     </div>
   );
