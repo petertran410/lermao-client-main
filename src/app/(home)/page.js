@@ -2,6 +2,7 @@ import { serverFetchJSON } from '@/utils/server-fetch';
 import HomeContact from './_components/contact';
 import HomeIntro from './_components/intro';
 import ProductMarquee from './_components/product-marquee';
+import CategoryShowcase from './_components/category-showcase';
 
 export const revalidate = 60;
 
@@ -21,16 +22,38 @@ async function fetchProductsByCategory(categoryId) {
   }
 }
 
+async function fetchRootCategories() {
+  try {
+    const res = await serverFetchJSON('/api/category/for-cms');
+    const all = res?.data || [];
+    return all
+      .filter((cat) => !cat.parent_id)
+      .sort((a, b) => (a.priority || 0) - (b.priority || 0))
+      .map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.slug,
+        description: cat.description,
+        image_url: cat.image_url
+      }));
+  } catch (e) {
+    console.error('Failed to fetch root categories:', e.message);
+    return [];
+  }
+}
+
 export default async function Home() {
-  const [topProducts, bottomProducts] = await Promise.all([
+  const [topProducts, bottomProducts, rootCategories] = await Promise.all([
     fetchProductsByCategory(1000073082),
-    fetchProductsByCategory(1000073086)
+    fetchProductsByCategory(1000073086),
+    fetchRootCategories()
   ]);
 
   return (
     <div>
       <HomeIntro />
       <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
+      <CategoryShowcase categories={rootCategories} />
       <HomeContact />
     </div>
   );

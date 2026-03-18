@@ -93,7 +93,7 @@ const ProductMarquee = ({ topProducts = [], bottomProducts = [] }) => {
   if (topProducts.length === 0 && bottomProducts.length === 0) return null;
 
   return (
-    <Box mt="56px" overflow="hidden">
+    <Box mt="70px" overflow="hidden">
       {topProducts.length > 0 && <MarqueeRow products={topProducts} direction="left" />}
       {bottomProducts.length > 0 && <MarqueeRow products={bottomProducts} direction="right" />}
     </Box>
