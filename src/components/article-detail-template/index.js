@@ -2,55 +2,96 @@
 'use client';
 
 import Breadcrumb from '@/components/breadcrumb';
-import Carousel from '@/components/carousel';
 import TableOfContents from '@/components/toc';
 import { useQueryFindIdBySlug, useQueryNewsDetail, useQueryRelatedNews } from '@/services/news.service';
 import { API } from '@/utils/API';
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { convertSlugURL } from '@/utils/helper-server';
+import { injectHeadingIds } from '@/utils/html-heading';
 import { AspectRatio, Box, Flex, Image, Spinner, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 // ═══════════════════════════════════════════
-// Related Articles Sidebar
+// Video Embed
 // ═══════════════════════════════════════════
-const RelatedArticles = ({ type, currentId, basePath }) => {
+const VideoEmbed = ({ embedUrl }) => {
+  if (!embedUrl) return null;
+
+  return (
+    <AspectRatio ratio={16 / 9} w="full" mt="20px" mb="20px">
+      <iframe
+        src={embedUrl}
+        title="Video nhúng"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        style={{ borderRadius: '8px' }}
+      />
+    </AspectRatio>
+  );
+};
+
+// ═══════════════════════════════════════════
+// Sidebar — Bài viết mới nhất
+// ═══════════════════════════════════════════
+const LatestArticlesSidebar = ({ type, currentId, basePath }) => {
   const { data: articles = [], isLoading } = useQueryRelatedNews(type, currentId, 6);
 
-  if (isLoading || !articles.length) return null;
+  if (isLoading) {
+    return (
+      <Box p="16px" bg="gray.50" borderRadius="8px">
+        <Text fontSize={18} fontWeight={500} mb="16px">
+          Đang tải...
+        </Text>
+      </Box>
+    );
+  }
+
+  if (!articles.length) {
+    return (
+      <Box p="16px" bg="gray.50" borderRadius="8px">
+        <Text fontSize={18} fontWeight={500} mb="16px">
+          Bài viết mới nhất
+        </Text>
+        <Text fontSize={14} color="gray.500">
+          Chưa có bài viết nào khác
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box>
-      <Text fontWeight={700} fontSize={18} mb="16px">
-        Bài viết liên quan
+      <Text fontSize={20} fontWeight={600} mb="20px">
+        Bài viết mới nhất
       </Text>
-      <Flex direction="column" gap="16px">
+      <Flex direction="column" gap="20px">
         {articles.map((article) => (
           <Link href={`${basePath}/${convertSlugURL(article.title)}`} key={article.id}>
             <Flex gap="12px" align="flex-start" data-group>
               <Image
                 src={article.imagesUrl?.[0]?.replace('http://', 'https://') || '/images/news-default.png'}
-                w="120px"
-                h="80px"
+                w="150px"
+                h="100px"
+                minW="150px"
                 objectFit="cover"
-                borderRadius={8}
+                borderRadius="8px"
                 alt={IMG_ALT}
-                flexShrink={0}
               />
               <Flex direction="column" gap="4px" flex={1}>
                 <Text
-                  fontSize={14}
-                  fontWeight={600}
+                  fontSize={16}
+                  fontWeight={500}
+                  lineHeight="20px"
                   noOfLines={2}
-                  lineHeight="18px"
                   _groupHover={{ color: 'main.1' }}
                   transition="color 0.2s"
                 >
                   {article.title}
                 </Text>
-                <Text fontSize={12} color="#999">
+                <Text fontSize={14} color="#A1A1AA">
                   {dayjs(article.createdDate).format('DD/MM/YYYY')}
                 </Text>
               </Flex>
@@ -71,7 +112,6 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
   const { data: newsDetail, isLoading: detailLoading } = useQueryNewsDetail(articleId);
   const hasIncrementedRef = useRef(false);
 
-  // Increment view
   useEffect(() => {
     if (articleId && !hasIncrementedRef.current) {
       hasIncrementedRef.current = true;
@@ -79,10 +119,14 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
     }
   }, [articleId]);
 
-  // Reset ref khi slug thay đổi
   useEffect(() => {
     hasIncrementedRef.current = false;
   }, [slug]);
+
+  // Inject heading IDs vào HTML 1 lần, dùng chung cho cả TOC và content
+  const processedHtml = useMemo(() => {
+    return injectHeadingIds(newsDetail?.htmlContent);
+  }, [newsDetail?.htmlContent]);
 
   if (idLoading || detailLoading) {
     return (
@@ -101,106 +145,109 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
     );
   }
 
-  const { title, htmlContent, createdDate, imagesUrl, view, description } = newsDetail;
+  const { title, createdDate, imagesUrl, view, description, embedUrl, viewCount } = newsDetail;
 
   const breadcrumbData = [
+    { title: 'Trang chủ', href: '/' },
     { title: breadcrumbTitle, href: basePath },
     { title, href: '#', isActive: true }
   ];
 
-  const hasToc = htmlContent?.startsWith('<toc></toc>') || htmlContent?.includes('<toc></toc>');
+  const showToc = processedHtml && !processedHtml.startsWith('<toc></toc>');
 
   return (
     <Flex
-      direction="column"
+      pt={{ xs: '10px', lg: '40px' }}
       px={PX_ALL}
-      pt={{ xs: '0px', md: '40px' }}
-      pb="60px"
+      gap={{ xs: '32px', lg: '48px' }}
+      pb="50px"
+      direction={{ xs: 'column', lg: 'row' }}
       zIndex={10}
       pos="relative"
-      className="page-detail"
     >
-      {/* Breadcrumb */}
-      <Box display={{ xs: 'none', lg: 'block' }}>
+      {/* ══════════════════════════════════════
+          MAIN CONTENT — 2/3
+      ══════════════════════════════════════ */}
+      <Flex flex={2 / 3} direction="column">
         <Breadcrumb data={breadcrumbData} />
-        <Box h="1px" w="full" bgColor="#E1E2E3" mt="12px" />
-      </Box>
 
-      <Flex gap={{ xs: '40px', lg: '32px' }} mt="24px" direction={{ xs: 'column', lg: 'row' }}>
-        {/* Main content */}
-        <Flex w="full" flex={{ xs: 'none', lg: 2 / 3 }} direction="column">
-          <Text as="h1" lineHeight="32px" fontWeight={700} fontSize={24}>
-            {title}
+        <Text as="h1" fontSize={{ xs: 24, lg: 28 }} fontWeight={700} mt="20px" lineHeight="34px">
+          {title}
+        </Text>
+
+        <Text mt="12px" color="#A1A1AA" fontSize={16}>
+          Ngày đăng: {dayjs(createdDate).format('DD/MM/YYYY')}
+        </Text>
+
+        {description && (
+          <Text mt="16px" fontWeight={500} fontSize={{ xs: 16, lg: 18 }} lineHeight="28px" color="#333">
+            {description}
           </Text>
+        )}
 
-          <Flex align="center" gap="24px" mt="12px">
-            <Flex align="center" gap="8px">
-              <Image src="/images/calendar.png" alt={IMG_ALT} w="20px" h="20px" />
-              <Text fontSize={12} color="#999">
-                {dayjs(createdDate).format('DD/MM/YYYY')}
-              </Text>
-            </Flex>
-            <Flex align="center" gap="8px">
-              <Image src="/images/eye.png" alt={IMG_ALT} w="20px" h="20px" />
-              <Text fontSize={12} color="#999">
-                {view || newsDetail.viewCount || 0} lượt xem
-              </Text>
-            </Flex>
-          </Flex>
-
-          {description && (
-            <Text mt="16px" fontSize={15} fontWeight={500} color="#555" lineHeight="24px">
-              {description}
+        {/* Table of Contents — dùng processedHtml (đã có id) */}
+        {showToc && (
+          <Box my="24px" borderRadius={8} border="1px solid #CCC" px="16px" py="12px">
+            <Text fontWeight={700} fontSize={20}>
+              Mục lục
             </Text>
-          )}
+            <TableOfContents html={processedHtml} />
+          </Box>
+        )}
 
-          {/* Table of Contents */}
-          {hasToc && htmlContent && (
-            <Box w="full" my="24px" borderRadius={8} border="1px solid #CCC" px="16px" py="12px">
-              <Text fontWeight={700} fontSize={18}>
-                Mục lục
-              </Text>
-              <TableOfContents html={htmlContent} />
-            </Box>
-          )}
+        <AspectRatio ratio={16 / 9} w="full" mt="20px">
+          <Image
+            src={imagesUrl?.[0]?.replace('http://', 'https://') || '/images/news-default.png'}
+            w="full"
+            h="full"
+            alt={title || IMG_ALT}
+            borderRadius={8}
+            fallbackSrc="/images/news-default.png"
+          />
+        </AspectRatio>
 
-          {/* Featured Image */}
-          {imagesUrl?.[0] && (
-            <AspectRatio ratio={{ xs: 4 / 3, md: 16 / 9 }} w="full" mt="20px">
-              <Image
-                src={imagesUrl[0]?.replace('http://', 'https://')}
-                alt={title || IMG_ALT}
-                w="full"
-                h="full"
-                fit="cover"
-                borderRadius={12}
-                fallbackSrc="/images/news-default.png"
-              />
-            </AspectRatio>
-          )}
+        <VideoEmbed embedUrl={embedUrl} />
 
-          {/* HTML Content */}
-          {htmlContent && (
-            <Box
-              w="full"
-              mt="24px"
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
-              className="html-content"
-              sx={{
-                img: { borderRadius: '12px', my: '16px', maxW: '100%' },
-                'h2, h3': { color: '#1d2128', mt: '24px', mb: '12px', fontWeight: 700 },
-                p: { mb: '12px', lineHeight: '1.8', fontSize: '15px' },
-                ul: { pl: '20px', mb: '12px' },
-                li: { mb: '6px' }
-              }}
-            />
-          )}
-        </Flex>
+        {/* HTML Content — dùng cùng processedHtml (heading đã có id khớp với TOC) */}
+        {processedHtml && (
+          <Box
+            w="full"
+            mt="20px"
+            className="html-content"
+            dangerouslySetInnerHTML={{ __html: processedHtml }}
+            sx={{
+              fontSize: '17px',
+              lineHeight: '1.9',
+              color: '#333',
+              // h2: { fontSize: '22px', fontWeight: 700, color: '#1d2128', mt: '32px', mb: '12px' },
+              // h3: { fontSize: '19px', fontWeight: 700, color: '#1d2128', mt: '24px', mb: '12px' },
+              // p: { mb: '14px' },
+              // img: { borderRadius: '8px', my: '16px', maxW: '100%', h: 'auto' },
+              // 'ul, ol': { pl: '24px', mb: '14px' },
+              // li: { mb: '8px' },
+              // a: { color: 'main.1', textDecoration: 'underline' },
+              blockquote: {
+                borderLeft: '4px solid',
+                borderColor: 'main.1',
+                pl: '16px',
+                ml: '0',
+                my: '16px',
+                fontStyle: 'italic',
+                color: '#555'
+              },
+              table: { w: '100%', borderCollapse: 'collapse', my: '16px' },
+              'th, td': { border: '1px solid #ddd', p: '8px 12px', textAlign: 'left' },
+              th: { bgColor: '#f5f5f5', fontWeight: 600 }
+            }}
+          />
+        )}
+      </Flex>
 
-        {/* Sidebar */}
-        <Flex w={{ xs: 'full', lg: '33%' }} direction="column" position={{ lg: 'sticky' }} top={{ lg: '120px' }}>
-          {articleId && <RelatedArticles type={type} currentId={articleId} basePath={basePath} />}
-        </Flex>
+      {/* ══════════════════════════════════════
+          SIDEBAR — 1/3
+      ══════════════════════════════════════ */}
+      <Flex flex={1 / 3} direction="column" position={{ lg: 'sticky' }} top={{ lg: '120px' }} alignSelf="flex-start">
+        {articleId && <LatestArticlesSidebar type={type} currentId={articleId} basePath={basePath} />}
       </Flex>
     </Flex>
   );

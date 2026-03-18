@@ -1,18 +1,17 @@
+// src/components/toc/toc.js
 'use client';
 
 import parse from 'html-react-parser';
 import React from 'react';
 
 const TableOfContents = ({ html }) => {
-  // Parse HTML string thành React elements
   const elements = parse(html);
 
-  // Hàm đệ quy để xử lý các thẻ heading
   const extractHeadings = (nodes) => {
     const headings = [];
     let idCounter = 0;
 
-    const traverse = (elements, level = 0) => {
+    const traverse = (elements) => {
       React.Children.forEach(elements, (element) => {
         if (!element || !element.type) return;
 
@@ -21,12 +20,10 @@ const TableOfContents = ({ html }) => {
           let id = element.props.id || `heading-${idCounter++}`;
           const text = element.props.children;
           const depth = parseInt(tag.replace('h', ''), 10);
-
           headings.push({ id, text, depth });
         }
-        // Tiếp tục duyệt các phần tử con nếu có
         if (element.props && element.props.children) {
-          traverse(element.props.children, level + 1);
+          traverse(element.props.children);
         }
       });
     };
@@ -51,29 +48,50 @@ const TableOfContents = ({ html }) => {
     }
   };
 
-  // Render danh sách mục lục
-  const renderToc = (headings) => {
-    return (
-      <ul>
+  if (!headings.length) return null;
+
+  return (
+    <nav>
+      <ul style={{ listStyle: 'none', padding: 0, margin: '1px 0 0 0' }}>
         {headings.map((heading, index) => (
-          <li key={index} style={{ paddingLeft: `${(heading.depth - 1) * 20}px` }}>
+          <li
+            key={index}
+            style={{
+              paddingLeft: `${(heading.depth - 2) * 20}px`,
+              marginBottom: '6px'
+            }}
+          >
             <a
               href={`#${heading.id}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScroll(heading.id);
               }}
-              style={{ fontWeight: 600, fontSize: 15 }}
+              style={{
+                fontWeight: 400,
+                fontSize: '15px',
+                color: '#333',
+                textDecoration: 'none',
+                lineHeight: '1.5',
+                display: 'inline-block',
+                transition: 'color 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = '#00b7e9';
+                e.target.style.textDecoration = 'underline';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = '#333';
+                e.target.style.textDecoration = 'none';
+              }}
             >
               {heading.text}
             </a>
           </li>
         ))}
       </ul>
-    );
-  };
-
-  return <nav>{renderToc(headings)}</nav>;
+    </nav>
+  );
 };
 
 export default TableOfContents;
