@@ -50,7 +50,7 @@ const Header = () => {
       href: '/'
     },
     {
-      title: 'Bài Viết',
+      title: 'Tin Tức',
       href: '/tin-tuc'
     }
     // {
