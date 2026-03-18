@@ -1,17 +1,18 @@
-// src/app/tin-tuc/[slug]/page.js
+// src/app/cong-thuc/[slug]/page.js
+import { API } from '@/utils/API';
 import { META_DESCRIPTION, META_KEYWORDS } from '@/utils/helper-server';
 import { serverFetchJSON } from '@/utils/server-fetch';
 import ArticleDetailClient from '@/components/article-detail-template';
 import Script from 'next/script';
 
-const NEWS_TYPE = 'NEWS';
+const NEWS_TYPE = 'CONG_THUC_PHA_CHE';
 
 export async function generateMetadata({ params }) {
   const { slug } = params;
 
   try {
     const idData = await serverFetchJSON(`/api/news/client/find-id-by-slug?slug=${slug}&type=${NEWS_TYPE}`);
-    if (!idData?.id) return { title: 'Tin tức | Gấu Lermao', description: META_DESCRIPTION };
+    if (!idData?.id) return { title: 'Công thức | Gấu Lermao', description: META_DESCRIPTION };
 
     const data = await serverFetchJSON(`/api/news/client/${idData.id}`);
     const { title: titleData, imagesUrl, description, titleMeta } = data || {};
@@ -34,22 +35,22 @@ export async function generateMetadata({ params }) {
       }
     };
   } catch {
-    return { title: 'Tin tức | Gấu Lermao', description: META_DESCRIPTION };
+    return { title: 'Công thức | Gấu Lermao', description: META_DESCRIPTION };
   }
 }
 
-const TinTucDetailPage = ({ params }) => {
+const CongThucDetailPage = ({ params }) => {
   const { slug } = params;
 
   return (
     <ArticleDetailClient
       slug={slug}
       type={NEWS_TYPE}
-      basePath="/tin-tuc"
-      breadcrumbTitle="Tin tức"
-      backLabel="Quay lại tin tức"
+      basePath="/cong-thuc"
+      breadcrumbTitle="Công thức"
+      backLabel="Quay lại công thức"
     />
   );
 };
 
-export default TinTucDetailPage;
+export default CongThucDetailPage;

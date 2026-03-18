@@ -47,7 +47,7 @@ const Header = () => {
     },
     {
       title: 'Workshop Pha Chế',
-      href: '/'
+      href: '/workshop-pha-che'
     },
     {
       title: 'Tin Tức',

@@ -1,19 +1,15 @@
+// src/app/cong-thuc/page.js
 import { getMetadata } from '@/utils/helper-server';
-import Head from 'next/head';
-import RecipeList from './_components/recipe-list';
+import ArticleListTemplate from '@/components/article-list-template';
 
-export const metadata = getMetadata({ title: 'Công thức | Gấu Lermao' });
+export const metadata = getMetadata({
+  title: 'Công thức pha chế | Gấu Lermao',
+  description:
+    'Tổng hợp công thức pha chế đồ uống: trà sữa, café, trà trái cây, đá xay dễ làm – dễ bán. Phù hợp cho người mới, quán nhỏ và chủ F&B.'
+});
 
-const Recipe = () => {
-  return (
-    <>
-      <Head>
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_DOMAIN}/cong-thuc`} />
-      </Head>
-      <RecipeList />
-    </>
-  );
+const CongThucPage = () => {
+  return <ArticleListTemplate type="CONG_THUC_PHA_CHE" title="Công thức pha chế" basePath="/cong-thuc" pageSize={12} />;
 };
 
-export default Recipe;
+export default CongThucPage;
