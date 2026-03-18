@@ -1,7 +1,7 @@
 'use client';
 
 import { IMG_ALT } from '@/utils/const';
-import { Box, Flex, Image } from '@chakra-ui/react';
+import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 const GAP = 24;
 
@@ -88,12 +88,17 @@ const MarqueeRow = ({ products, direction = 'left' }) => {
     </Box>
   );
 };
-
 const ProductMarquee = ({ topProducts = [], bottomProducts = [] }) => {
   if (topProducts.length === 0 && bottomProducts.length === 0) return null;
 
   return (
     <Box mt="70px" overflow="hidden">
+      <Text textAlign="center" fontSize={{ xs: '22px', md: '28px' }} fontWeight={800} color="#1d2128" mb="24px">
+        Các Sản Phẩm Của Nhà{' '}
+        <Text as="span" color="#00b7e9" fontSize={{ xs: '22px', md: '28px' }} fontWeight={800}>
+          Gấu Lermao
+        </Text>
+      </Text>
       {topProducts.length > 0 && <MarqueeRow products={topProducts} direction="left" />}
       {bottomProducts.length > 0 && <MarqueeRow products={bottomProducts} direction="right" />}
     </Box>
