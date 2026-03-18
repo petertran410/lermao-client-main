@@ -68,8 +68,6 @@ const Header = () => {
         align="center"
         h="100px"
         px={PX_ALL}
-        gap="20px"
-        justify="space-between"
         bgColor="#FFF"
         boxShadow="0px 4px 24px 0px #0000000D"
         pos="fixed"
@@ -77,42 +75,70 @@ const Header = () => {
         left={0}
         w="full"
       >
-        {MENU_LIST.map((item) => {
-          const { title, href } = item;
-          const isActive = pathname === href;
-
-          if (title === 'Logo') {
+        {/* Left menu */}
+        <Flex flex={1} justify="flex-end" gap="8px" pr="32px">
+          {MENU_LIST.slice(0, 3).map((item) => {
+            const { title, href } = item;
+            const isActive = pathname === href;
             return (
-              <Link href="/" key={title}>
-                <Image src="/images/logo.png" w="70px" h="64px" fit="cover" alt={IMG_ALT} />
+              <Link href={href} key={title}>
+                <Box
+                  px="18px"
+                  py="10px"
+                  borderBottom="1px solid"
+                  borderColor={isActive ? 'main.1' : 'transparent'}
+                  data-group
+                >
+                  <Text
+                    fontWeight={700}
+                    fontSize={16}
+                    color={isActive ? 'main.1' : undefined}
+                    _groupHover={{ color: 'main.1' }}
+                    transitionDuration="250ms"
+                    whiteSpace="nowrap"
+                  >
+                    {title}
+                  </Text>
+                </Box>
               </Link>
             );
-          }
+          })}
+        </Flex>
 
-          return (
-            <Link href={href} key={title}>
-              <Box
-                px="18px"
-                py="10px"
-                borderBottom="1px solid"
-                borderColor={isActive ? 'main.1' : 'transparent'}
-                data-group
-              >
-                <Text
-                  fontWeight={700}
-                  fontSize={16}
-                  color={isActive ? 'main.1' : undefined}
-                  _groupHover={{ color: 'main.1' }}
-                  transitionDuration="250ms"
+        {/* Logo — center */}
+        <Link href="/">
+          <Image src="/images/logo.png" w="70px" h="64px" fit="cover" alt={IMG_ALT} flexShrink={0} />
+        </Link>
+
+        {/* Right menu */}
+        <Flex flex={1} justify="flex-start" gap="8px" pl="32px">
+          {MENU_LIST.slice(4).map((item) => {
+            const { title, href } = item;
+            const isActive = pathname === href;
+            return (
+              <Link href={href} key={title}>
+                <Box
+                  px="18px"
+                  py="10px"
+                  borderBottom="1px solid"
+                  borderColor={isActive ? 'main.1' : 'transparent'}
+                  data-group
                 >
-                  {title}
-                </Text>
-              </Box>
-            </Link>
-          );
-        })}
-
-        {/* <CartHeader /> */}
+                  <Text
+                    fontWeight={700}
+                    fontSize={16}
+                    color={isActive ? 'main.1' : undefined}
+                    _groupHover={{ color: 'main.1' }}
+                    transitionDuration="250ms"
+                    whiteSpace="nowrap"
+                  >
+                    {title}
+                  </Text>
+                </Box>
+              </Link>
+            );
+          })}
+        </Flex>
       </Flex>
 
       <Flex
@@ -145,7 +171,7 @@ const Header = () => {
           <Image src="/images/logo.png" alt={IMG_ALT} w={12} h="auto" fit="cover" />
         </Link>
 
-        <CartHeaderMobile />
+        {/* <CartHeaderMobile /> */}
       </Flex>
 
       <Drawer isOpen={isOpen} placement="left" onClose={onClose} autoFocus={false}>
