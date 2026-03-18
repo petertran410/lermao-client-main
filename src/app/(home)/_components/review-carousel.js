@@ -7,6 +7,8 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const CARD_W = 220;
 const CARD_H = 380;
+const CENTER_W = 300;
+const CENTER_H = 520;
 const GAP = 16;
 const STEP = CARD_W + GAP;
 const AUTO_MS = 2000;
@@ -16,14 +18,12 @@ const stripHtml = (h) => (h ? h.replace(/<[^>]*>/g, '').trim() : '');
 
 const ReviewCarousel = ({ reviews = [] }) => {
   const count = reviews.length;
-  // Triplicate list cho seamless loop
   const tripled = count > 0 ? [...reviews, ...reviews, ...reviews] : [];
-  const [pos, setPos] = useState(count); // bắt đầu ở bộ giữa
+  const [pos, setPos] = useState(count);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const intervalRef = useRef(null);
   const trackRef = useRef(null);
 
-  // ── Autoplay ──
   const startAuto = useCallback(() => {
     if (count <= 1) return;
     intervalRef.current = setInterval(() => {
@@ -41,10 +41,8 @@ const ReviewCarousel = ({ reviews = [] }) => {
     return stopAuto;
   }, [startAuto]);
 
-  // ── Seamless reset khi vượt biên ──
   useEffect(() => {
     if (!isTransitioning) return;
-
     const onEnd = () => {
       if (pos >= count * 2) {
         setIsTransitioning(false);
@@ -54,13 +52,11 @@ const ReviewCarousel = ({ reviews = [] }) => {
         setPos(pos + count);
       }
     };
-
     const el = trackRef.current;
     if (el) el.addEventListener('transitionend', onEnd);
     return () => el?.removeEventListener('transitionend', onEnd);
   }, [pos, count, isTransitioning]);
 
-  // ── Sau reset không transition → bật lại frame sau ──
   useEffect(() => {
     if (!isTransitioning) {
       requestAnimationFrame(() => {
@@ -78,21 +74,20 @@ const ReviewCarousel = ({ reviews = [] }) => {
 
   if (count === 0) return null;
 
-  // Tính vị trí trung tâm: card ở pos nằm giữa viewport
-  // offset tính từ trung tâm để xác định rotate/scale
   const centerPixel = pos * STEP;
+  const transitionCSS = isTransitioning ? 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none';
+  const cardTransitionCSS = isTransitioning ? 'all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none';
 
   return (
     <Box mt="56px" py="40px" overflow="hidden">
       <Text textAlign="center" fontSize={{ xs: '22px', md: '28px' }} fontWeight={800} color="#1d2128" mb="40px">
         Khách hàng nói gì về{' '}
-        <Text as="span" color="#00b7e9" fontSize={{ xs: '22px', md: '28px' }}>
+        <Text as="span" color="#00b7e9" fontSize={{ xs: '22px', md: '28px' }} fontWeight={800}>
           Gấu Lermao
         </Text>
       </Text>
 
-      {/* Track wrapper */}
-      <Box position="relative" h={`${CARD_H + 60}px`} onMouseEnter={stopAuto} onMouseLeave={startAuto}>
+      <Box position="relative" h={`${CENTER_H + 60}px`} onMouseEnter={stopAuto} onMouseLeave={startAuto}>
         <Flex
           ref={trackRef}
           position="absolute"
@@ -100,47 +95,55 @@ const ReviewCarousel = ({ reviews = [] }) => {
           top="50%"
           gap={`${GAP}px`}
           align="center"
-          transition={isTransitioning ? 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none'}
+          transition={transitionCSS}
           transform={`translate(calc(-${centerPixel}px - ${CARD_W / 2}px), -50%)`}
           willChange="transform"
         >
           {tripled.map((review, i) => {
             const offset = i - pos;
             const absOffset = Math.abs(offset);
-            const rotate = offset * 5;
-            const scale = absOffset === 0 ? 1 : Math.max(0.78, 1 - absOffset * 0.07);
-            const opacity = absOffset > 3 ? 0 : Math.max(0.3, 1 - absOffset * 0.2);
             const isCenter = absOffset === 0;
+
+            const rotate = isCenter ? 0 : offset * 5;
+            const scale = isCenter ? 1 : Math.max(0.78, 1 - absOffset * 0.07);
+            const opacity = absOffset > 3 ? 0 : Math.max(0.3, 1 - absOffset * 0.2);
+
+            const w = isCenter ? CENTER_W : CARD_W;
+            const h = isCenter ? CENTER_H : CARD_H;
+            const infoH = isCenter ? '210px' : '90px';
+            const nameLines = isCenter ? 2 : 1;
+            const descLines = isCenter ? 8 : 2;
 
             return (
               <Flex
                 key={`${review.id}-${i}`}
                 direction="column"
                 flex="0 0 auto"
-                w={`${CARD_W}px`}
-                h={`${CARD_H}px`}
+                w={`${w}px`}
+                h={`${h}px`}
                 bg="#FFF"
-                borderRadius="16px"
+                borderRadius={isCenter ? '20px' : '16px'}
                 overflow="hidden"
-                boxShadow={isCenter ? '0 8px 32px rgba(0,0,0,0.15)' : '0 4px 16px rgba(0,0,0,0.06)'}
-                border={isCenter ? '2.5px solid #00b7e9' : '1px solid #eee'}
-                transition={
-                  isTransitioning
-                    ? 'transform 0.6s cubic-bezier(0.25,0.1,0.25,1), opacity 0.6s ease, box-shadow 0.6s ease, border 0.6s ease'
-                    : 'none'
+                boxShadow={
+                  isCenter
+                    ? '0 12px 40px rgba(0, 183, 233, 0.25), 0 4px 16px rgba(0,0,0,0.1)'
+                    : '0 4px 16px rgba(0,0,0,0.06)'
                 }
+                border={isCenter ? '2.5px solid #00b7e9' : '1px solid #eee'}
+                transition={cardTransitionCSS}
                 transform={`rotate(${rotate}deg) scale(${scale})`}
                 opacity={opacity}
               >
                 {/* Image */}
                 <Box flex="1" minH="0" overflow="hidden" bg="#f5f5f5">
                   <Image
-                    // src={review.image?.replace('http://', 'https://') || FALLBACK}
-                    src={review.image ? review.image : FALLBACK}
+                    src={review.image || FALLBACK}
                     alt={review.name || IMG_ALT}
                     w="full"
                     h="full"
                     objectFit="cover"
+                    transition={cardTransitionCSS}
+                    transform={isCenter ? 'scale(1.03)' : 'scale(1)'}
                     onError={(e) => {
                       e.target.src = FALLBACK;
                     }}
@@ -148,11 +151,31 @@ const ReviewCarousel = ({ reviews = [] }) => {
                 </Box>
 
                 {/* Info */}
-                <Flex direction="column" p="12px" gap="4px" flex="0 0 auto" h="100px">
-                  <Text fontSize="14px" fontWeight={700} color="#1d2128" noOfLines={1}>
+                <Flex
+                  direction="column"
+                  p={isCenter ? '14px 16px' : '10px 12px'}
+                  gap="6px"
+                  flex="0 0 auto"
+                  h={infoH}
+                  transition={cardTransitionCSS}
+                  bg={isCenter ? 'linear-gradient(180deg, #fff 0%, #f0fafd 100%)' : '#FFF'}
+                >
+                  <Text
+                    fontSize={isCenter ? '16px' : '13px'}
+                    fontWeight={700}
+                    color="#1d2128"
+                    noOfLines={nameLines}
+                    transition={cardTransitionCSS}
+                  >
                     {review.name}
                   </Text>
-                  <Text fontSize="12px" color="gray.500" noOfLines={3} lineHeight="1.6">
+                  <Text
+                    fontSize={isCenter ? '13px' : '11px'}
+                    color="gray.500"
+                    noOfLines={descLines}
+                    lineHeight="1.7"
+                    transition={cardTransitionCSS}
+                  >
                     {stripHtml(review.review_description)}
                   </Text>
                 </Flex>
