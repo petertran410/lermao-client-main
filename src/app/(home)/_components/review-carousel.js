@@ -165,7 +165,7 @@ const ReviewCarousel = ({ reviews = [] }) => {
                   p="10px 12px"
                   gap="4px"
                   flex="0 0 auto"
-                  h="100px"
+                  h="120px"
                   bg={isCenter ? 'linear-gradient(180deg, #fff 0%, #f0fafd 100%)' : '#FFF'}
                 >
                   <Text fontSize="13px" fontWeight={700} color="#1d2128" noOfLines={1}>
