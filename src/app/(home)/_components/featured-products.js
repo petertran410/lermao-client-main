@@ -1,6 +1,7 @@
 // src/app/(home)/_components/featured-products.js
 'use client';
 
+import ScrollableTabs from '@/components/scrollable-tabs';
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { formatCurrency } from '@/utils/helper-server';
 import { AspectRatio, Box, Flex, Image, Text } from '@chakra-ui/react';
@@ -9,8 +10,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const FALLBACK = '/images/lermao.png';
-const AUTO_MS = 3000;
-const PAUSE_AFTER_MANUAL_MS = 5000;
+const AUTO_MS = 1500;
+const PAUSE_AFTER_MANUAL_MS = 3000;
 const CARD_GAP = 25;
 
 const stripHtml = (html) => {
@@ -263,47 +264,53 @@ const ArrowBtn = ({ direction, onClick, disabled }) => (
 );
 
 /* ══════════════════════════════════════════════════════════
-   useCarousel — hook xử lý carousel logic
+   useCarousel — hook xử lý carousel logic (responsive)
    ══════════════════════════════════════════════════════════ */
-const useCarousel = (itemCount, cardWidth) => {
+const useCarousel = (itemCount) => {
   const trackRef = useRef(null);
   const [snapIndex, setSnapIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(215);
   const snapPointsRef = useRef([0]);
   const autoRef = useRef(null);
   const pauseRef = useRef(null);
   const isPausedRef = useRef(false);
+  const hasStartedRef = useRef(false);
 
-  const step = cardWidth + CARD_GAP;
   const totalCards = itemCount + 1; // +1 for ViewAllCard
 
-  // Tính snap points
+  // Tính card width responsive + snap points
   useEffect(() => {
     const calc = () => {
       if (!trackRef.current) return;
       const visibleW = trackRef.current.offsetWidth;
-      const trackW = totalCards * cardWidth + (totalCards - 1) * CARD_GAP;
+
+      // Tính số card muốn hiển thị dựa trên container width
+      let cardsToShow;
+      if (visibleW >= 1400) cardsToShow = 6;
+      else if (visibleW >= 1100) cardsToShow = 5;
+      else if (visibleW >= 800) cardsToShow = 4;
+      else if (visibleW >= 550) cardsToShow = 3;
+      else cardsToShow = 2;
+
+      // Card width = (container - tổng gap) / số card → luôn vừa khít
+      const totalGaps = (cardsToShow - 1) * CARD_GAP;
+      const cw = Math.floor((visibleW - totalGaps) / cardsToShow);
+      setCardWidth(cw);
+
+      const step = cw + CARD_GAP;
+      const trackW = totalCards * cw + (totalCards - 1) * CARD_GAP;
       const max = Math.max(0, trackW - visibleW);
 
-      // Tính số card vừa đủ hiển thị (không bị lồi)
-      const visibleFullCards = Math.floor((visibleW + CARD_GAP) / step);
-      // Số bước cần scroll = totalCards - visibleFullCards
-      const totalSteps = Math.max(0, totalCards - visibleFullCards);
-
+      // Mỗi bước scroll đúng 1 card
+      const totalSteps = Math.max(0, totalCards - cardsToShow);
       const pts = [];
       for (let i = 0; i <= totalSteps; i++) {
-        const offset = i * step;
-        // Điểm cuối cùng không được vượt quá max
-        pts.push(Math.min(offset, max));
+        pts.push(Math.min(i * step, max));
       }
 
-      // Đảm bảo điểm cuối = max (để ViewAllCard hiển thị trọn)
-      if (pts.length === 0) {
-        pts.push(0);
-      } else if (pts[pts.length - 1] < max) {
-        pts.push(max);
-      }
+      if (pts.length === 0) pts.push(0);
+      else if (pts[pts.length - 1] < max) pts.push(max);
 
-      // Loại bỏ duplicate
       snapPointsRef.current = [...new Set(pts)];
       setSnapIndex((prev) => Math.min(prev, snapPointsRef.current.length - 1));
     };
@@ -311,11 +318,12 @@ const useCarousel = (itemCount, cardWidth) => {
     calc();
     window.addEventListener('resize', calc);
     return () => window.removeEventListener('resize', calc);
-  }, [totalCards, cardWidth, step]);
+  }, [totalCards]);
 
-  // Reset khi itemCount thay đổi (chuyển tab)
+  // Reset snap + restart auto khi chuyển tab (itemCount thay đổi)
   useEffect(() => {
     setSnapIndex(0);
+    hasStartedRef.current = false;
   }, [itemCount]);
 
   const slide = useCallback((dir) => {
@@ -343,13 +351,22 @@ const useCarousel = (itemCount, cardWidth) => {
     }, AUTO_MS);
   }, [stopAuto, slide]);
 
+  // Start auto-play — chạy lại mỗi khi itemCount thay đổi
   useEffect(() => {
-    if (snapPointsRef.current.length > 1) startAuto();
+    // Delay nhỏ để đảm bảo snap points đã được tính xong
+    const timer = setTimeout(() => {
+      if (snapPointsRef.current.length > 1) {
+        startAuto();
+        hasStartedRef.current = true;
+      }
+    }, 100);
+
     return () => {
+      clearTimeout(timer);
       stopAuto();
       if (pauseRef.current) clearTimeout(pauseRef.current);
     };
-  }, [startAuto, stopAuto]);
+  }, [startAuto, stopAuto, itemCount]);
 
   const handleManual = useCallback(
     (dir) => {
@@ -372,6 +389,7 @@ const useCarousel = (itemCount, cardWidth) => {
   return {
     trackRef,
     offset,
+    cardWidth,
     handleManual,
     pauseHover: () => {
       isPausedRef.current = true;
@@ -385,10 +403,8 @@ const useCarousel = (itemCount, cardWidth) => {
 /* ══════════════════════════════════════════════════════════
    ProductCarousel — carousel cho 1 danh mục
    ══════════════════════════════════════════════════════════ */
-const CARD_W = 215;
-
 const ProductCarousel = ({ products, categorySlug, animationKey }) => {
-  const { trackRef, offset, handleManual, pauseHover, resumeHover } = useCarousel(products.length, CARD_W);
+  const { trackRef, offset, cardWidth, handleManual, pauseHover, resumeHover } = useCarousel(products.length);
 
   return (
     <Box
@@ -416,11 +432,11 @@ const ProductCarousel = ({ products, categorySlug, animationKey }) => {
           willChange="transform"
         >
           {products.map((product, i) => (
-            <Box key={product.id} flexShrink={0} w={`${CARD_W}px`}>
+            <Box key={product.id} flexShrink={0} w={`${cardWidth}px`}>
               <ProductCard product={product} index={i} />
             </Box>
           ))}
-          <Box flexShrink={0} w={`${CARD_W}px`}>
+          <Box flexShrink={0} w={`${cardWidth}px`}>
             <ViewAllCard categorySlug={categorySlug} />
           </Box>
         </Flex>
@@ -558,41 +574,9 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
       </Flex>
 
       {/* ── Tab pills ── */}
-      <Flex
-        justify="center"
-        gap={{ xs: '6px', md: '10px' }}
-        flexWrap="wrap"
-        bg="#f5f5f5"
-        borderRadius="full"
-        p="5px"
-        w="fit-content"
-        mx="auto"
-        mb="20px"
-      >
-        {tabs.map((tab, i) => (
-          <Box
-            key={tab.id}
-            as="button"
-            px={{ xs: '14px', md: '22px' }}
-            py={{ xs: '8px', md: '10px' }}
-            borderRadius="full"
-            fontSize={{ xs: '13px', md: '15px' }}
-            fontWeight={600}
-            cursor="pointer"
-            transition="all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)"
-            bg={i === activeIndex ? '#00b7e9' : 'transparent'}
-            color={i === activeIndex ? '#FFF' : '#555'}
-            boxShadow={i === activeIndex ? '0 4px 14px rgba(0, 183, 233, 0.35)' : 'none'}
-            _hover={{
-              bg: i === activeIndex ? '#00b7e9' : '#e8e8e8'
-            }}
-            onClick={() => setActiveIndex(i)}
-            whiteSpace="nowrap"
-          >
-            {tab.name}
-          </Box>
-        ))}
-      </Flex>
+      <Box mb="20px">
+        <ScrollableTabs items={tabs} activeIndex={activeIndex} onSelect={setActiveIndex} />
+      </Box>
 
       {/* ── Product carousel cho danh mục active ── */}
       {activeProducts.length > 0 ? (

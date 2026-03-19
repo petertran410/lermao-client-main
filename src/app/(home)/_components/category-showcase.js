@@ -1,5 +1,6 @@
 'use client';
 
+import ScrollableTabs from '@/components/scrollable-tabs';
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { Box, Container, Flex, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
@@ -18,39 +19,7 @@ const CategoryShowcase = ({ categories = [] }) => {
   return (
     <Box mt="100px" px={PX_ALL}>
       {/* ── Tab Options ── */}
-      <Flex
-        justify="center"
-        gap={{ xs: '8px', md: '12px' }}
-        flexWrap="wrap"
-        bg="#f5f5f5"
-        borderRadius="full"
-        p="6px"
-        w="fit-content"
-        mx="auto"
-      >
-        {categories.map((cat, i) => (
-          <Box
-            key={cat.id}
-            as="button"
-            px={{ xs: '14px', md: '24px' }}
-            py={{ xs: '8px', md: '10px' }}
-            borderRadius="full"
-            fontSize={{ xs: '13px', md: '15px' }}
-            fontWeight={600}
-            cursor="pointer"
-            transition="all 0.3s"
-            bg={i === activeIndex ? '#00b7e9' : 'transparent'}
-            color={i === activeIndex ? '#FFF' : '#555'}
-            _hover={{
-              bg: i === activeIndex ? '#00b7e9' : '#e8e8e8'
-            }}
-            onClick={() => setActiveIndex(i)}
-            whiteSpace="nowrap"
-          >
-            {cat.name}
-          </Box>
-        ))}
-      </Flex>
+      <ScrollableTabs items={categories} activeIndex={activeIndex} onSelect={setActiveIndex} />
 
       {/* ── Content Container ── */}
       <Box
