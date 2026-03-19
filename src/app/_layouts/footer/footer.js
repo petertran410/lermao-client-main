@@ -36,11 +36,11 @@ const Footer = () => {
   const CONTACT_LINKS = [
     {
       title: 'Facebook',
-      href: 'https://facebook.com'
+      href: 'https://www.facebook.com/dieptra.0788339379'
     },
     {
       title: 'Zalo',
-      href: 'https://zalo.me'
+      href: 'https://zalo.me/4415290839928975010'
     }
   ];
 

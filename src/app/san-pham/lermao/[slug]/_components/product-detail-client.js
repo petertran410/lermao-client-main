@@ -19,8 +19,7 @@ import {
   AspectRatio,
   Icon,
   HStack,
-  VStack,
-  Divider
+  VStack
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FiChevronRight, FiHome, FiStar, FiPackage, FiBookOpen, FiArrowLeft } from 'react-icons/fi';
@@ -413,6 +412,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
               {/* CTA Buttons */}
               <Flex gap="12px" w="full" direction={{ xs: 'column', sm: 'row' }}>
                 <Button
+                  as="a"
                   flex={1}
                   h="52px"
                   bg="main.1"
@@ -428,11 +428,13 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
                   }}
                   _active={{ transform: 'translateY(0)' }}
                   transition="all 0.2s"
+                  href="https://zalo.me/4415290839928975010"
+                  target="_blank"
                 >
                   Liên hệ đặt hàng
                 </Button>
 
-                {/* <Button
+                <Button
                   flex={1}
                   h="52px"
                   bg="white"
@@ -451,10 +453,10 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
                   _active={{ transform: 'translateY(0)' }}
                   transition="all 0.2s"
                   as="a"
-                  href="tel:+84931566676"
+                  href="tel:+84973123230"
                 >
-                  Gọi ngay: 0931 566 676
-                </Button> */}
+                  Gọi ngay: 0973123230
+                </Button>
               </Flex>
             </VStack>
           </GridItem>

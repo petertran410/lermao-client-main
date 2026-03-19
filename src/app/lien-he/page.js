@@ -57,7 +57,7 @@ const Contact = () => {
 
         <Flex align="center" gap="20px">
           <Link
-            href="https://zalo.me"
+            href="https://zalo.me/4415290839928975010"
             target="_blank"
             display="flex"
             alignItems="center"
@@ -69,7 +69,7 @@ const Contact = () => {
             <Image src="/images/zalo-contact.png" alt={IMG_ALT} boxSize={{ xs: '40px', md: '60px', lg: '90px' }} />
           </Link>
           <Link
-            href="https://facebook.com"
+            href="https://www.facebook.com/dieptra.0788339379"
             target="_blank"
             display="flex"
             alignItems="center"
