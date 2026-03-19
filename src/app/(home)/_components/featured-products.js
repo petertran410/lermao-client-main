@@ -12,8 +12,9 @@ const FALLBACK = '/images/lermao.png';
 const AUTO_MS = 4000;
 const CARD_W = 215;
 const CARD_GAP = 16;
-const STEP = CARD_W + CARD_GAP;
+const STEP = CARD_W + CARD_GAP; // 231
 
+/* ────────────────────── ProductCard ────────────────────── */
 const ProductCard = ({ product }) => {
   const { title, kiotviet_name, slug, imagesUrl, kiotviet_images, price, kiotviet_price } = product || {};
   const name = title || kiotviet_name || 'Sản phẩm';
@@ -76,6 +77,7 @@ const ProductCard = ({ product }) => {
   );
 };
 
+/* ────────────────────── ViewAllCard ────────────────────── */
 const ViewAllCard = ({ categoryName, categorySlug }) => (
   <Link href={`/san-pham/${categorySlug}`}>
     <Flex
@@ -112,6 +114,7 @@ const ViewAllCard = ({ categoryName, categorySlug }) => (
   </Link>
 );
 
+/* ────────────────────── ArrowBtn ────────────────────── */
 const ArrowBtn = ({ direction, onClick }) => (
   <Box
     as="button"
@@ -133,68 +136,117 @@ const ArrowBtn = ({ direction, onClick }) => (
   </Box>
 );
 
+/* ────────────────────── CategoryCarousel ────────────────────── */
 const SIDE_PAD_XS = 20;
-const SIDE_PAD_LG = 36;
+const SIDE_PAD_LG = 25;
 
 const CategoryCarousel = ({ categoryName, categorySlug, products }) => {
   const trackWrapRef = useRef(null);
-  const [offset, setOffset] = useState(0);
-  const [maxOffset, setMaxOffset] = useState(0);
+  const [snapIndex, setSnapIndex] = useState(0);
+  const snapPointsRef = useRef([0]);
   const autoRef = useRef(null);
+  const pauseRef = useRef(null);
   const isPausedRef = useRef(false);
 
   const totalCards = products.length + 1;
 
-  const calcMax = useCallback(() => {
-    if (!trackWrapRef.current) return;
-    const visibleW = trackWrapRef.current.offsetWidth;
-    const trackW = totalCards * CARD_W + (totalCards - 1) * CARD_GAP;
-    const max = Math.max(0, trackW - visibleW);
-    setMaxOffset(max);
-    setOffset((prev) => Math.min(prev, max));
+  /*
+   * Tính snap points: [0, 231, 462, ..., maxOffset]
+   * - Tất cả điểm trung gian = bội STEP → card bên trái luôn hiển thị trọn
+   * - Điểm cuối = maxOffset chính xác → card cuối ("Xem tất cả") hiển thị trọn bên phải
+   */
+  useEffect(() => {
+    const calc = () => {
+      if (!trackWrapRef.current) return;
+      const visibleW = trackWrapRef.current.offsetWidth;
+      const trackW = totalCards * CARD_W + (totalCards - 1) * CARD_GAP;
+      const max = Math.max(0, trackW - visibleW);
+
+      const pts = [0];
+      for (let s = STEP; s < max; s += STEP) {
+        pts.push(s);
+      }
+      // Điểm cuối: nếu max > 0 và chưa trùng điểm cuối cùng → thêm max
+      if (max > 0 && pts[pts.length - 1] !== max) {
+        pts.push(max);
+      }
+      snapPointsRef.current = pts;
+      // Clamp index nếu snap points co lại (resize nhỏ hơn)
+      setSnapIndex((prev) => Math.min(prev, pts.length - 1));
+    };
+
+    calc();
+    window.addEventListener('resize', calc);
+    return () => window.removeEventListener('resize', calc);
   }, [totalCards]);
 
-  useEffect(() => {
-    calcMax();
-    window.addEventListener('resize', calcMax);
-    return () => window.removeEventListener('resize', calcMax);
-  }, [calcMax]);
+  /*
+   * slide(): chỉ phụ thuộc snapIndex (state) và snapPointsRef (ref)
+   * → dependency = [] → reference KHÔNG BAO GIỜ thay đổi
+   * → useEffect auto-play KHÔNG BAO GIỜ bị trigger lại
+   */
+  const slide = useCallback((dir) => {
+    setSnapIndex((prev) => {
+      const len = snapPointsRef.current.length;
+      if (len <= 1) return 0;
+      let next = prev + dir;
+      if (next >= len) return 0;
+      if (next < 0) return len - 1;
+      return next;
+    });
+  }, []);
 
-  const slideTo = useCallback(
+  /* Auto-play: stable callbacks, không dependency chain */
+  const stopAuto = useCallback(() => {
+    if (autoRef.current) {
+      clearInterval(autoRef.current);
+      autoRef.current = null;
+    }
+  }, []);
+
+  const startAuto = useCallback(() => {
+    stopAuto();
+    autoRef.current = setInterval(() => {
+      if (!isPausedRef.current) {
+        slide(1);
+      }
+    }, AUTO_MS);
+  }, [stopAuto, slide]);
+
+  // Mount: start auto-play 1 lần duy nhất
+  useEffect(() => {
+    if (snapPointsRef.current.length > 1) {
+      startAuto();
+    }
+    return () => {
+      stopAuto();
+      if (pauseRef.current) clearTimeout(pauseRef.current);
+    };
+  }, [startAuto, stopAuto]);
+
+  /* Manual: dừng auto → slide → chờ 5s → restart */
+  const handleManual = useCallback(
     (dir) => {
-      setOffset((prev) => {
-        const next = prev + dir * STEP;
-        if (next > maxOffset) return 0;
-        if (next < 0) return maxOffset;
-        return next;
-      });
+      // 1. Dừng auto-play
+      stopAuto();
+      // 2. Clear timeout cũ (nếu ấn nút liên tục)
+      if (pauseRef.current) {
+        clearTimeout(pauseRef.current);
+        pauseRef.current = null;
+      }
+      // 3. Slide ngay
+      slide(dir);
+      // 4. Restart auto sau 5s
+      pauseRef.current = setTimeout(() => {
+        pauseRef.current = null;
+        startAuto();
+      }, 5000);
     },
-    [maxOffset]
+    [stopAuto, startAuto, slide]
   );
 
-  // Auto play
-  useEffect(() => {
-    if (maxOffset <= 0) return;
-    autoRef.current = setInterval(() => {
-      if (isPausedRef.current) return;
-      slideTo(1);
-    }, AUTO_MS);
-    return () => clearInterval(autoRef.current);
-  }, [slideTo, maxOffset]);
-
-  const handleManual = (dir) => {
-    isPausedRef.current = true;
-    clearInterval(autoRef.current);
-    slideTo(dir);
-    setTimeout(() => {
-      isPausedRef.current = false;
-      if (maxOffset <= 0) return;
-      autoRef.current = setInterval(() => {
-        if (isPausedRef.current) return;
-        slideTo(1);
-      }, AUTO_MS);
-    }, 5000);
-  };
+  // Lấy offset pixel từ snap index
+  const offset = snapPointsRef.current[snapIndex] ?? 0;
 
   return (
     <Box borderRadius="24px" overflow="hidden" bg="linear-gradient(135deg, #00b7e9 0%, #0090c4 50%, #006d94 100%)">
@@ -224,7 +276,7 @@ const CategoryCarousel = ({ categoryName, categorySlug, products }) => {
         </Flex>
       </Flex>
 
-      {/* ── Track — dùng margin thay padding, overflow riêng ── */}
+      {/* ── Track ── */}
       <Box
         ref={trackWrapRef}
         mx={{ xs: `${SIDE_PAD_XS}px`, lg: `${SIDE_PAD_LG}px` }}
@@ -258,6 +310,7 @@ const CategoryCarousel = ({ categoryName, categorySlug, products }) => {
   );
 };
 
+/* ────────────────────── FeaturedProducts ────────────────────── */
 const FeaturedProducts = ({ featuredData = [] }) => {
   if (!featuredData.length) return null;
 
