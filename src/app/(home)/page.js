@@ -6,6 +6,7 @@ import ProductMarquee from './_components/product-marquee';
 import CategoryShowcase from './_components/category-showcase';
 import ReviewCarousel from './_components/review-carousel';
 import ScrollReveal from './_components/scroll-reveal';
+import ArticleCategoryShowcase from './_components/article-category-showcase';
 import HomeBlogSection from './_components/home-blog-section';
 
 export const revalidate = 60;
@@ -97,6 +98,10 @@ export default async function Home() {
 
       <ScrollReveal direction="up" delay={0.2}>
         <ReviewCarousel reviews={reviews} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.2}>
+        <ArticleCategoryShowcase />
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.25}>
