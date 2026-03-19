@@ -13,12 +13,9 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
+        setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.15 }
+      { threshold: 0.08, rootMargin: '40px 0px 40px 0px' }
     );
 
     observer.observe(el);
@@ -37,8 +34,13 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
       ref={ref}
       opacity={isVisible ? 1 : 0}
       transform={isVisible ? 'translate(0, 0)' : initialTransform}
-      transition={`opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s`}
+      transition={
+        isVisible
+          ? `opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s`
+          : 'opacity 0.4s ease, transform 0.4s ease'
+      }
       willChange="opacity, transform"
+      pointerEvents={isVisible ? 'auto' : 'none'}
     >
       {children}
     </Box>

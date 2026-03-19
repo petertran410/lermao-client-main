@@ -9,9 +9,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const FALLBACK = '/images/lermao.png';
-const AUTO_MS = 4000;
-const PAUSE_AFTER_MANUAL_MS = 4000;
-const CARD_GAP = 16;
+const AUTO_MS = 3000;
+const PAUSE_AFTER_MANUAL_MS = 5000;
+const CARD_GAP = 25;
 
 const stripHtml = (html) => {
   if (!html) return '';
@@ -284,10 +284,28 @@ const useCarousel = (itemCount, cardWidth) => {
       const trackW = totalCards * cardWidth + (totalCards - 1) * CARD_GAP;
       const max = Math.max(0, trackW - visibleW);
 
-      const pts = [0];
-      for (let s = step; s <= max; s += step) pts.push(s);
-      snapPointsRef.current = pts;
-      setSnapIndex((prev) => Math.min(prev, pts.length - 1));
+      // Tính số card vừa đủ hiển thị (không bị lồi)
+      const visibleFullCards = Math.floor((visibleW + CARD_GAP) / step);
+      // Số bước cần scroll = totalCards - visibleFullCards
+      const totalSteps = Math.max(0, totalCards - visibleFullCards);
+
+      const pts = [];
+      for (let i = 0; i <= totalSteps; i++) {
+        const offset = i * step;
+        // Điểm cuối cùng không được vượt quá max
+        pts.push(Math.min(offset, max));
+      }
+
+      // Đảm bảo điểm cuối = max (để ViewAllCard hiển thị trọn)
+      if (pts.length === 0) {
+        pts.push(0);
+      } else if (pts[pts.length - 1] < max) {
+        pts.push(max);
+      }
+
+      // Loại bỏ duplicate
+      snapPointsRef.current = [...new Set(pts)];
+      setSnapIndex((prev) => Math.min(prev, snapPointsRef.current.length - 1));
     };
 
     calc();
@@ -549,7 +567,7 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
         p="5px"
         w="fit-content"
         mx="auto"
-        mb="32px"
+        mb="20px"
       >
         {tabs.map((tab, i) => (
           <Box
