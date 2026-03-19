@@ -65,12 +65,15 @@ const ReviewCarousel = ({ reviews = [] }) => {
     restartRef.current = setTimeout(() => startAuto(), 3000);
   };
 
-  const handleCardClick = (review, isCenter) => {
-    if (!isCenter) return;
-    stopAuto();
-    if (restartRef.current) clearTimeout(restartRef.current);
-    setSelectedReview(review);
-    onOpen();
+  const handleCardClick = (review, isCenter, offset) => {
+    if (isCenter && review) {
+      stopAuto();
+      if (restartRef.current) clearTimeout(restartRef.current);
+      setSelectedReview(review);
+      onOpen();
+    } else if (!isCenter) {
+      goTo(offset);
+    }
   };
 
   const handleModalClose = () => {
@@ -141,10 +144,15 @@ const ReviewCarousel = ({ reviews = [] }) => {
                 transition={cardTransition}
                 transform={`translateX(${tx}px) rotate(${rotate}deg) scale(${scale})`}
                 opacity={opacity}
-                cursor={isCenter ? 'pointer' : 'default'}
+                cursor="pointer"
                 onClick={() => handleCardClick(review, isCenter)}
                 _hover={
-                  isCenter ? { boxShadow: '0 20px 56px rgba(0, 183, 233, 0.4), 0 8px 24px rgba(0,0,0,0.12)' } : {}
+                  isCenter
+                    ? { boxShadow: '0 20px 56px rgba(0, 183, 233, 0.4), 0 8px 24px rgba(0,0,0,0.12)' }
+                    : {
+                        opacity: Math.min(1, opacity + 0.2),
+                        transform: `translateX(${tx}px) rotate(${rotate * 0.5}deg) scale(${Math.min(scale + 0.03, 1)})`
+                      }
                 }
               >
                 <Box flex="1" minH="0" overflow="hidden" bg="#f5f5f5">
