@@ -172,7 +172,7 @@ export default async function Home() {
     newsArticles
   ] = await Promise.all([
     fetchProductsByCategory(1000073082),
-    fetchProductsByCategory(1000073086),
+    fetchProductsByCategory(1000073084),
     fetchRootCategories(),
     fetchAllCategories(),
     fetchReviews(),
@@ -184,6 +184,10 @@ export default async function Home() {
 
   // Gom featured products về root category
   const featuredData = groupFeaturedByRootCategory(featuredRaw, allCategories, rootCategories);
+
+  const featuredCategories = allCategories
+    .filter((cat) => cat.is_featured)
+    .sort((a, b) => (a.priority || 0) - (b.priority || 0));
 
   return (
     <div>
@@ -198,7 +202,11 @@ export default async function Home() {
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.1}>
-        <FeaturedProducts featuredData={featuredData} />
+        <FeaturedProducts
+          featuredData={featuredData}
+          featuredCategories={featuredCategories}
+          allCategories={allCategories}
+        />
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.2}>
