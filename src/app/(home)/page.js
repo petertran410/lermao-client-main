@@ -3,6 +3,7 @@ import { serverFetchJSON } from '@/utils/server-fetch';
 import HomeContact from './_components/contact';
 import HomeIntro from './_components/intro';
 import ProductMarquee from './_components/product-marquee';
+import FeaturedProducts from './_components/featured-products';
 import CategoryShowcase from './_components/category-showcase';
 import ReviewCarousel from './_components/review-carousel';
 import ScrollReveal from './_components/scroll-reveal';
@@ -47,12 +48,32 @@ async function fetchRootCategories() {
   }
 }
 
+async function fetchAllCategories() {
+  try {
+    const res = await serverFetchJSON('/api/category/for-cms');
+    return res?.data || [];
+  } catch (e) {
+    console.error('Failed to fetch all categories:', e.message);
+    return [];
+  }
+}
+
 async function fetchReviews() {
   try {
     const res = await serverFetchJSON('/api/review/client/testimonials');
     return Array.isArray(res) ? res : [];
   } catch (e) {
     console.error('Failed to fetch reviews:', e.message);
+    return [];
+  }
+}
+
+async function fetchFeaturedByCategories() {
+  try {
+    const res = await serverFetchJSON('/api/product/client/featured-by-categories');
+    return Array.isArray(res) ? res : [];
+  } catch (e) {
+    console.error('Failed to fetch featured products:', e.message);
     return [];
   }
 }
@@ -72,17 +93,97 @@ async function fetchNewsByType(type, pageSize = 10) {
   }
 }
 
+/**
+ * Tìm root category (cấp cao nhất) của 1 category bất kỳ
+ */
+function findRootCategory(categoryId, allCategories) {
+  let currentId = Number(categoryId);
+  let current = allCategories.find((c) => Number(c.id) === currentId);
+  let loops = 0;
+
+  while (current && current.parent_id && loops < 20) {
+    current = allCategories.find((c) => Number(c.id) === Number(current.parent_id));
+    loops++;
+  }
+
+  return current || null;
+}
+
+/**
+ * Gom tất cả featured products về theo root category
+ * Input: featuredData (grouped by direct category), allCategories (full tree)
+ * Output: grouped by ROOT category
+ */
+function groupFeaturedByRootCategory(featuredData, allCategories, rootCategories) {
+  const rootMap = new Map();
+
+  // Khởi tạo map theo thứ tự rootCategories
+  for (const root of rootCategories) {
+    rootMap.set(Number(root.id), {
+      categoryId: Number(root.id),
+      categoryName: root.name,
+      categorySlug: root.slug,
+      products: []
+    });
+  }
+
+  // Gom products vào root tương ứng
+  for (const group of featuredData) {
+    const root = findRootCategory(group.categoryId, allCategories);
+    if (!root) continue;
+
+    const rootId = Number(root.id);
+    let existing = rootMap.get(rootId);
+
+    // Nếu root chưa tồn tại trong map (trường hợp rootCategories thiếu)
+    if (!existing) {
+      existing = {
+        categoryId: rootId,
+        categoryName: root.name,
+        categorySlug: root.slug,
+        products: []
+      };
+      rootMap.set(rootId, existing);
+    }
+
+    // Thêm products, loại trùng id
+    const existingIds = new Set(existing.products.map((p) => Number(p.id)));
+    for (const product of group.products) {
+      if (!existingIds.has(Number(product.id))) {
+        existing.products.push(product);
+        existingIds.add(Number(product.id));
+      }
+    }
+  }
+
+  return Array.from(rootMap.values()).filter((g) => g.products.length > 0);
+}
+
 export default async function Home() {
-  const [topProducts, bottomProducts, rootCategories, reviews, congThucArticles, workshopArticles, newsArticles] =
-    await Promise.all([
-      fetchProductsByCategory(1000073082),
-      fetchProductsByCategory(1000073086),
-      fetchRootCategories(),
-      fetchReviews(),
-      fetchNewsByType('CONG_THUC_PHA_CHE', 10),
-      fetchNewsByType('WORKSHOP', 10),
-      fetchNewsByType('NEWS', 10)
-    ]);
+  const [
+    topProducts,
+    bottomProducts,
+    rootCategories,
+    allCategories,
+    reviews,
+    featuredRaw,
+    congThucArticles,
+    workshopArticles,
+    newsArticles
+  ] = await Promise.all([
+    fetchProductsByCategory(1000073082),
+    fetchProductsByCategory(1000073086),
+    fetchRootCategories(),
+    fetchAllCategories(),
+    fetchReviews(),
+    fetchFeaturedByCategories(),
+    fetchNewsByType('CONG_THUC_PHA_CHE', 10),
+    fetchNewsByType('WORKSHOP', 10),
+    fetchNewsByType('NEWS', 10)
+  ]);
+
+  // Gom featured products về root category
+  const featuredData = groupFeaturedByRootCategory(featuredRaw, allCategories, rootCategories);
 
   return (
     <div>
@@ -90,6 +191,10 @@ export default async function Home() {
 
       <ScrollReveal direction="up" delay={0}>
         <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <FeaturedProducts featuredData={featuredData} />
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.2}>
