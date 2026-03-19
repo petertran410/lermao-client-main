@@ -1,3 +1,4 @@
+// src/app/(home)/page.js
 import { serverFetchJSON } from '@/utils/server-fetch';
 import HomeContact from './_components/contact';
 import HomeIntro from './_components/intro';
@@ -5,6 +6,7 @@ import ProductMarquee from './_components/product-marquee';
 import CategoryShowcase from './_components/category-showcase';
 import ReviewCarousel from './_components/review-carousel';
 import ScrollReveal from './_components/scroll-reveal';
+import HomeBlogSection from './_components/home-blog-section';
 
 export const revalidate = 60;
 
@@ -54,13 +56,32 @@ async function fetchReviews() {
   }
 }
 
+async function fetchNewsByType(type, pageSize = 10) {
+  try {
+    const params = new URLSearchParams({
+      pageSize: String(pageSize),
+      pageNumber: '0',
+      type
+    });
+    const res = await serverFetchJSON(`/api/news/client/get-all?${params.toString()}`);
+    return res?.content || [];
+  } catch (e) {
+    console.error(`Failed to fetch news type ${type}:`, e.message);
+    return [];
+  }
+}
+
 export default async function Home() {
-  const [topProducts, bottomProducts, rootCategories, reviews] = await Promise.all([
-    fetchProductsByCategory(1000073082),
-    fetchProductsByCategory(1000073086),
-    fetchRootCategories(),
-    fetchReviews()
-  ]);
+  const [topProducts, bottomProducts, rootCategories, reviews, congThucArticles, workshopArticles, newsArticles] =
+    await Promise.all([
+      fetchProductsByCategory(1000073082),
+      fetchProductsByCategory(1000073086),
+      fetchRootCategories(),
+      fetchReviews(),
+      fetchNewsByType('CONG_THUC_PHA_CHE', 10),
+      fetchNewsByType('WORKSHOP', 10),
+      fetchNewsByType('NEWS', 10)
+    ]);
 
   return (
     <div>
@@ -70,15 +91,23 @@ export default async function Home() {
         <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.1}>
+      <ScrollReveal direction="up" delay={0.2}>
         <CategoryShowcase categories={rootCategories} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.1}>
+      <ScrollReveal direction="up" delay={0.2}>
         <ReviewCarousel reviews={reviews} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.15}>
+      <ScrollReveal direction="up" delay={0.25}>
+        <HomeBlogSection
+          congThucArticles={congThucArticles}
+          workshopArticles={workshopArticles}
+          newsArticles={newsArticles}
+        />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.3}>
         <HomeContact />
       </ScrollReveal>
     </div>

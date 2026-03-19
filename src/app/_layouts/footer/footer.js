@@ -36,7 +36,7 @@ const Footer = () => {
   const CONTACT_LINKS = [
     {
       title: 'Facebook',
-      href: 'https://www.facebook.com/dieptra.0788339379'
+      href: 'https://www.facebook.com/lermao.sanhannhugau'
     },
     {
       title: 'Zalo',

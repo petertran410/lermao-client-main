@@ -69,7 +69,7 @@ const Contact = () => {
             <Image src="/images/zalo-contact.png" alt={IMG_ALT} boxSize={{ xs: '40px', md: '60px', lg: '90px' }} />
           </Link>
           <Link
-            href="https://www.facebook.com/dieptra.0788339379"
+            href="https://www.facebook.com/lermao.sanhannhugau"
             target="_blank"
             display="flex"
             alignItems="center"

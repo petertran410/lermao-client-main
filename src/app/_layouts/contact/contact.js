@@ -71,7 +71,7 @@ const Contact = () => {
             _hover={{ transform: 'scale(1.1)' }}
           />
         </Link>
-        <Link href="https://www.facebook.com/dieptra.0788339379" target="_blank" _hover={{ textDecor: 'none' }}>
+        <Link href="https://www.facebook.com/lermao.sanhannhugau" target="_blank" _hover={{ textDecor: 'none' }}>
           <Image
             src="/images/facebook-contact.png"
             alt={IMG_ALT}
