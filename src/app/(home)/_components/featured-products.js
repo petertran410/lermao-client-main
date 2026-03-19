@@ -163,15 +163,10 @@ const CategoryCarousel = ({ categoryName, categorySlug, products }) => {
       const max = Math.max(0, trackW - visibleW);
 
       const pts = [0];
-      for (let s = STEP; s < max; s += STEP) {
+      for (let s = STEP; s <= max; s += STEP) {
         pts.push(s);
       }
-      // Điểm cuối: nếu max > 0 và chưa trùng điểm cuối cùng → thêm max
-      if (max > 0 && pts[pts.length - 1] !== max) {
-        pts.push(max);
-      }
       snapPointsRef.current = pts;
-      // Clamp index nếu snap points co lại (resize nhỏ hơn)
       setSnapIndex((prev) => Math.min(prev, pts.length - 1));
     };
 

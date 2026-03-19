@@ -193,12 +193,12 @@ export default async function Home() {
         <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.1}>
-        <FeaturedProducts featuredData={featuredData} />
-      </ScrollReveal>
-
       <ScrollReveal direction="up" delay={0.2}>
         <CategoryShowcase categories={rootCategories} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" delay={0.1}>
+        <FeaturedProducts featuredData={featuredData} />
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.2}>
