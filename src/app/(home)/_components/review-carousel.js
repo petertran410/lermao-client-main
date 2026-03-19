@@ -112,6 +112,8 @@ const ReviewCarousel = ({ reviews = [] }) => {
 
         <Box position="relative" h={`${containerH}px`} onMouseEnter={stopAuto} onMouseLeave={startAuto}>
           {visibleCards.map(({ review, offset, virtualIndex }) => {
+            if (!review) return null;
+
             const absOffset = Math.abs(offset);
             const isCenter = offset === 0;
             const rotate = isCenter ? 0 : offset * 5;
@@ -145,7 +147,7 @@ const ReviewCarousel = ({ reviews = [] }) => {
                 transform={`translateX(${tx}px) rotate(${rotate}deg) scale(${scale})`}
                 opacity={opacity}
                 cursor="pointer"
-                onClick={() => handleCardClick(review, isCenter)}
+                onClick={() => handleCardClick(review, isCenter, offset)}
                 _hover={
                   isCenter
                     ? { boxShadow: '0 20px 56px rgba(0, 183, 233, 0.4), 0 8px 24px rgba(0,0,0,0.12)' }
@@ -157,8 +159,8 @@ const ReviewCarousel = ({ reviews = [] }) => {
               >
                 <Box flex="1" minH="0" overflow="hidden" bg="#f5f5f5">
                   <Image
-                    src={review.image || FALLBACK}
-                    alt={review.name || IMG_ALT}
+                    src={review?.image || FALLBACK}
+                    alt={review?.name || IMG_ALT}
                     w="full"
                     h="full"
                     objectFit="cover"
