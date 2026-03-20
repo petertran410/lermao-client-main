@@ -165,17 +165,17 @@ const HomeFAQSection = () => {
           overflow="hidden"
         >
           <Image
-            src="/images/faq-lermao.png"
+            src="/images/6-faq.webp"
             alt={IMG_ALT}
             w="full"
-            h={{ xs: '280px', md: '360px', lg: '480px' }}
-            objectFit="cover"
+            h={{ xs: '400px', md: '360px', lg: '480px' }}
+            objectFit="fill"
             borderRadius="24px"
             fallbackSrc="/images/preview.png"
           />
 
           {/* Overlay card */}
-          <Flex
+          {/* <Flex
             position="absolute"
             bottom="0"
             left="0"
@@ -194,10 +194,10 @@ const HomeFAQSection = () => {
             <Text color="whiteAlpha.800" fontSize={14} mt="8px">
               Đồng hành cùng hơn 40000+ đối tác trên toàn quốc
             </Text>
-          </Flex>
+          </Flex> */}
 
           {/* Mascot decoration */}
-          <Image
+          {/* <Image
             src="/images/lermao-run.gif"
             alt={IMG_ALT}
             w="70px"
@@ -213,7 +213,7 @@ const HomeFAQSection = () => {
                 '50%': { transform: 'translateY(-10px)' }
               }
             }}
-          />
+          /> */}
         </Box>
 
         {/* Right — FAQ Accordion */}
