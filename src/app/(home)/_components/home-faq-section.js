@@ -146,7 +146,7 @@ const HomeFAQSection = () => {
   }, []);
 
   return (
-    <Box px={PX_ALL} py={{ xs: '40px', lg: '60px' }}>
+    <Box px={PX_ALL} py={{ xs: '40px', lg: '40px' }}>
       {/* ── Section Heading ── */}
       <Flex align="center" justify="center" gap="16px" mb="32px">
         <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />

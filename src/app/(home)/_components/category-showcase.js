@@ -17,7 +17,7 @@ const CategoryShowcase = ({ categories = [] }) => {
   const imageUrl = active.image_url?.replace('http://', 'https://') || FALLBACK_IMAGE;
 
   return (
-    <Box mt="70px" px={PX_ALL}>
+    <Box mt="40px" px={PX_ALL}>
       {/* ── Section Heading ── */}
       <Flex align="center" justify="center" gap="16px" mb="32px">
         <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />

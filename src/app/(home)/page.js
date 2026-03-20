@@ -10,6 +10,7 @@ import ScrollReveal from './_components/scroll-reveal';
 import ArticleCategoryShowcase from './_components/article-category-showcase';
 import HomeBlogSection from './_components/home-blog-section';
 import HomeFAQSection from './_components/home-faq-section';
+import BrandClosing from './_components/brand-closing';
 
 export const revalidate = 60;
 
@@ -229,6 +230,11 @@ export default async function Home() {
       {/* ── NEW: FAQ Section ── */}
       <ScrollReveal direction="up" delay={0.28}>
         <HomeFAQSection />
+      </ScrollReveal>
+
+      {/* ── Brand Closing Statement ── */}
+      <ScrollReveal direction="up" delay={0.3}>
+        <BrandClosing />
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.3}>

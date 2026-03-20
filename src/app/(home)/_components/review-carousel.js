@@ -102,7 +102,7 @@ const ReviewCarousel = ({ reviews = [] }) => {
 
   return (
     <>
-      <Box mt="56px" py="40px" overflow="hidden">
+      <Box mt="10px" py="40px" overflow="hidden">
         {/* ── Section Heading ── */}
         <Flex align="center" justify="center" gap="16px" mb="32px">
           <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
