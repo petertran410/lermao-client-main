@@ -1,6 +1,7 @@
 import { IMG_ALT } from '@/utils/const';
 import { getMetadata } from '@/utils/helper-server';
 import { Box, Image } from '@chakra-ui/react';
+import { Analytics } from '@vercel/analytics/next';
 import { Montserrat } from 'next/font/google';
 import Head from 'next/head';
 import Contact from './_layouts/contact';
@@ -57,6 +58,7 @@ export default function RootLayout({ children }) {
             <Footer />
           </Box>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
