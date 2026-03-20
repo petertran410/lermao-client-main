@@ -2,11 +2,11 @@ import { extendTheme } from '@chakra-ui/react';
 
 const BreakpointConfig = {
   breakpoints: {
-    xs: '320px', // mobile
+    xs: '320px',
     sm: '480px',
-    md: '768px', // tablet
+    md: '768px',
     lg: '992px',
-    xl: '1280px', // desktop
+    xl: '1280px',
     '2xl': '1600px',
     '3xl': '2000px'
   }
@@ -25,6 +25,7 @@ const ComponentsTheme = {
 
 const ColorConfig = {
   colors: {
+    primary: '#00b7e9',
     main: { 0: '#92d9ed', 1: '#77D0E8' },
     sub: { 0: '#ffbd66', 1: '#FF9E20', 2: '#ff9100' },
     text: { 0: '#828282', 1: '#1d2128' },
@@ -42,6 +43,4 @@ export const chakraTheme = extendTheme({
   ...ColorConfig,
   ...BreakpointConfig,
   config
-  // ...MiscConfig,
-  // ...GlobalConfig
 });

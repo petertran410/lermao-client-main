@@ -43,17 +43,26 @@ const HomeContact = (props) => {
 
   return (
     <Flex direction="column" px={px} mt={mt} pos="relative" zIndex={10}>
-      <TitleSpecial fontSize={{ xs: 28, lg: 30, '2xl': 32 }} textAlign="center">
-        Liên hệ với chúng tớ
-      </TitleSpecial>
+      {/* ── Section Heading ── */}
+      <Flex align="center" justify="center" gap="16px" mb="32px">
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+        <Text
+          as="h2"
+          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+          fontWeight={900}
+          textAlign="center"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+          bgClip="text"
+          sx={{ WebkitTextFillColor: 'transparent' }}
+        >
+          Liên Hệ Với Chúng Tớ
+        </Text>
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
+      </Flex>
 
-      <Box
-        mt="40px"
-        bgColor="#FFF"
-        borderRadius={16}
-        boxShadow="0px 4px 24px 0px #0000000D"
-        className="gradient-border"
-      >
+      <Box bgColor="#FFF" borderRadius={16} boxShadow="0px 4px 24px 0px #0000000D" className="gradient-border">
         <form
           style={{ display: 'block', padding: '24px', borderRadius: 14 }}
           onSubmit={handleSubmit(onSubmit)}

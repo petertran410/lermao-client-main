@@ -222,7 +222,7 @@ a {
 
 .category-home-gradient-border {
   padding: 2px;
-  background: linear-gradient(to bottom, #77d0e8, #42e682);
+  background: linear-gradient(to bottom, #00b7e9, #92d9ed);
 }
 
 .category-home-gradient-border:hover {
@@ -242,7 +242,7 @@ a {
 
 .gradient-border {
   padding: 2px;
-  background: linear-gradient(to bottom, #77d0e8, #42e682);
+  background: linear-gradient(to bottom, #00b7e9, #92d9ed);
 }
 
 .gradient-border-content {

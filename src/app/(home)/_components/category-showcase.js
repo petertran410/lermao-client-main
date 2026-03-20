@@ -2,7 +2,7 @@
 
 import ScrollableTabs from '@/components/scrollable-tabs';
 import { IMG_ALT, PX_ALL } from '@/utils/const';
-import { Box, Container, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -17,13 +17,33 @@ const CategoryShowcase = ({ categories = [] }) => {
   const imageUrl = active.image_url?.replace('http://', 'https://') || FALLBACK_IMAGE;
 
   return (
-    <Box mt="100px" px={PX_ALL}>
+    <Box mt="70px" px={PX_ALL}>
+      {/* ── Section Heading ── */}
+      <Flex align="center" justify="center" gap="16px" mb="32px">
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+        <Text
+          as="h2"
+          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+          fontWeight={900}
+          textAlign="center"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+          bgClip="text"
+          sx={{ WebkitTextFillColor: 'transparent' }}
+        >
+          Giải Pháp Pha Chế Toàn Diện
+        </Text>
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
+      </Flex>
+
       {/* ── Tab Options ── */}
-      <ScrollableTabs items={categories} activeIndex={activeIndex} onSelect={setActiveIndex} />
+      <Box mb="20px">
+        <ScrollableTabs items={categories} activeIndex={activeIndex} onSelect={setActiveIndex} />
+      </Box>
 
       {/* ── Content Container ── */}
       <Box
-        mt="32px"
         borderRadius="24px"
         overflow="hidden"
         bg="#FFF"
@@ -42,7 +62,6 @@ const CategoryShowcase = ({ categories = [] }) => {
             position="relative"
             overflow="hidden"
           >
-            {/* Decorative circles */}
             <Box
               position="absolute"
               w="200px"

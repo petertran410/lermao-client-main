@@ -417,12 +417,6 @@ const ProductCarousel = ({ products, categorySlug, animationKey }) => {
         }
       }}
     >
-      {/* Navigation */}
-      <Flex justify="flex-end" gap="8px" mb="16px" pr="4px">
-        <ArrowBtn direction="left" onClick={() => handleManual(-1)} />
-        <ArrowBtn direction="right" onClick={() => handleManual(1)} />
-      </Flex>
-
       {/* Track */}
       <Box ref={trackRef} overflow="hidden" onMouseEnter={pauseHover} onMouseLeave={resumeHover}>
         <Flex
@@ -441,6 +435,12 @@ const ProductCarousel = ({ products, categorySlug, animationKey }) => {
           </Box>
         </Flex>
       </Box>
+
+      {/* Navigation */}
+      <Flex justify="center" gap="8px" mt="16px" pr="4px">
+        <ArrowBtn direction="left" onClick={() => handleManual(-1)} />
+        <ArrowBtn direction="right" onClick={() => handleManual(1)} />
+      </Flex>
     </Box>
   );
 };
@@ -562,15 +562,23 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
   return (
     <Box px={PX_ALL} mt="80px">
       {/* ── Section header ── */}
-      <Flex align="center" justify="center" gap="16px" mb="28px">
-        <Box h="2px" flex={1} maxW="100px" bg="linear-gradient(90deg, transparent, #00b7e9)" />
-        <Flex align="center" gap="10px">
-          <Text fontSize="22px">🧋</Text>
-          <Text fontSize={{ xs: '20px', lg: '26px' }} fontWeight={800} color="#1d2128" textAlign="center">
-            Sản phẩm nổi bật
-          </Text>
-        </Flex>
-        <Box h="2px" flex={1} maxW="100px" bg="linear-gradient(90deg, #00b7e9, transparent)" />
+      <Flex align="center" justify="center" gap="16px" mb="32px">
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+        <Text fontSize="45px">🧋</Text>
+        <Text
+          as="h2"
+          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+          fontWeight={900}
+          textAlign="center"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+          bgClip="text"
+          sx={{ WebkitTextFillColor: 'transparent' }}
+        >
+          Sản Phẩm Nổi Bật
+        </Text>
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
       </Flex>
 
       {/* ── Tab pills ── */}

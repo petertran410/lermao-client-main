@@ -570,19 +570,19 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
         {relatedProducts.length > 0 && (
           <Box mt={{ xs: '48px', lg: '72px' }} position="relative">
             <Flex align="center" justify="center" gap="16px" mb="32px">
-              <Box h="2px" flex={1} maxW="120px" bg="linear-gradient(90deg, transparent, #77D0E8)" />
+              <Box h="2px" flex={1} maxW="120px" bg="linear-gradient(90deg, transparent, #00b7e9)" />
               <HStack spacing="8px">
                 <Image src="/images/lermao-run.gif" alt={IMG_ALT} w="40px" h="auto" />
                 <Text
                   fontSize={{ xs: '22px', lg: '28px' }}
                   fontWeight={800}
-                  bgGradient="linear(to-r, main.1, #20e0ff)"
+                  bgGradient="linear(to-r, #00b7e9, #77D0E8)"
                   bgClip="text"
                 >
                   Sản phẩm liên quan
                 </Text>
               </HStack>
-              <Box h="2px" flex={1} maxW="120px" bg="linear-gradient(90deg, #20e0ff, transparent)" />
+              <Box h="2px" flex={1} maxW="120px" bg="linear-gradient(90deg, #77D0E8, transparent)" />
             </Flex>
 
             <Carousel breakpoints={breakpoints} slidesPerView={4} spaceBetween={20}>

@@ -139,7 +139,7 @@ const FAQItem = ({ item, index, isOpen, onToggle }) => {
 // Main Section
 // ═══════════════════════════════════════════
 const HomeFAQSection = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
 
   const handleToggle = useCallback((index) => {
     setOpenIndex((prev) => (prev === index ? -1 : index));
@@ -147,11 +147,23 @@ const HomeFAQSection = () => {
 
   return (
     <Box px={PX_ALL} py={{ xs: '40px', lg: '60px' }}>
-      {/* Section title */}
-      <Flex justify="center" mb={{ xs: '32px', lg: '48px' }}>
-        <TitleSpecial fontSize={{ xs: 24, lg: 30 }} textAlign="center">
-          Tại sao nên chọn Gấu LerMao?
-        </TitleSpecial>
+      {/* ── Section Heading ── */}
+      <Flex align="center" justify="center" gap="16px" mb="32px">
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+        <Text
+          as="h2"
+          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+          fontWeight={900}
+          textAlign="center"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+          bgClip="text"
+          sx={{ WebkitTextFillColor: 'transparent' }}
+        >
+          Tại Sao Nên Chọn Gấu LerMao ?
+        </Text>
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
       </Flex>
 
       {/* Content: Image left + FAQ right */}

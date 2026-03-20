@@ -103,12 +103,24 @@ const ReviewCarousel = ({ reviews = [] }) => {
   return (
     <>
       <Box mt="56px" py="40px" overflow="hidden">
-        <Text textAlign="center" fontSize={{ xs: '22px', md: '28px' }} fontWeight={800} color="#1d2128" mb="40px">
-          Khách hàng nói gì về{' '}
-          <Text as="span" color="#00b7e9" fontSize={{ xs: '22px', md: '28px' }} fontWeight={800}>
-            Gấu Lermao
+        {/* ── Section Heading ── */}
+        <Flex align="center" justify="center" gap="16px" mb="32px">
+          <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+          <Text
+            as="h2"
+            fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+            fontWeight={900}
+            textAlign="center"
+            lineHeight="1.2"
+            letterSpacing="-0.02em"
+            bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+            bgClip="text"
+            sx={{ WebkitTextFillColor: 'transparent' }}
+          >
+            Khách Hàng Nói Gì Về Nhà Gấu LerMao
           </Text>
-        </Text>
+          <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
+        </Flex>
 
         <Box position="relative" h={`${containerH}px`} onMouseEnter={stopAuto} onMouseLeave={startAuto}>
           {visibleCards.map(({ review, offset, virtualIndex }) => {
