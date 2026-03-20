@@ -29,6 +29,28 @@ const FALLBACK = '/images/lermao.png';
 const stripHtml = (h) => (h ? h.replace(/<[^>]*>/g, '').trim() : '');
 const mod = (n, m) => ((n % m) + m) % m;
 
+const ArrowBtn = ({ direction, onClick, disabled }) => (
+  <Box
+    as="button"
+    onClick={onClick}
+    w="40px"
+    h="40px"
+    borderRadius="full"
+    bg={disabled ? '#f0f0f0' : '#FFF'}
+    display="flex"
+    alignItems="center"
+    justifyContent="center"
+    boxShadow={disabled ? 'none' : '0 2px 8px rgba(0,0,0,0.1)'}
+    cursor={disabled ? 'not-allowed' : 'pointer'}
+    transition="all 0.2s"
+    opacity={disabled ? 0.4 : 1}
+    _hover={disabled ? {} : { transform: 'scale(1.1)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+    _active={disabled ? {} : { transform: 'scale(0.95)' }}
+  >
+    {direction === 'left' ? <FiChevronLeft size={20} color="#00b7e9" /> : <FiChevronRight size={20} color="#00b7e9" />}
+  </Box>
+);
+
 const ReviewCarousel = ({ reviews = [] }) => {
   const count = reviews.length;
   const [pos, setPos] = useState(0);
@@ -121,7 +143,6 @@ const ReviewCarousel = ({ reviews = [] }) => {
           </Text>
           <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
         </Flex>
-
         <Box position="relative" h={`${containerH}px`} onMouseEnter={stopAuto} onMouseLeave={startAuto}>
           {visibleCards.map(({ review, offset, virtualIndex }) => {
             if (!review) return null;
@@ -206,12 +227,12 @@ const ReviewCarousel = ({ reviews = [] }) => {
             );
           })}
         </Box>
-
-        <Flex justify="center" gap="16px" mt="24px">
-          <IconButton
+        {/* onClick={() => goTo(-1)} */}
+        <Flex justify="center" gap="16px">
+          {/* <IconButton
             aria-label="Previous"
             icon={<FiChevronLeft size={20} />}
-            onClick={() => goTo(-1)}
+            
             w="44px"
             h="44px"
             borderRadius="full"
@@ -221,21 +242,9 @@ const ReviewCarousel = ({ reviews = [] }) => {
             _active={{ bg: '#d07a10' }}
             transition="all 0.2s"
             boxShadow="0 4px 12px rgba(255, 158, 32, 0.4)"
-          />
-          <IconButton
-            aria-label="Next"
-            icon={<FiChevronRight size={20} />}
-            onClick={() => goTo(1)}
-            w="44px"
-            h="44px"
-            borderRadius="full"
-            bg="#FF9E20"
-            color="#FFF"
-            _hover={{ bg: '#e88d1a', transform: 'scale(1.1)' }}
-            _active={{ bg: '#d07a10' }}
-            transition="all 0.2s"
-            boxShadow="0 4px 12px rgba(255, 158, 32, 0.4)"
-          />
+          /> */}
+          <ArrowBtn direction="left" onClick={() => goTo(-1)} />
+          <ArrowBtn direction="right" onClick={() => goTo(1)} />
         </Flex>
       </Box>
 

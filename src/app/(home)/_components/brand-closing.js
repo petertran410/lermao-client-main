@@ -115,7 +115,7 @@ const BrandClosing = () => {
               bgClip="text"
               sx={{
                 WebkitTextFillColor: 'transparent',
-                backgroundImage: 'linear-gradient(90deg, #FF9E20, #ffbd66, #FF9E20, #ffbd66, #FF9E20)',
+                backgroundImage: 'linear-gradient(90deg, #00b7e9, #77D0E8, #00b7e9, #77D0E8, #00b7e9)',
                 backgroundSize: '300% 100%',
                 animation: 'gradientDrift 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite',
                 '@keyframes gradientDrift': {
@@ -161,7 +161,7 @@ const BrandClosing = () => {
             </Text>
 
             {/* Layer 3: Glow shadow behind text — spring pulse */}
-            <Box
+            {/* <Box
               position="absolute"
               top="50%"
               left="50%"
@@ -178,7 +178,7 @@ const BrandClosing = () => {
                   '50%': { opacity: 1, transform: 'translate(-50%, -50%) scale(1.15)' }
                 }
               }}
-            />
+            /> */}
           </Box>
 
           {/* ── Brand name below ── */}

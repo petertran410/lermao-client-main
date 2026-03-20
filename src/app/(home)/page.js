@@ -195,15 +195,15 @@ export default async function Home() {
     <div>
       <HomeIntro />
 
-      <ScrollReveal direction="up" delay={0}>
+      <ScrollReveal direction="up" delay={0} minH="250px">
         <ProductMarquee topProducts={topProducts} bottomProducts={bottomProducts} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.2}>
+      <ScrollReveal direction="up" delay={0.2} minH="500px">
         <CategoryShowcase categories={rootCategories} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.1}>
+      <ScrollReveal direction="up" delay={0.1} minH="400px">
         <FeaturedProducts
           featuredData={featuredData}
           featuredCategories={featuredCategories}
@@ -211,15 +211,15 @@ export default async function Home() {
         />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.2}>
+      <ScrollReveal direction="up" delay={0.2} minH="400px">
         <ReviewCarousel reviews={reviews} />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.2}>
+      <ScrollReveal direction="up" delay={0.2} minH="400px">
         <ArticleCategoryShowcase />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.25}>
+      <ScrollReveal direction="up" delay={0.25} minH="300px">
         <HomeBlogSection
           congThucArticles={congThucArticles}
           workshopArticles={workshopArticles}
@@ -227,17 +227,15 @@ export default async function Home() {
         />
       </ScrollReveal>
 
-      {/* ── NEW: FAQ Section ── */}
-      <ScrollReveal direction="up" delay={0.28}>
+      <ScrollReveal direction="up" delay={0.28} minH="400px">
         <HomeFAQSection />
       </ScrollReveal>
 
-      {/* ── Brand Closing Statement ── */}
-      <ScrollReveal direction="up" delay={0.3}>
+      <ScrollReveal direction="up" delay={0.3} minH="300px">
         <BrandClosing />
       </ScrollReveal>
 
-      <ScrollReveal direction="up" delay={0.3}>
+      <ScrollReveal direction="up" delay={0.32} minH="400px">
         <HomeContact />
       </ScrollReveal>
     </div>

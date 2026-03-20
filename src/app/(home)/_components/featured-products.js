@@ -4,7 +4,7 @@
 import ScrollableTabs from '@/components/scrollable-tabs';
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { formatCurrency } from '@/utils/helper-server';
-import { AspectRatio, Box, Flex, IconButton, Image, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Flex, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -437,40 +437,9 @@ const ProductCarousel = ({ products, categorySlug, animationKey }) => {
       </Box>
 
       {/* Navigation */}
-      {/* <Flex justify="center" gap="8px" mt="16px" pr="4px">
+      <Flex justify="center" gap="8px" mt="16px" pr="4px">
         <ArrowBtn direction="left" onClick={() => handleManual(-1)} />
         <ArrowBtn direction="right" onClick={() => handleManual(1)} />
-      </Flex> */}
-
-      <Flex justify="center" gap="16px" mt="24px">
-        <IconButton
-          aria-label="Previous"
-          icon={<FiChevronLeft size={20} />}
-          onClick={() => handleManual(-1)}
-          w="44px"
-          h="44px"
-          borderRadius="full"
-          bg="#FF9E20"
-          color="#FFF"
-          _hover={{ bg: '#e88d1a', transform: 'scale(1.1)' }}
-          _active={{ bg: '#d07a10' }}
-          transition="all 0.2s"
-          boxShadow="0 4px 12px rgba(255, 158, 32, 0.4)"
-        />
-        <IconButton
-          aria-label="Next"
-          icon={<FiChevronRight size={20} />}
-          onClick={() => handleManual(1)}
-          w="44px"
-          h="44px"
-          borderRadius="full"
-          bg="#FF9E20"
-          color="#FFF"
-          _hover={{ bg: '#e88d1a', transform: 'scale(1.1)' }}
-          _active={{ bg: '#d07a10' }}
-          transition="all 0.2s"
-          boxShadow="0 4px 12px rgba(255, 158, 32, 0.4)"
-        />
       </Flex>
     </Box>
   );
@@ -591,25 +560,17 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
   if (!tabs.length || !featuredData.length) return null;
 
   return (
-    <Box px={PX_ALL} mt="40px">
+    <Box px={PX_ALL} mt="80px">
       {/* ── Section header ── */}
-      <Flex align="center" justify="center" gap="16px" mb="32px">
-        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
-        <Text fontSize="45px">🧋</Text>
-        <Text
-          as="h2"
-          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
-          fontWeight={900}
-          textAlign="center"
-          lineHeight="1.2"
-          letterSpacing="-0.02em"
-          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
-          bgClip="text"
-          sx={{ WebkitTextFillColor: 'transparent' }}
-        >
-          Sản Phẩm Nổi Bật
-        </Text>
-        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
+      <Flex align="center" justify="center" gap="16px" mb="28px">
+        <Box h="2px" flex={1} maxW="100px" bg="linear-gradient(90deg, transparent, #00b7e9)" />
+        <Flex align="center" gap="10px">
+          <Text fontSize="22px">🧋</Text>
+          <Text fontSize={{ xs: '20px', lg: '26px' }} fontWeight={800} color="#1d2128" textAlign="center">
+            Sản phẩm nổi bật
+          </Text>
+        </Flex>
+        <Box h="2px" flex={1} maxW="100px" bg="linear-gradient(90deg, #00b7e9, transparent)" />
       </Flex>
 
       {/* ── Tab pills ── */}

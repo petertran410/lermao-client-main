@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
           <ChakraProvider theme={chakraTheme}>
             <div className={fontFamily.className}>
               <Box bgGradient="linear(to-br, #FFF 0%, #FFF 5%, #e7f7fb 50%, #FFF 95%, #FFF 100%)" pos="relative">
-                <Contact />
+                {/* <Contact />
                 <Image
                   display={{ xs: 'none', lg: 'block' }}
                   src="/images/bg-intro-left.png"
@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }) {
                   top="8%"
                   right={0}
                   zIndex={10}
-                />
+                /> */}
 
                 <Header />
                 <Box pt={{ xs: '72px', lg: '100px' }} minH="60vh">

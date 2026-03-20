@@ -3,7 +3,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import Feedback from './feedback';
 import Introduction from './introduction';
 import ProductProcess from './production-process';
 import Statistic from './statistic';
@@ -28,8 +27,7 @@ const IntroWrapper = () => {
     { position: 500, component: Statistic },
     { position: 800, component: Vision },
     { position: 1400, component: Strength },
-    { position: 1700, component: ProductProcess },
-    { position: 2100, component: Feedback }
+    { position: 1700, component: ProductProcess }
   ];
 
   return (

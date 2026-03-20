@@ -48,7 +48,7 @@ const ProductProcess = () => {
   const [currentStep, setCurrentStep] = useState(STEPS[0]);
 
   return (
-    <Flex direction="column" bgColor="#FFF" pos="relative" px={{ xs: '18px', lg: 0 }}>
+    <Flex direction="column" bgColor="#FFF" pos="relative" px={{ xs: '18px', lg: 0 }} mb="80px">
       <Flex direction="column" align="center">
         <TitleSpecial fontSize={32} textAlign="center">
           Quy trình sản xuất, đóng gói,
