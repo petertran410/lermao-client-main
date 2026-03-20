@@ -1,10 +1,21 @@
+// src/app/(home)/_components/home-faq-section.js
 'use client';
 
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { Box, Flex, Icon, Image, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useCallback, useRef, useState } from 'react';
-import { FiShield, FiBookOpen, FiDollarSign, FiTrendingUp, FiTruck, FiHeart, FiPlus, FiMinus } from 'react-icons/fi';
-import TitleSpecial from '@/components/title-special';
+import {
+  FiShield,
+  FiBookOpen,
+  FiDollarSign,
+  FiTrendingUp,
+  FiTruck,
+  FiHeart,
+  FiPlus,
+  FiMinus,
+  FiArrowRight
+} from 'react-icons/fi';
 
 // ═══════════════════════════════════════════
 // FAQ Data
@@ -186,46 +197,61 @@ const HomeFAQSection = () => {
             fallbackSrc="/images/preview.png"
           />
 
-          {/* Overlay card */}
-          {/* <Flex
+          {/* ── CTA Button overlay at bottom ── */}
+          <Flex
             position="absolute"
             bottom="0"
             left="0"
             right="0"
-            direction="column"
-            p="24px"
-            bgGradient="linear(to-t, blackAlpha.700, transparent)"
+            justify="center"
+            pb="5px"
+            pt="5px"
+            bgGradient="linear(to-t, blackAlpha.700, blackAlpha.300, transparent)"
             borderBottomRadius="24px"
           >
-            <Text color="white" fontSize={{ xs: 18, lg: 22 }} fontWeight={800} lineHeight="1.3">
-              Giải pháp pha chế
-            </Text>
-            <Text color="white" fontSize={{ xs: 18, lg: 22 }} fontWeight={800} lineHeight="1.3">
-              toàn diện số 1
-            </Text>
-            <Text color="whiteAlpha.800" fontSize={14} mt="8px">
-              Đồng hành cùng hơn 40000+ đối tác trên toàn quốc
-            </Text>
-          </Flex> */}
-
-          {/* Mascot decoration */}
-          {/* <Image
-            src="/images/lermao-run.gif"
-            alt={IMG_ALT}
-            w="70px"
-            h="auto"
-            position="absolute"
-            top="16px"
-            right="16px"
-            opacity={0.85}
-            sx={{
-              animation: 'mascotFloat 3s ease-in-out infinite',
-              '@keyframes mascotFloat': {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' }
-              }
-            }}
-          /> */}
+            <Flex
+              as={Link}
+              href="/nguyen-lieu-pha-che"
+              target="_blank"
+              align="center"
+              gap="8px"
+              bg="rgba(255,255,255,0.95)"
+              color="#2e7d32"
+              px="12px"
+              py="8px"
+              borderRadius="full"
+              fontWeight={700}
+              fontSize={{ xs: 13, lg: 14 }}
+              letterSpacing="0.02em"
+              border="1.5px solid"
+              borderColor="whiteAlpha.600"
+              backdropFilter="blur(8px)"
+              boxShadow="0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.6)"
+              transition="all 0.35s cubic-bezier(0.4, 0, 0.2, 1)"
+              _hover={{
+                bg: '#2e7d32',
+                color: 'white',
+                borderColor: '#2e7d32',
+                transform: 'translateY(-3px) scale(1.03)',
+                boxShadow: '0 8px 28px rgba(46,125,50,0.45), inset 0 1px 0 rgba(255,255,255,0.2)',
+                '& .btn-arrow': {
+                  transform: 'translateX(3px)'
+                }
+              }}
+              _active={{
+                transform: 'translateY(-1px) scale(1.01)',
+                boxShadow: '0 4px 12px rgba(46,125,50,0.3)'
+              }}
+            >
+              Khám phá nguyên liệu
+              <Icon
+                className="btn-arrow"
+                as={FiArrowRight}
+                boxSize="15px"
+                transition="transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)"
+              />
+            </Flex>
+          </Flex>
         </Box>
 
         {/* Right — FAQ Accordion */}
