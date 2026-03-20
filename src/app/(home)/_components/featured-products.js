@@ -564,7 +564,7 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
       {/* ── Section Heading ── */}
       <Flex align="center" justify="center" gap="16px" mb="32px">
         <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
-        <Text fontSize="50px">🧋</Text>
+        <Image src="/images/trasua.svg" alt={IMG_ALT} w="50px" h="50px" />
         <Text
           as="h2"
           fontSize={{ xs: '24px', md: '30px', lg: '36px' }}

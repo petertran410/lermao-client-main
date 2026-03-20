@@ -264,7 +264,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
   };
 
   return (
-    <Container maxW="auto" py={8} px={PX_ALL} pt={{ base: '80px', lg: '180px' }}>
+    <Container maxW="auto" py={8} px={PX_ALL} pt={{ base: '80px' }}>
       <VStack align="start" spacing="16px" mt="20px" mb="40px">
         <Breadcrumb data={getBreadcrumbData()} />
 
