@@ -5,7 +5,7 @@ export const useMutateContact = () => {
   return useMutation({
     mutationFn: (params) =>
       API.request({
-        url: '/api/product/contact',
+        url: '/api/contact',
         params,
         method: 'POST'
       })
