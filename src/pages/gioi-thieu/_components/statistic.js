@@ -31,7 +31,7 @@ const Statistic = () => {
         </Flex>
         <Flex direction="column" align="center" gap="18px">
           <TitleSpecial color="#FFF" fontSize={64} _hover={{ color: '#FFF' }}>
-            30.000+
+            40.000+
           </TitleSpecial>
           <Text fontSize={16} fontWeight={700} color="#FFF">
             Đối tác đồng hành

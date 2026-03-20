@@ -9,6 +9,7 @@ import ReviewCarousel from './_components/review-carousel';
 import ScrollReveal from './_components/scroll-reveal';
 import ArticleCategoryShowcase from './_components/article-category-showcase';
 import HomeBlogSection from './_components/home-blog-section';
+import HomeFAQSection from './_components/home-faq-section';
 
 export const revalidate = 60;
 
@@ -223,6 +224,11 @@ export default async function Home() {
           workshopArticles={workshopArticles}
           newsArticles={newsArticles}
         />
+      </ScrollReveal>
+
+      {/* ── NEW: FAQ Section ── */}
+      <ScrollReveal direction="up" delay={0.28}>
+        <HomeFAQSection />
       </ScrollReveal>
 
       <ScrollReveal direction="up" delay={0.3}>

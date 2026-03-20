@@ -42,7 +42,7 @@ const ArticleCategoryShowcase = () => {
   const active = ARTICLE_CATEGORIES[activeIndex];
 
   return (
-    <Box mt="50px" mb="50px" px={PX_ALL}>
+    <Box mt="50px" px={PX_ALL}>
       {/* ── Tab Options ── */}
       <ScrollableTabs items={ARTICLE_CATEGORIES} activeIndex={activeIndex} onSelect={setActiveIndex} />
 
