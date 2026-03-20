@@ -15,7 +15,7 @@ export function middleware(request) {
 
   if (pathname === '/dang-nhap') {
     if (token) {
-      return NextResponse.redirect(new URL('/quan-tri/san-pham', url));
+      return NextResponse.redirect(new URL('/quan-tri/nguyen-lieu-pha-che', url));
     }
     return NextResponse.next();
   }

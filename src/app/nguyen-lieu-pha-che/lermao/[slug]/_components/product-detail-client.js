@@ -222,11 +222,11 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
   const displayPrice = price || kiotviet_price;
 
   const breadcrumbData = [
-    { title: 'Trang chủ', href: '/' },
-    { title: 'Sản phẩm', href: '/san-pham' },
+    { title: 'Trang Chủ', href: '/' },
+    { title: 'Nguyên Liệu Pha Chế', href: '/nguyen-lieu-pha-che' },
     ...categoryHierarchy.map((cat) => ({
       title: cat.name,
-      href: `/san-pham/${cat.slug}`
+      href: `/nguyen-lieu-pha-che/${cat.slug}`
     })),
     { title, href: '#', isActive: true }
   ];
@@ -299,7 +299,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
         <Breadcrumb items={breadcrumbData} />
 
         {/* ── Back button ── */}
-        <Link href="/san-pham">
+        <Link href="/nguyen-lieu-pha-che">
           <Button
             mt="12px"
             mb="24px"
@@ -328,7 +328,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
             <VStack align="start" spacing="20px">
               {/* Category badge */}
               {category && (
-                <Link href={`/san-pham/${category.slug}`}>
+                <Link href={`/nguyen-lieu-pha-che/${category.slug}`}>
                   <Badge
                     px="12px"
                     py="4px"

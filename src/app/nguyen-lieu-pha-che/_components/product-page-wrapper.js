@@ -39,10 +39,10 @@ const PRODUCTS_PER_PAGE = 15;
 
 const t = (key) => {
   const map = {
-    'product.title': 'Tất cả sản phẩm',
-    'product.breadcrumb.title.home': 'Trang chủ',
-    'product.breadcrumb.title.product': 'Sản phẩm',
-    'product.all.product': 'Tất cả danh mục',
+    'product.title': 'Nguyên Liệu Pha Chế LerMao',
+    'product.breadcrumb.title.home': 'Trang Chủ',
+    'product.breadcrumb.title.product': 'Nguyên Liệu Pha Chế',
+    'product.all.product': 'Nguyên Liệu Pha Chế',
     'product.sorting.name': 'Tên A-Z',
     'product.sorting.price.low': 'Giá thấp → cao',
     'product.sorting.price.high': 'Giá cao → thấp',
@@ -200,18 +200,18 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
   // Navigate bằng URL path
   const handleTopCategoryClick = (categoryId) => {
     if (categoryId === 'all') {
-      router.push('/san-pham');
+      router.push('/nguyen-lieu-pha-che');
     } else {
       const category = topCategories.find((cat) => cat.id.toString() === categoryId.toString());
       if (category) {
-        router.push(`/san-pham/${category.slug}`);
+        router.push(`/nguyen-lieu-pha-che/${category.slug}`);
       }
     }
     setCurrentPage(1);
   };
 
   const handleSidebarSelect = (url) => {
-    // url từ sidebar có dạng /san-pham/slug1/slug2
+    // url từ sidebar có dạng /nguyen-lieu-pha-che/slug1/slug2
     router.push(url);
     setCurrentPage(1);
   };
@@ -242,7 +242,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
   const getBreadcrumbData = () => {
     const base = [
       { title: t('product.breadcrumb.title.home'), href: '/' },
-      { title: t('product.breadcrumb.title.product'), href: '/san-pham' }
+      { title: t('product.breadcrumb.title.product'), href: '/nguyen-lieu-pha-che' }
     ];
 
     if (!categorySlug || categorySlug.length === 0) return base;
@@ -254,7 +254,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
       if (category) {
         base.push({
           title: category.name,
-          href: index === categorySlug.length - 1 ? '#' : `/san-pham/${currentPath}`,
+          href: index === categorySlug.length - 1 ? '#' : `/nguyen-lieu-pha-che/${currentPath}`,
           isActive: index === categorySlug.length - 1
         });
       }
@@ -406,7 +406,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
                   onClick={() => {
                     setSearchTerm('');
                     if (searchInputRef.current) searchInputRef.current.value = '';
-                    router.push('/san-pham');
+                    router.push('/nguyen-lieu-pha-che');
                   }}
                   variant="outline"
                   borderColor="main.1"

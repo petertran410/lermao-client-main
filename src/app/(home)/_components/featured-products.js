@@ -52,7 +52,7 @@ const ProductCard = ({ product, index = 0 }) => {
   const descText = stripHtml(general_description);
 
   return (
-    <Link href={`/san-pham/lermao/${slug}`}>
+    <Link href={`/nguyen-lieu-pha-che/lermao/${slug}`}>
       {/* Perspective wrapper — nằm ngoài overflow:hidden để 3D hoạt động */}
       <Box
         sx={{ perspective: '800px' }}
@@ -206,7 +206,7 @@ const ProductCard = ({ product, index = 0 }) => {
    ViewAllCard
    ══════════════════════════════════════════════════════════ */
 const ViewAllCard = ({ categorySlug }) => (
-  <Link href={`/san-pham/${categorySlug}`}>
+  <Link href={`/nguyen-lieu-pha-che/${categorySlug}`}>
     <Flex
       bg="#f8fcfe"
       border="2px dashed #d0eef7"
@@ -560,17 +560,25 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
   if (!tabs.length || !featuredData.length) return null;
 
   return (
-    <Box px={PX_ALL} mt="80px">
-      {/* ── Section header ── */}
-      <Flex align="center" justify="center" gap="16px" mb="28px">
-        <Box h="2px" flex={1} maxW="100px" bg="linear-gradient(90deg, transparent, #00b7e9)" />
-        <Flex align="center" gap="10px">
-          <Text fontSize="22px">🧋</Text>
-          <Text fontSize={{ xs: '20px', lg: '26px' }} fontWeight={800} color="#1d2128" textAlign="center">
-            Sản phẩm nổi bật
-          </Text>
-        </Flex>
-        <Box h="2px" flex={1} maxW="100px" bg="linear-gradient(90deg, #00b7e9, transparent)" />
+    <Box px={PX_ALL} mt="40px">
+      {/* ── Section Heading ── */}
+      <Flex align="center" justify="center" gap="16px" mb="32px">
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+        <Text fontSize="50px">🧋</Text>
+        <Text
+          as="h2"
+          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+          fontWeight={900}
+          textAlign="center"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+          bgClip="text"
+          sx={{ WebkitTextFillColor: 'transparent' }}
+        >
+          Các Sản Phẩm Nổi Bật
+        </Text>
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
       </Flex>
 
       {/* ── Tab pills ── */}

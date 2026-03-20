@@ -34,8 +34,8 @@ const Header = () => {
       href: '/gioi-thieu'
     },
     {
-      title: 'Sản Phẩm',
-      href: '/san-pham'
+      title: 'Nguyên Liệu Pha Chế',
+      href: '/nguyen-lieu-pha-che'
     },
     {
       title: 'Logo',

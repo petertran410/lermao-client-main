@@ -31,7 +31,7 @@ export default function sitemap() {
       priority: 0.8
     },
     {
-      url: `${domain}/san-pham`,
+      url: `${domain}/nguyen-lieu-pha-che`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8

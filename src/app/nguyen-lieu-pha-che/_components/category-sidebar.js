@@ -192,7 +192,7 @@ const CategorySidebar = ({
 
     const slugPath = buildCategorySlugPath(fullCategories, categoryId);
     if (slugPath.length > 0) {
-      const url = `/san-pham/${slugPath.join('/')}`;
+      const url = `/nguyen-lieu-pha-che/${slugPath.join('/')}`;
       if (onSubCategorySelect) {
         onSubCategorySelect(url);
       }

@@ -47,7 +47,7 @@ const ProductItem = ({ item }) => {
       }}
       position="relative"
     >
-      <Link href={`/san-pham/lermao/${productSlug}`}>
+      <Link href={`/nguyen-lieu-pha-che/lermao/${productSlug}`}>
         <AspectRatio ratio={1 / 1} w="full">
           <Box
             w="full"

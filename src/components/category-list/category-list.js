@@ -36,7 +36,7 @@ const CategoryList = () => {
           }
 
           return (
-            <Link href={`/san-pham?categoryId=${id}`} key={id} style={{ display: 'block' }}>
+            <Link href={`/nguyen-lieu-pha-che?categoryId=${id}`} key={id} style={{ display: 'block' }}>
               <Flex
                 align="center"
                 justify="space-between"

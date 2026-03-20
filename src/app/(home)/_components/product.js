@@ -90,7 +90,7 @@ const HomeProduct = async () => {
                       {description}
                     </Text>
 
-                    <Link href={`/san-pham?categoryId=${id}`}>
+                    <Link href={`/nguyen-lieu-pha-che?categoryId=${id}`}>
                       <Flex
                         color="#FFF"
                         border="1px solid #FFF"
@@ -127,7 +127,7 @@ const HomeProduct = async () => {
       <TopProduct isHome />
 
       <Flex justify="center" mt="40px">
-        <Link href="/san-pham">
+        <Link href="/nguyen-lieu-pha-che">
           <Flex
             align="center"
             justify="center"

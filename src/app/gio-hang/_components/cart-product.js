@@ -109,14 +109,14 @@ const CartProduct = () => {
           return (
             <GridItem key={id}>
               <Flex p="16px" bgColor="#FFF" gap="16px" borderRadius={8} boxShadow="0px 4px 24px 0px #0000000D">
-                <Link href={`/san-pham/${convertSlugURL(title)}.${id}`} target="_blank">
+                <Link href={`/nguyen-lieu-pha-che/${convertSlugURL(title)}.${id}`} target="_blank">
                   <Image src={imagesUrl?.[0]?.replace('http://', 'https://')} alt={IMG_ALT} h="100px" w="auto" />
                 </Link>
 
                 <Flex flex={1} direction="column" gap="8px" borderLeft="1px solid #E1E2E3" pl="16px">
                   <Flex align="flex-start" gap="16px">
                     <Link
-                      href={`/san-pham/${convertSlugURL(title)}.${id}`}
+                      href={`/nguyen-lieu-pha-che/${convertSlugURL(title)}.${id}`}
                       target="_blank"
                       style={{ display: 'flex', flex: 1 }}
                     >
@@ -153,7 +153,7 @@ const CartProduct = () => {
       <Box w="full" h="1px" bgColor="#E1E2E3" mt="32px" mb="16px" />
 
       <Flex align="center" justify="space-between" direction={{ xs: 'column', md: 'row' }}>
-        <Link href="/san-pham">
+        <Link href="/nguyen-lieu-pha-che">
           <Flex
             align="center"
             justify="center"

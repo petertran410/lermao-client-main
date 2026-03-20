@@ -140,7 +140,7 @@ const CategoryShowcase = ({ categories = [] }) => {
               {active.description || 'Đang cập nhật mô tả danh mục...'}
             </Text>
 
-            <Link href={`/san-pham/${active.slug}`}>
+            <Link href={`/nguyen-lieu-pha-che/${active.slug}`}>
               <Flex
                 as="span"
                 align="center"

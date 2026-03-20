@@ -12,23 +12,23 @@ const Footer = () => {
   const { data: CATEGORY_LIST = [] } = useQueryCategoryList();
   const MENU_LINKS = [
     {
-      title: 'Giới thiệu',
+      title: 'Giới Thiệu',
       href: '/gioi-thieu'
     },
     {
-      title: 'Sản phẩm',
-      href: '/san-pham'
+      title: 'Nguyên Liệu Pha Chế',
+      href: '/nguyen-lieu-pha-che'
     },
     {
-      title: 'Công thức',
+      title: 'Công Thức',
       href: '/cong-thuc'
     },
     {
-      title: 'Tin tức',
+      title: 'Tin Tức',
       href: '/tin-tuc'
     },
     {
-      title: 'Liên hệ',
+      title: 'Liên Hệ',
       href: '/lien-he'
     }
   ];
@@ -108,16 +108,29 @@ const Footer = () => {
           </Flex>
 
           <Flex align="flex-start" gap="8px">
-            <Image src="/images/location.png" alt={IMG_ALT} w="24px" h="24px" />
-            <Box>
-              <Text color="#FFF" fontSize={15} fontWeight={400} _hover={{ color: '#FFF' }}>
-                Trụ sở chính: B-TT10-4 thuộc dự án Him Lam Vạn Phúc, đường Tố Hữu, Phường Vạn Phúc, Quận Hà Đông, Thành
-                phố Hà Nội
-              </Text>
-              <Text color="#FFF" fontSize={15} fontWeight={400} mt="8px" _hover={{ color: '#FFF' }}>
-                Cửa hàng tại TP.HCM: Số 42 Đường số 7, Phường 10, Quận Tân Bình, Thành phố Hồ Chí Minh
-              </Text>
-            </Box>
+            <Flex direction="column" gap="8px">
+              <Flex align="center" gap="8px">
+                <Image src="/images/location.png" alt={IMG_ALT} w="24px" h="24px" />
+                <Text color="#FFF" fontSize={15} fontWeight={400} _hover={{ color: '#FFF' }}>
+                  Trụ sở chính: B-TT10-4 thuộc dự án Him Lam Vạn Phúc, đường Tố Hữu, Phường Vạn Phúc, Quận Hà Đông,
+                  Thành phố Hà Nội
+                </Text>
+              </Flex>
+
+              <Flex align="center" gap="8px">
+                <Image src="/images/location.png" alt={IMG_ALT} w="24px" h="24px" />
+                <Text color="#FFF" fontSize={15} fontWeight={400} _hover={{ color: '#FFF' }}>
+                  Văn phòng miền Nam: P1.2.24 Diamond Alnata, Block A3, Celadon City, Tân Phú, TP.HCM.
+                </Text>
+              </Flex>
+
+              <Flex align="center" gap="8px">
+                <Image src="/images/location.png" alt={IMG_ALT} w="24px" h="24px" />
+                <Text color="#FFF" fontSize={15} fontWeight={400} mt="8px" _hover={{ color: '#FFF' }}>
+                  Cửa hàng tại TP.HCM: Số 42 Đường số 7, Phường 10, Quận Tân Bình, Thành phố Hồ Chí Minh
+                </Text>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
@@ -147,7 +160,7 @@ const Footer = () => {
           </Flex>
         </Flex>
 
-        <Flex direction="column">
+        {/* <Flex direction="column">
           <Text color="#FFF" fontWeight={700} fontSize={16} _hover={{ color: '#FFF' }}>
             Nhóm sản phẩm
           </Text>
@@ -156,7 +169,7 @@ const Footer = () => {
             {CATEGORY_LIST.map((item) => {
               const { name, id } = item;
               return (
-                <Link href={`/san-pham?categoryId=${id}`} key={id}>
+                <Link href={`/nguyen-lieu-pha-che?categoryId=${id}`} key={id}>
                   <Text as="span" color="#FFF" fontWeight={400} fontSize={16} _hover={{ color: '#FFF' }}>
                     {name}
                   </Text>
@@ -164,7 +177,7 @@ const Footer = () => {
               );
             })}
           </Flex>
-        </Flex>
+        </Flex> */}
 
         <Flex direction="column">
           <Text color="#FFF" fontWeight={700} fontSize={16} _hover={{ color: '#FFF' }}>

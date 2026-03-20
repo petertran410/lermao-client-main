@@ -14,7 +14,7 @@ const EmptyCart = () => {
             </Text>
           </Box>
         </Box>
-        <Link href="/san-pham">
+        <Link href="/nguyen-lieu-pha-che">
           <Flex
             align="center"
             justify="center"

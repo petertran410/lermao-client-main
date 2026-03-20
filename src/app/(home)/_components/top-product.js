@@ -42,7 +42,7 @@ const TopProductItem = (props) => {
         </Box>
 
         <Box>
-          <Link href={`/san-pham/${convertSlugURL(title)}.${id}`}>
+          <Link href={`/nguyen-lieu-pha-che/${convertSlugURL(title)}.${id}`}>
             <Flex
               fontSize={16}
               fontWeight={700}
