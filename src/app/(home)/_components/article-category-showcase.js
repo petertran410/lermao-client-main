@@ -24,7 +24,7 @@ const ARTICLE_CATEGORIES = [
     // TODO: Thay description và image theo ý muốn
     description:
       'Tham gia Workshop Pha Chế để cập nhật menu mới nhất và tối ưu quy trình vận hành quán. Cơ hội giao lưu cùng chuyên gia, chia sẻ bí quyết chọn nguyên liệu và kỹ thuật pha chế đột phá.',
-    image: '/images/lermao.png'
+    image: '/images/workshop-pha-che.webp'
   },
   {
     id: 'tin-tuc',
@@ -33,7 +33,7 @@ const ARTICLE_CATEGORIES = [
     // TODO: Thay description và image theo ý muốn
     description:
       'Đón đầu xu hướng F&B! Xem ngay tin tức thị trường pha chế, phân tích chuyên sâu và lịch Workshop sắp tới của Diệp Trà để nâng cao kiến thức kinh doanh, tiếp cận nguồn nguyên liệu mới.',
-    image: '/images/lermao.png'
+    image: '/images/lermao-tin-tuc.webp'
   }
 ];
 
