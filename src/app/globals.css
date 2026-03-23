@@ -10,6 +10,14 @@
   }
 }
 
+@font-face {
+  font-family: 'SFProDisplayMedium';
+  src: url('https://media.hisweetievietnam.com/fonts/api/font-file.php?id=sf-pro-display-black-otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 html,
 body {
   max-width: 100vw;
@@ -19,6 +27,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
+  font-family: 'fg-sf-pro-display-medium-otf', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

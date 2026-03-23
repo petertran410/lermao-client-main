@@ -21,7 +21,8 @@ export default function RootLayout({ children }) {
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       </Head>
 
-      <body className={fontFamily.className}>
+      {/* <body className={fontFamily.className}> */}
+      <body>
         <Providers>
           <Box bgGradient="linear(to-br, #FFF 0%, #FFF 5%, #e7f7fb 50%, #FFF 95%, #FFF 100%)" pos="relative">
             <Contact />
