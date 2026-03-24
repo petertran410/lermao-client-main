@@ -2,6 +2,14 @@
 const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/media-proxy/:path*',
+        destination: 'https://media.hisweetievietnam.com/:path*'
+      }
+    ];
   }
 };
 
