@@ -62,7 +62,7 @@ const CategoryItem = ({
           </Box>
 
           <Text
-            fontSize="sm"
+            fontSize="lg"
             fontWeight={isSelected ? '600' : '400'}
             color={isSelected ? 'main.1' : 'gray.700'}
             _hover={{ color: 'main.1' }}
@@ -213,7 +213,7 @@ const CategorySidebar = ({
 
   if (error || !categoryHierarchy) {
     return (
-      <Box w="280px" bg="white" border="1px solid #E2E8F0" borderRadius="md" p={4}>
+      <Box w="full" bg="white" border="1px solid #E2E8F0" borderRadius="md" p={4}>
         <Text fontSize="md" color="red.500">
           Không thể tải danh mục con
         </Text>
@@ -223,7 +223,7 @@ const CategorySidebar = ({
 
   return (
     <Box
-      w={{ xs: '100%', md: '280px' }}
+      w={{ base: 'full', xs: 'full', md: '280px' }}
       bg="white"
       border="1px solid #E2E8F0"
       borderRadius="xl"
@@ -231,10 +231,10 @@ const CategorySidebar = ({
       overflowY="auto"
     >
       <Box p={4} borderBottom="1px solid #E2E8F0">
-        <Text fontSize="md" fontWeight="600" color="main.1">
+        <Text fontSize="lg" fontWeight="600" color="main.1">
           Danh mục
         </Text>
-        <Text fontSize="sm" color="gray.600" mt={1}>
+        <Text fontSize="lg" color="gray.600" mt={1}>
           {categoryHierarchy.name}
         </Text>
       </Box>

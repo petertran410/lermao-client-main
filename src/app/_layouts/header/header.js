@@ -43,7 +43,7 @@ const Header = () => {
     },
     {
       title: 'Công Thức',
-      href: '/cong-thuc'
+      href: '/cong-thuc-pha-che'
     },
     {
       title: 'Workshop Pha Chế',
@@ -107,7 +107,7 @@ const Header = () => {
 
         {/* Logo — center */}
         <Link href="/">
-          <Image src="/images/logo.png" w="70px" h="64px" fit="cover" alt={IMG_ALT} flexShrink={0} />
+          <Image src="/images/logo.webp" w="70px" h="64px" fit="cover" alt={IMG_ALT} flexShrink={0} />
         </Link>
 
         {/* Right menu */}
@@ -168,7 +168,7 @@ const Header = () => {
         </button>
 
         <Link href="/">
-          <Image src="/images/logo.png" alt={IMG_ALT} w={12} h="auto" fit="cover" />
+          <Image src="/images/logo.webp" alt={IMG_ALT} w={12} h="auto" fit="cover" />
         </Link>
 
         {/* <CartHeaderMobile /> */}
@@ -181,7 +181,7 @@ const Header = () => {
           <DrawerHeader>
             <Flex align="center" gap={4}>
               <Link href="/">
-                <Image src="/images/logo.png" alt={IMG_ALT} w={14} h="auto" fit="cover" />
+                <Image src="/images/logo.webp" alt={IMG_ALT} w={14} h="auto" fit="cover" />
               </Link>
 
               <Text fontWeight={700} fontSize={20}>

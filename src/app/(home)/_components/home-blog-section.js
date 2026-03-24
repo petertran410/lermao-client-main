@@ -139,7 +139,7 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
   return (
     <Box px={PX_ALL} py={{ xs: '40px' }}>
       <Flex direction="column" gap={{ xs: '48px', lg: '56px' }}>
-        {/* <BlogRow title="Công thức pha chế" articles={congThucArticles} basePath="/cong-thuc" /> */}
+        {/* <BlogRow title="Công thức pha chế" articles={congThucArticles} basePath="/cong-thuc-pha-che" /> */}
         <BlogRow title="Workshop Pha Chế" articles={workshopArticles} basePath="/workshop-pha-che" />
         {/* <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" /> */}
       </Flex>

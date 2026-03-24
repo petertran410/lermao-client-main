@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
   const targetSlug = categorySlug?.[categorySlug.length - 1];
 
   if (!targetSlug) {
-    return getMetadata({ title: 'Sản phẩm | Gấu Lermao' });
+    return getMetadata({ title: 'Nguyên Liệu Pha Chế' });
   }
 
   try {
@@ -18,13 +18,13 @@ export async function generateMetadata({ params }) {
 
     if (found) {
       return getMetadata({
-        title: `${found.title_meta || found.name} | Gấu Lermao`,
+        title: `${found.title_meta || found.name}`,
         description: found.description || undefined
       });
     }
   } catch (e) {}
 
-  return getMetadata({ title: 'Sản phẩm | Gấu Lermao' });
+  return getMetadata({ title: 'Nguyên Liệu Pha Chế' });
 }
 
 const CategoryProductsPage = ({ params }) => {

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
 
   const { title: titleData, imagesUrl, title_meta, general_description } = data || {};
   const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
-  const title = title_meta || `${titleData} | Gấu Lermao`;
+  const title = title_meta || `${titleData}`;
   const description = general_description || META_DESCRIPTION;
 
   return {

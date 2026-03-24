@@ -265,7 +265,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
 
   return (
     <Container maxW="auto" py={8} px={PX_ALL} pt={{ base: '80px' }}>
-      <VStack align="start" spacing="16px" mt="20px" mb="40px">
+      <VStack align="start" spacing="16px" mt="" mb="40px">
         <Breadcrumb data={getBreadcrumbData()} />
 
         <Heading as="h1" fontSize={{ base: '28px', lg: '36px' }} fontWeight={700} color="main.1">
@@ -275,7 +275,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
         {/* Tabs danh mục cấp cao */}
         <Flex gap={3} flexWrap="wrap">
           <Button
-            size="sm"
+            size="md"
             variant={selectedCategory === 'all' ? 'solid' : 'outline'}
             bg={selectedCategory === 'all' ? 'main.1' : 'white'}
             color={selectedCategory === 'all' ? 'white' : 'main.1'}
@@ -290,7 +290,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
             return (
               <Button
                 key={cat.id}
-                size="sm"
+                size="md"
                 variant={isActive ? 'solid' : 'outline'}
                 bg={isActive ? 'main.1' : 'white'}
                 color={isActive ? 'white' : 'main.1'}
@@ -348,9 +348,15 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
       </VStack>
 
       {/* Layout: Sidebar + Product Grid */}
-      <Flex gap={8} align="start">
+      <Flex gap={8} align="start" direction={{ base: 'row', xs: 'column', md: 'column', lg: 'row' }}>
         {selectedCategory !== 'all' && (
-          <Box display={{ base: 'none', lg: 'block' }} minW="260px" maxW="280px" position="sticky" top="180px">
+          <Box
+            display={{ base: 'block', lg: 'block' }}
+            minW="260px"
+            maxW={{ md: '220px', lg: '280px' }}
+            position="sticky"
+            top="180px"
+          >
             <CategorySidebar
               selectedCategory={selectedCategory}
               selectedSubCategory={subCategoryId}

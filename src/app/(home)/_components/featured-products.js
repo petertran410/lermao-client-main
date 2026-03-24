@@ -576,7 +576,7 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
           bgClip="text"
           sx={{ WebkitTextFillColor: 'transparent' }}
         >
-          Các Sản Phẩm Nổi Bật
+          Nguyên Liệu Pha Chế Nổi Bật
         </Text>
         <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
       </Flex>

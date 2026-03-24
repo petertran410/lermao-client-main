@@ -25,7 +25,7 @@ export const convertSlugURL = (text) => {
 export const formatCurrency = (price = 0) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND' }).format(Number(price));
 
-const META_TITLE = 'Gấu Lermao | Giải pháp pha chế toàn diện số 1 tại Việt Nam';
+const META_TITLE = 'Gấu LerMao | Giải Pháp Pha Chế Toàn Diện Tại Việt Nam';
 export const META_DESCRIPTION =
   'Gấu LerMao tự hào là thương hiệu dẫn đầu trong hoạt động cung cấp nguyên liệu pha chế toàn diện, sẵn sàng đồng hành cùng các chủ doanh nghiệp kinh doanh ngành F&B, coffee, trà sữa và đồ uống trên toàn quốc. Với sứ mệnh mang đến những sản phẩm chất lượng vượt trội,  Gấu LerMao luôn cam kết cung cấp nguồn nguyên liệu tươi ngon, đa dạng và an toàn nhất. Chúng tôi không chỉ đáp ứng nhu cầu sáng tạo của các nhà pha chế, mà còn mang đến giải pháp toàn diện cho các doanh nghiệp, nâng tầm mọi thức uống trong menu, chinh phục khẩu vị khách hàng của bạn một cách trọn vẹn.';
 const META_IMAGE = '/images/preview.png';
@@ -62,7 +62,7 @@ export const META_KEYWORDS = [
   'nguyên liệu pha chế uy tín'
 ];
 const META_URL = 'https://lermao.vn';
-const META_SITENAME = 'Gấu Lermao | Giải pháp pha chế toàn diện số 1 tại Việt Nam';
+const META_SITENAME = 'Gấu LerMao | Giải Pháp Pha Chế Toàn Diện Tại Việt Nam';
 const META_TYPE = 'website';
 
 export const getMetadata = (data) => {

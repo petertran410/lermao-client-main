@@ -21,7 +21,7 @@ const Footer = () => {
     },
     {
       title: 'Công Thức',
-      href: '/cong-thuc'
+      href: '/cong-thuc-pha-che'
     },
     {
       title: 'Tin Tức',
@@ -66,7 +66,7 @@ const Footer = () => {
       mt={{ xs: isIntroPage ? '-70px' : '-300px', md: isIntroPage ? '0px' : '-180px', lg: '-50px', xl: '0px' }}
     >
       <Flex flex={{ xs: 'none', md: 1 }} direction="column">
-        <Image src="/images/logo.png" alt={IMG_ALT} w="75px" h="auto" fit="cover" />
+        <Image src="/images/logo.webp" alt={IMG_ALT} w="75px" h="auto" fit="cover" />
 
         <Text
           fontSize={20}

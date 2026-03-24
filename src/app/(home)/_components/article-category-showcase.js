@@ -10,8 +10,8 @@ import { useState } from 'react';
 const ARTICLE_CATEGORIES = [
   {
     id: 'cong-thuc',
-    name: 'Công thức pha chế',
-    href: '/cong-thuc',
+    name: 'Công Thức Pha Chế',
+    href: '/cong-thuc-pha-che',
     // TODO: Thay description và image theo ý muốn
     description:
       'Tổng hợp Công thức pha chế: trà sữa, café, trà trái cây, đá xay dễ làm – dễ bán. Phù hợp cho người mới, quán nhỏ và chủ F&B cần sáng tạo thực đơn. Cập nhật kiến thức cần thiết trong lĩnh vực.',
@@ -47,7 +47,6 @@ const ArticleCategoryShowcase = () => {
       <Flex align="center" justify="center" gap="16px" mb="32px">
         <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
         <Text
-          as="h2"
           fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
           fontWeight={900}
           textAlign="center"

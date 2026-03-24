@@ -19,7 +19,7 @@ export default function sitemap() {
       priority: 0.8
     },
     {
-      url: `${domain}/cong-thuc`,
+      url: `${domain}/cong-thuc-pha-che`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8

@@ -5,7 +5,7 @@ import ProductPageWrapper from './_components/product-page-wrapper';
 export const metadata = getMetadata({
   title: 'Nguyên Liệu Pha Chế LerMao | Nguồn Hàng Giá Tốt',
   description:
-    'Bạn đang tìm nguyên liệu pha chế chất lượng? Gấu LerMao là nguồn hàng uy tín, hỗ trợ công thức pha chế độc quyền và giải pháp vận hành tối ưu. Mứt ngon, topping xu hướng, giao hàng toàn quốc!'
+    'Bạn đang tìm nguyên liệu pha chế chất lượng? Gấu LerMao là nguồn hàng uy tín, chuyên cung cấp: Topping xu hướng, mứt trái cây, hạt nổ, bột pha chế... Nguồn ổn định, giá cạnh tranh. Khám phá ngay!'
 });
 
 const Product = () => {

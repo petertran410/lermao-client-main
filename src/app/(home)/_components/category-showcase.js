@@ -113,6 +113,7 @@ const CategoryShowcase = ({ categories = [] }) => {
             gap="20px"
           >
             <Text
+              as="h2"
               key={`title-${active.id}`}
               fontSize={{ xs: '22px', md: '26px', lg: '30px' }}
               fontWeight={800}

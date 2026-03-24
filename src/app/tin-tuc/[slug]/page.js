@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
     const data = await serverFetchJSON(`/api/news/client/${idData.id}`);
     const { title: titleData, imagesUrl, description, titleMeta } = data || {};
     const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
-    const title = titleMeta || `${titleData} | Gấu Lermao`;
+    const title = titleMeta || `${titleData}`;
 
     return {
       title,
