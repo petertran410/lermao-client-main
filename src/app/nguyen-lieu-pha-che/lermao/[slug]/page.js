@@ -1,7 +1,7 @@
 import { API } from '@/utils/API';
 import { META_DESCRIPTION, META_URL } from '@/utils/helper-server';
 import { serverFetchJSON } from '@/utils/server-fetch';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import ProductDetailClient from './_components/product-detail-client';
 
 export async function generateMetadata({ params }) {
@@ -52,7 +52,7 @@ const ProductDetail = async ({ params }) => {
   }
 
   if (!productDetail) {
-    notFound();
+    redirect('/nguyen-lieu-pha-che');
   }
 
   let relatedProducts = [];
