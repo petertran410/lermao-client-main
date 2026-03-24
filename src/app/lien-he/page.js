@@ -3,7 +3,7 @@ import { getMetadata } from '@/utils/helper-server';
 import { Flex, Image, Link, Text } from '@chakra-ui/react';
 import HomeContact from '../(home)/_components/contact';
 
-export const metadata = getMetadata({ title: 'Liên hệ | Gấu Lermao' });
+export const metadata = getMetadata({ title: 'Liên hệ | Gấu Lermao', path: '/lien-he' });
 
 const Contact = () => {
   return (

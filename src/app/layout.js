@@ -12,7 +12,8 @@ import { Providers } from './providers';
 export const metadata = getMetadata({
   title: 'Gấu LerMao | Giải Pháp Pha Chế Toàn Diện Tại Việt Nam',
   description:
-    'Gấu LerMao - Đơn vị tiên phong kiến tạo hệ sinh thái nguyên liệu pha chế bền vững. Chúng tôi cung cấp giải pháp pha chế toàn diện, là đối tác tin cậy đồng hành cùng sự thành công của các chủ quán trà sữa trên khắp Việt Nam.'
+    'Gấu LerMao - Đơn vị tiên phong kiến tạo hệ sinh thái nguyên liệu pha chế bền vững. Chúng tôi cung cấp giải pháp pha chế toàn diện, là đối tác tin cậy đồng hành cùng sự thành công của các chủ quán trà sữa trên khắp Việt Nam.',
+  path: '/'
 });
 
 export default function RootLayout({ children }) {

@@ -1,5 +1,4 @@
-// src/app/workshop-pha-che/[slug]/page.js
-import { META_DESCRIPTION } from '@/utils/helper-server';
+import { META_DESCRIPTION, META_URL } from '@/utils/helper-server';
 import { serverFetchJSON } from '@/utils/server-fetch';
 import ArticleDetailClient from '@/components/article-detail-template';
 
@@ -16,13 +15,18 @@ export async function generateMetadata({ params }) {
     const { title: titleData, imagesUrl, description, titleMeta } = data || {};
     const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
     const title = titleMeta || `${titleData}`;
+    const canonicalUrl = `${META_URL}/workshop-pha-che/${slug}`;
 
     return {
       title,
       description: description || META_DESCRIPTION,
+      alternates: {
+        canonical: canonicalUrl
+      },
       openGraph: {
         title,
         description: description || META_DESCRIPTION,
+        url: canonicalUrl,
         images: [{ url: imageUrl, width: 800, height: 600, alt: titleData }]
       },
       twitter: {

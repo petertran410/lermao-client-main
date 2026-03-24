@@ -61,7 +61,7 @@ export const META_KEYWORDS = [
   'doanh nghiệp pha chế tại Việt Nam',
   'nguyên liệu pha chế uy tín'
 ];
-const META_URL = 'https://www.lermao.com';
+export const META_URL = 'https://www.lermao.com';
 const META_SITENAME = 'Gấu LerMao | Giải Pháp Pha Chế Toàn Diện Tại Việt Nam';
 const META_TYPE = 'website';
 
@@ -70,25 +70,28 @@ export const getMetadata = (data) => {
     title = META_TITLE,
     description = META_DESCRIPTION,
     keywords = META_KEYWORDS,
-    url = META_URL,
+    path,
+    url,
     siteName = META_SITENAME,
     type = META_TYPE
   } = data || {};
+
+  const canonicalUrl = path ? `${META_URL}${path}` : url || META_URL;
 
   return {
     title,
     description,
     keywords,
-    url,
+    url: canonicalUrl,
     type,
     images: [META_IMAGE],
     alternates: {
-      canonical: url
+      canonical: canonicalUrl
     },
     openGraph: {
       title,
       description,
-      url,
+      url: canonicalUrl,
       siteName,
       images: [META_IMAGE],
       type

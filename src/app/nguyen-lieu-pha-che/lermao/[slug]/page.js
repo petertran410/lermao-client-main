@@ -1,5 +1,5 @@
 import { API } from '@/utils/API';
-import { META_DESCRIPTION } from '@/utils/helper-server';
+import { META_DESCRIPTION, META_URL } from '@/utils/helper-server';
 import { serverFetchJSON } from '@/utils/server-fetch';
 import { notFound } from 'next/navigation';
 import ProductDetailClient from './_components/product-detail-client';
@@ -18,13 +18,18 @@ export async function generateMetadata({ params }) {
   const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
   const title = title_meta || `${titleData}`;
   const description = general_description || META_DESCRIPTION;
+  const canonicalUrl = `${META_URL}/nguyen-lieu-pha-che/lermao/${slug}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl
+    },
     openGraph: {
       title,
       description,
+      url: canonicalUrl,
       images: [{ url: imageUrl, width: 800, height: 600, alt: title }]
     },
     twitter: {

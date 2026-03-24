@@ -7,6 +7,7 @@ const IntroPage = () => {
       <Head>
         <title>Giới thiệu | Gấu Lermao</title>
         <meta charSet="UTF-8" />
+        <link rel="canonical" href="https://www.lermao.com/gioi-thieu" />
       </Head>
       <IntroWrapper />
     </>
