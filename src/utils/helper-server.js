@@ -61,7 +61,7 @@ export const META_KEYWORDS = [
   'doanh nghiệp pha chế tại Việt Nam',
   'nguyên liệu pha chế uy tín'
 ];
-const META_URL = 'https://lermao.vn';
+const META_URL = 'https://www.lermao.com';
 const META_SITENAME = 'Gấu LerMao | Giải Pháp Pha Chế Toàn Diện Tại Việt Nam';
 const META_TYPE = 'website';
 
@@ -82,6 +82,9 @@ export const getMetadata = (data) => {
     url,
     type,
     images: [META_IMAGE],
+    alternates: {
+      canonical: url
+    },
     openGraph: {
       title,
       description,
