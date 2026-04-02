@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+Disallow: /gio-hang/
+Disallow: /thanh-toan/
+Disallow: /dang-ky/
+Disallow: /dang-nhap/
+Disallow: /profile/
+Disallow: /tim-kiem
+Disallow: /search
+Disallow: /*?s=
+Disallow: /*?q=
+Disallow: /*?filter=
+Disallow: /*?sort=
+Disallow: /*?orderby=
+Disallow: /*?add-to-cart=
+Disallow: /*?fbclid=
+Disallow: /*?gclid=
+Disallow: /*utm_*
+Disallow: /*ref=
+Disallow: /*track=
+Disallow: /*go=
+Disallow: /*?replytocom
+
+Sitemap: https://www.lermao.com/sitemap.xml
