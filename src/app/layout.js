@@ -30,7 +30,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="vi">
       <body>
-        {/* Google Analytics - tải sau khi page interactive để không block render */}
         <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-6K6R2TWX89" />
         <Script
           id="google-analytics"

@@ -73,12 +73,14 @@ export const getMetadata = (data) => {
     path,
     url,
     siteName = META_SITENAME,
-    type = META_TYPE
+    type = META_TYPE,
+    other,
+    robots
   } = data || {};
 
   const canonicalUrl = path ? `${META_URL}${path}` : url || META_URL;
 
-  return {
+  const metadata = {
     title,
     description,
     keywords,
@@ -103,4 +105,14 @@ export const getMetadata = (data) => {
       images: [META_IMAGE]
     }
   };
+
+  if (other) {
+    metadata.other = other;
+  }
+
+  if (robots) {
+    metadata.robots = robots;
+  }
+
+  return metadata;
 };
