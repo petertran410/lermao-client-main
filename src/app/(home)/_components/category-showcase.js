@@ -141,7 +141,7 @@ const CategoryShowcase = ({ categories = [] }) => {
               {active.description || 'Đang cập nhật mô tả danh mục...'}
             </Text>
 
-            <Link href={`/nguyen-lieu-pha-che/${active.slug}`}>
+            <Link href={`/nguyen-lieu-pha-che/${active.slug}`} target="_blank">
               <Flex
                 as="span"
                 align="center"

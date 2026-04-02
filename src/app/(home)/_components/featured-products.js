@@ -206,7 +206,7 @@ const ProductCard = ({ product, index = 0 }) => {
    ViewAllCard
    ══════════════════════════════════════════════════════════ */
 const ViewAllCard = ({ categorySlug }) => (
-  <Link href={`/nguyen-lieu-pha-che/${categorySlug}`}>
+  <Link href={`/nguyen-lieu-pha-che/${categorySlug}`} target="_blank">
     <Flex
       bg="#f8fcfe"
       border="2px dashed #d0eef7"

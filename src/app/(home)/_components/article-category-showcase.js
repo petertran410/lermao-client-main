@@ -161,7 +161,7 @@ const ArticleCategoryShowcase = () => {
               {active.description}
             </Text>
 
-            <Link href={active.href}>
+            <Link href={active.href} target="_blank">
               <Flex
                 as="span"
                 align="center"
