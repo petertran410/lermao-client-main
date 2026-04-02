@@ -137,10 +137,11 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
   if (!hasAny) return null;
 
   return (
-    <Box px={PX_ALL} py={{ xs: '40px' }}>
+    <Box px={PX_ALL} py={{ xs: '40px', md: '0' }}>
       <Flex direction="column" gap={{ xs: '48px', lg: '56px' }}>
         {/* <BlogRow title="Công thức pha chế" articles={congThucArticles} basePath="/cong-thuc-pha-che" /> */}
         <BlogRow title="Workshop Pha Chế" articles={workshopArticles} basePath="/workshop-pha-che" />
+        {/* <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" /> */}
       </Flex>
 
       <Flex align="center" justify="center" gap="16px" mt="40px" mb="16px">
@@ -262,8 +263,6 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
           </Flex>
         </Flex>
       </Box>
-
-      {/* <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" /> */}
     </Box>
   );
 };
