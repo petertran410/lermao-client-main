@@ -143,6 +143,58 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
         <BlogRow title="Workshop Pha Chế" articles={workshopArticles} basePath="/workshop-pha-che" />
         {/* <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" /> */}
       </Flex>
+
+      <Flex align="center" justify="center" gap="16px" mt="40px" mb="16px">
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, transparent, #00b7e9)" />
+        <Text
+          as="h2"
+          fontSize={{ xs: '24px', md: '30px', lg: '36px' }}
+          fontWeight={900}
+          textAlign="center"
+          lineHeight="1.2"
+          letterSpacing="-0.02em"
+          bgGradient="linear(to-r, #00b7e9, #77D0E8)"
+          bgClip="text"
+          sx={{ WebkitTextFillColor: 'transparent' }}
+        >
+          Kết Nối Cùng Gấu LerMao
+        </Text>
+        <Box h="2px" flex={1} maxW="120px" bgGradient="linear(to-r, #77D0E8, transparent)" />
+      </Flex>
+
+      <Box
+        flex={{ lg: '0 0 380px' }}
+        w={{ xs: 'full', lg: 'full' }}
+        position="relative"
+        borderRadius="24px"
+        overflow="hidden"
+      >
+        <Image
+          src="/images/workshop-demo.webp"
+          alt={IMG_ALT}
+          w="full"
+          h={{ xs: '300px', md: '300px', lg: '330px' }}
+          objectFit="fill"
+          borderRadius="24px"
+          fallbackSrc="/images/preview.png"
+        />
+
+        <Flex
+          position="absolute"
+          bottom="40"
+          // left="20"
+          // right="20"
+          // justify="center"
+          textAlign="center"
+          pb="5px"
+          pt="5px"
+          // bgGradient="linear(to-t, blackAlpha.700, blackAlpha.300, transparent)"
+          borderBottomRadius="24px"
+          w="350px"
+        >
+          Khám phá sản phẩm cập nhật xu hướng và tìm kiếm giải pháp phù hợp với mô hình kinh doanh đồ uống của bạn
+        </Flex>
+      </Box>
     </Box>
   );
 };
