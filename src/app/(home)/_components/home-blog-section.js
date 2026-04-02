@@ -3,7 +3,7 @@
 
 import { IMG_ALT, PX_ALL } from '@/utils/const';
 import { convertSlugURL } from '@/utils/helper-server';
-import { AspectRatio, Box, Flex, IconButton, Image, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Button, Flex, IconButton, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -141,7 +141,6 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
       <Flex direction="column" gap={{ xs: '48px', lg: '56px' }}>
         {/* <BlogRow title="Công thức pha chế" articles={congThucArticles} basePath="/cong-thuc-pha-che" /> */}
         <BlogRow title="Workshop Pha Chế" articles={workshopArticles} basePath="/workshop-pha-che" />
-        {/* <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" /> */}
       </Flex>
 
       <Flex align="center" justify="center" gap="16px" mt="40px" mb="16px">
@@ -168,33 +167,104 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
         position="relative"
         borderRadius="24px"
         overflow="hidden"
+        mb="30px"
       >
         <Image
           src="/images/workshop-demo.webp"
           alt={IMG_ALT}
           w="full"
           h={{ xs: '300px', md: '300px', lg: '330px' }}
-          objectFit="fill"
+          objectFit="cover"
           borderRadius="24px"
           fallbackSrc="/images/preview.png"
         />
 
         <Flex
           position="absolute"
-          bottom="40"
-          // left="20"
-          // right="20"
-          // justify="center"
-          textAlign="center"
-          pb="5px"
-          pt="5px"
-          // bgGradient="linear(to-t, blackAlpha.700, blackAlpha.300, transparent)"
-          borderBottomRadius="24px"
-          w="350px"
+          top={{ xs: '20px', md: '30px', lg: '60px' }}
+          left="0"
+          right="0"
+          mx="auto"
+          w={{ xs: 'calc(100% - 40px)', md: '400px' }}
+          maxW="370px"
+          direction="column" // ← THÊM: Stack vertical
+          align="center"
+          gap="25px" // ← THÊM: Khoảng cách giữa text và buttons
         >
-          Khám phá sản phẩm cập nhật xu hướng và tìm kiếm giải pháp phù hợp với mô hình kinh doanh đồ uống của bạn
+          {/* Text */}
+          <Text
+            textAlign="center"
+            color="white"
+            fontSize={{ xs: '14px', md: '20px' }}
+            fontWeight={700}
+            lineHeight="1.5"
+            textShadow="1px 1px 5px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.6)"
+          >
+            Khám phá sản phẩm cập nhật xu hướng và tìm kiếm giải pháp phù hợp với mô hình kinh doanh đồ uống của bạn
+          </Text>
+
+          {/* Buttons */}
+          <Flex
+            gap={{ xs: '8px', md: '12px' }}
+            direction={{ xs: 'column', sm: 'row' }} // Stack trên mobile, row trên tablet+
+            w="full"
+            justify="center"
+          >
+            <Button
+              as="a"
+              href="/workshop-pha-che"
+              target="_blank"
+              size={{ xs: 'sm', md: 'md' }}
+              bg="#1768c3"
+              color="white"
+              fontWeight={700}
+              fontSize={{ xs: '13px', md: '14px' }}
+              px={{ xs: '16px', md: '20px' }}
+              py={{ xs: '10px', md: '12px' }}
+              borderRadius="full"
+              _hover={{
+                bg: '#1768c3',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(119, 208, 232, 0.5)'
+              }}
+              _active={{ transform: 'translateY(0)' }}
+              transition="all 0.2s"
+              boxShadow="0 4px 12px rgba(0, 0, 0, 0.3)"
+            >
+              Đăng Ký Work Shop
+            </Button>
+
+            <Button
+              as="a"
+              href="https://zalo.me/4415290839928975010"
+              target="_blank"
+              rel="noopener noreferrer"
+              size={{ xs: 'sm', md: 'md' }}
+              bg="white"
+              color="#1768c3"
+              fontWeight={700}
+              fontSize={{ xs: '13px', md: '14px' }}
+              px={{ xs: '16px', md: '20px' }}
+              py={{ xs: '10px', md: '12px' }}
+              borderRadius="full"
+              border="2px solid"
+              borderColor="white"
+              _hover={{
+                bg: 'rgba(255, 255, 255, 0.9)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(255, 255, 255, 0.5)'
+              }}
+              _active={{ transform: 'translateY(0)' }}
+              transition="all 0.2s"
+              boxShadow="0 4px 12px rgba(0, 0, 0, 0.3)"
+            >
+              Liên Hệ Tư Vấn
+            </Button>
+          </Flex>
         </Flex>
       </Box>
+
+      <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" />
     </Box>
   );
 };
