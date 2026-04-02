@@ -167,7 +167,6 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
         position="relative"
         borderRadius="24px"
         overflow="hidden"
-        mb="30px"
       >
         <Image
           src="/images/workshop-demo.webp"
@@ -186,7 +185,7 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
           right="0"
           mx="auto"
           w={{ xs: 'calc(100% - 40px)', md: '400px' }}
-          maxW="370px"
+          maxW={{ lg: '390px', xl: '370px', '2xl': '450px' }}
           direction="column" // ← THÊM: Stack vertical
           align="center"
           gap="25px" // ← THÊM: Khoảng cách giữa text và buttons
@@ -264,7 +263,7 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
         </Flex>
       </Box>
 
-      <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" />
+      {/* <BlogRow title="Tin tức" articles={newsArticles} basePath="/tin-tuc" /> */}
     </Box>
   );
 };
