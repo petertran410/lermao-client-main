@@ -54,7 +54,7 @@ const CategoryShowcase = ({ categories = [] }) => {
           {/* ── Left: Image ── */}
           <Flex
             flex={{ lg: 1 }}
-            bg="linear-gradient(135deg, #f0fafd 0%, #e0f4fb 100%)"
+            // bg="linear-gradient(135deg, #f0fafd 0%, #e0f4fb 100%)"
             align="center"
             justify="center"
             p={{ xs: '32px', lg: '48px' }}
@@ -62,7 +62,7 @@ const CategoryShowcase = ({ categories = [] }) => {
             position="relative"
             overflow="hidden"
           >
-            <Box
+            {/* <Box
               position="absolute"
               w="200px"
               h="200px"
@@ -79,16 +79,16 @@ const CategoryShowcase = ({ categories = [] }) => {
               bg="rgba(0, 183, 233, 0.06)"
               bottom="-20px"
               right="-20px"
-            />
+            /> */}
 
             <Image
               key={active.id}
               src={imageUrl}
               alt={active.name || IMG_ALT}
               maxH={{ xs: '200px', lg: '300px' }}
-              maxW="90%"
+              maxW="100%"
               borderRadius="8px"
-              objectFit="contain"
+              objectFit="fix"
               position="relative"
               zIndex={1}
               onError={(e) => {
