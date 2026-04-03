@@ -54,42 +54,21 @@ const CategoryShowcase = ({ categories = [] }) => {
           {/* ── Left: Image ── */}
           <Flex
             flex={{ lg: 1 }}
-            // bg="linear-gradient(135deg, #f0fafd 0%, #e0f4fb 100%)"
-            align="center"
-            justify="center"
-            p={{ xs: '32px', lg: '48px' }}
-            minH={{ xs: '260px', lg: 'auto' }}
+            bg="linear-gradient(135deg, #f0fafd 0%, #e0f4fb 100%)"
             position="relative"
             overflow="hidden"
+            minH={{ xs: '260px', lg: 'auto' }}
           >
-            {/* <Box
-              position="absolute"
-              w="200px"
-              h="200px"
-              borderRadius="full"
-              bg="rgba(0, 183, 233, 0.08)"
-              top="-40px"
-              left="-40px"
-            />
-            <Box
-              position="absolute"
-              w="120px"
-              h="120px"
-              borderRadius="full"
-              bg="rgba(0, 183, 233, 0.06)"
-              bottom="-20px"
-              right="-20px"
-            /> */}
-
             <Image
               key={active.id}
               src={imageUrl}
               alt={active.name || IMG_ALT}
-              maxH={{ xs: '200px', lg: '300px' }}
-              maxW="100%"
-              borderRadius="8px"
-              objectFit="fix"
-              position="relative"
+              position="absolute"
+              top={0}
+              left={0}
+              w="100%"
+              h="100%"
+              objectFit="cover"
               zIndex={1}
               onError={(e) => {
                 e.target.src = FALLBACK_IMAGE;
