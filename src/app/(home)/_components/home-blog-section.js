@@ -194,11 +194,11 @@ const HomeBlogSection = ({ congThucArticles = [], workshopArticles = [], newsArt
           {/* Text */}
           <Text
             textAlign="center"
-            color="white"
+            color="#266ab3"
             fontSize={{ xs: '14px', md: '20px' }}
             fontWeight={700}
             lineHeight="1.5"
-            textShadow="1px 1px 5px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.6)"
+            // textShadow="1px 1px 5px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.6)"
           >
             Khám phá sản phẩm cập nhật xu hướng và tìm kiếm giải pháp phù hợp với mô hình kinh doanh đồ uống của bạn
           </Text>
