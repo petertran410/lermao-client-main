@@ -1,7 +1,8 @@
 import { IMG_ALT } from '@/utils/const';
-import { Flex, Image, Text } from '@chakra-ui/react';
+import { Flex, Icon, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { FiHome } from 'react-icons/fi';
 
 const Breadcrumb = (props) => {
   const { data } = props;
@@ -15,10 +16,14 @@ const Breadcrumb = (props) => {
           <Fragment key={href}>
             <Link href={href}>
               <Text
-                fontWeight={isActive ? 600 : 400}
-                fontSize={isActive ? 16 : 16}
-                color={isActive ? '#5FA6BA' : '#6A7074'}
+                fontWeight={600}
+                fontSize="16px"
+                color={isActive ? 'main.1' : 'gray.500'}
+                _hover={{ color: 'main.1' }}
+                transition="color 0.2s"
+                noOfLines={1}
               >
+                {index === 0 && <Icon as={FiHome} boxSize="15px" mr="4px" mb="-2px" />}
                 {title}
               </Text>
             </Link>

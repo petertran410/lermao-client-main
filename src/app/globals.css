@@ -133,7 +133,7 @@ a {
 }
 
 .html-content ul {
-  list-style-type: none;
+  list-style-type: disc;
   padding-left: 28px;
 }
 

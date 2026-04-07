@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import {
   Box,
   Container,
@@ -98,27 +98,34 @@ const FloatingBubble = ({ size, top, left, right, delay, color }) => (
 // ═══════════════════════════════════════════
 // Breadcrumb
 // ═══════════════════════════════════════════
-const Breadcrumb = ({ items }) => (
-  <Flex align="center" gap="8px" flexWrap="wrap" fontSize="16px" color="gray.500">
-    {items.map((item, i) => (
-      <Flex key={i} align="center" gap="8px">
-        {i > 0 && <Icon as={FiChevronRight} boxSize="14px" />}
-        {item.isActive ? (
-          <Text color="main.1" fontWeight={600} fontSize="16px" noOfLines={1}>
-            {item.title}
-          </Text>
-        ) : (
-          <Link href={item.href}>
-            <Text _hover={{ color: 'main.1' }} transition="color 0.2s" fontSize="16px" noOfLines={1}>
-              {i === 0 && <Icon as={FiHome} boxSize="15px" mr="4px" mb="-2px" />}
-              {item.title}
-            </Text>
-          </Link>
-        )}
-      </Flex>
-    ))}
-  </Flex>
-);
+const Breadcrumb = ({ items }) => {
+  const data = items;
+  return (
+    <Flex align="center" flexWrap="wrap" fontSize="16px" color="gray.500">
+      {data.map((item, i) => {
+        const { title, href, isActive } = item;
+        return (
+          <Fragment key={href}>
+            <Link href={href}>
+              <Text
+                fontWeight={600}
+                fontSize="16px"
+                color={isActive ? 'main.1' : 'gray.500'}
+                _hover={{ color: 'main.1' }}
+                transition="color 0.2s"
+                noOfLines={1}
+              >
+                {i === 0 && <Icon as={FiHome} boxSize="15px" mr="4px" mb="-2px" />}
+                {title}
+              </Text>
+            </Link>
+            {i !== data.length - 1 && <Image src="/images/caret-right-blue.png" alt={IMG_ALT} w="24px" h="24px" />}
+          </Fragment>
+        );
+      })}
+    </Flex>
+  );
+};
 
 // ═══════════════════════════════════════════
 // Image Gallery
@@ -287,14 +294,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
         }}
       />
 
-      <Container
-        maxW="container.2xl"
-        px={PX_ALL}
-        pt={{ xs: '90px', lg: '160px' }}
-        pb="80px"
-        position="relative"
-        zIndex={1}
-      >
+      <Container maxW="container.2xl" px={PX_ALL} pt={{ base: '80px' }} pb="80px" position="relative" zIndex={1}>
         {/* ── Breadcrumb ── */}
         <Breadcrumb items={breadcrumbData} />
 

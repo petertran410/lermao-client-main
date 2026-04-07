@@ -1,4 +1,3 @@
-// src/components/toc/toc.js
 'use client';
 
 import parse from 'html-react-parser';
@@ -52,7 +51,7 @@ const TableOfContents = ({ html }) => {
 
   return (
     <nav>
-      <ul style={{ listStyle: 'none', padding: 0, margin: '1px 0 0 0' }}>
+      <ul style={{ padding: '0 0 0 16px', margin: '1px 0 0 0' }}>
         {headings.map((heading, index) => (
           <li
             key={index}

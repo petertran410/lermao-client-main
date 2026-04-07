@@ -157,7 +157,7 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
 
   return (
     <Flex
-      pt={{ xs: '10px', lg: '40px' }}
+      pt={{ base: '80px' }}
       px={PX_ALL}
       gap={{ xs: '32px', lg: '48px' }}
       pb="50px"
