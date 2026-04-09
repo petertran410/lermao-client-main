@@ -236,9 +236,12 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
   const breadcrumbData = [
     { title: 'Trang Chủ', href: '/' },
     { title: 'Nguyên Liệu Pha Chế', href: '/nguyen-lieu-pha-che' },
-    ...categoryHierarchy.map((cat) => ({
+    ...categoryHierarchy.map((cat, index) => ({
       title: cat.name,
-      href: `/nguyen-lieu-pha-che/${cat.slug}`
+      href: `/nguyen-lieu-pha-che/${categoryHierarchy
+        .slice(0, index + 1)
+        .map((c) => c.slug)
+        .join('/')}`
     })),
     { title, href: '#', isActive: true }
   ];
