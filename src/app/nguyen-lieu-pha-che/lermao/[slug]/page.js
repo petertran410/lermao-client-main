@@ -4,6 +4,8 @@ import { serverFetchJSON } from '@/utils/server-fetch';
 import { redirect } from 'next/navigation';
 import ProductDetailClient from './_components/product-detail-client';
 
+export const revalidate = 0;
+
 export async function generateMetadata({ params }) {
   const { slug } = params;
 

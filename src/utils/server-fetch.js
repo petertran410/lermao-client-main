@@ -5,6 +5,7 @@ export async function serverFetch(path, options = {}) {
   const { headers = {}, ...restOptions } = options;
 
   const response = await fetch(`${API_DOMAIN}${path}`, {
+    cache: 'no-store',
     headers: {
       'Content-Type': 'application/json',
       'X-Site-Code': SITE_CODE,

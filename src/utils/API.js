@@ -62,7 +62,8 @@ export const API = {
           'X-Site-Code': SITE_CODE,
           Accept: 'application/json'
         },
-        credentials: 'include'
+        credentials: 'include',
+        ...(cache !== undefined ? { cache } : { cache: 'no-store' })
       };
 
       const token = getAccessToken();
