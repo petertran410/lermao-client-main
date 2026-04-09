@@ -136,6 +136,8 @@ const ImageGallery = ({ images, title }) => {
   const validImages = images.length > 0 ? images : [FALLBACK_IMAGE];
   const currentImage = (validImages[selectedIndex] || validImages[0] || FALLBACK_IMAGE).replace('http://', 'https://');
 
+  console.log(currentImage);
+
   return (
     <Flex direction="column" gap="16px" align="center">
       <Box
@@ -225,6 +227,8 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
     rate,
     slug
   } = productDetail;
+
+  console.log(productDetail);
 
   const displayPrice = price || kiotviet_price;
 
