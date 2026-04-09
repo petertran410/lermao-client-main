@@ -21,7 +21,7 @@ import {
   Center
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-
+import { motion, AnimatePresence } from 'framer-motion';
 import { PX_ALL } from '../../../utils/const';
 import Breadcrumb from '../../../components/breadcrumb';
 import ProductItem from '../../../components/product-item';
@@ -65,6 +65,26 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
 
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [subCategoryId, setSubCategoryId] = useState(null);
+
+  const pageVariants = {
+    enter: (direction) => ({ x: direction > 0 ? 80 : -80, opacity: 0, scale: 0.97 }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: { x: { type: 'spring', stiffness: 300, damping: 30 }, opacity: { duration: 0.25 } }
+    },
+    exit: (direction) => ({
+      x: direction > 0 ? -80 : 80,
+      opacity: 0,
+      scale: 0.97,
+      transition: { x: { type: 'spring', stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }
+    })
+  };
+
+  const MotionBox = motion(Box);
+
+  const [pageDirection, setPageDirection] = useState(1);
 
   const { data: topCategories = [], isLoading: categoriesLoading } = useQueryTopLevelCategories();
   const { data: allCategories = [], isLoading: allCategoriesLoading } = useQueryAllCategories();
@@ -142,7 +162,8 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
   const shouldUseCategoryFilter = effectiveCategoryId && effectiveCategoryId !== 'all' && categoryIds.length > 0;
 
   const { data: allProductsData, isLoading: allProductsLoading } = useQueryProductList({
-    currentPage: searchTerm.trim() ? 1 : currentPage,
+    currentPage: 1,
+    pageSize: 1000,
     enabled: !shouldUseCategoryFilter
   });
 
@@ -374,28 +395,47 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
             </Center>
           ) : products.length > 0 ? (
             <>
-              <Grid
-                templateColumns={{
-                  base: 'repeat(1, 1fr)',
-                  sm: 'repeat(2, 1fr)',
-                  md: 'repeat(3, 1fr)',
-                  xl: selectedCategory !== 'all' ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
-                  '2xl': selectedCategory !== 'all' ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
-                }}
-                gap={6}
-                mb={10}
-              >
-                {products.map((product) => (
-                  <GridItem key={product.id}>
-                    <ProductItem item={product} />
-                  </GridItem>
-                ))}
-              </Grid>
+              <AnimatePresence mode="wait" custom={pageDirection}>
+                <MotionBox
+                  key={currentPage}
+                  custom={pageDirection}
+                  variants={pageVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                >
+                  <Grid
+                    templateColumns={{
+                      base: 'repeat(1, 1fr)',
+                      sm: 'repeat(2, 1fr)',
+                      md: 'repeat(3, 1fr)',
+                      xl: selectedCategory !== 'all' ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+                      '2xl': selectedCategory !== 'all' ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)'
+                    }}
+                    gap={6}
+                    mb={10}
+                  >
+                    {products.map((product, index) => (
+                      <GridItem key={product.id}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 24 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.04, duration: 0.35, ease: 'easeOut' }}
+                        >
+                          <ProductItem item={product} />
+                        </motion.div>
+                      </GridItem>
+                    ))}
+                  </Grid>
+                </MotionBox>
+              </AnimatePresence>
+
               {totalPages > 1 && (
                 <ProductPagination
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={(page) => {
+                    setPageDirection(page > currentPage ? 1 : -1);
                     setCurrentPage(page);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}

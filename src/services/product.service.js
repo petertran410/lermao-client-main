@@ -7,9 +7,9 @@ const PRODUCTS_PER_PAGE = 15;
 export const useQueryProductList = (options = {}) => {
   const params = useGetParamsURL();
   const { page: pageFromURL = 1 } = params;
-  const { currentPage, enabled = true } = options;
+  const { currentPage, enabled = true, pageSize = PRODUCTS_PER_PAGE } = options;
   const activePage = currentPage || pageFromURL;
-  const queryKey = ['GET_PRODUCT_LIST_CLIENT', activePage];
+  const queryKey = ['GET_PRODUCT_LIST_CLIENT', activePage, pageSize];
 
   return useQuery({
     queryKey,
@@ -18,7 +18,7 @@ export const useQueryProductList = (options = {}) => {
         url: '/api/product/client/get-all',
         params: {
           pageNumber: activePage - 1,
-          pageSize: PRODUCTS_PER_PAGE
+          pageSize: pageSize
         }
       }),
     enabled,
@@ -94,13 +94,13 @@ export const useQueryProductByIds = (productIds = []) => {
 };
 
 export const useQueryProductDetail = (id) => {
-  const queryKey = ['GET_PRODUCT_DETAIL_CLIENT', id];
+  const websiteCode = localStorage.getItem('website') || 'lermao';
+  const queryKey = ['GET_PRODUCT_DETAIL_CLIENT', id, websiteCode];
 
   return useQuery({
     queryKey,
     queryFn: () => API.request({ url: `/api/product/get-by-id/${id}` }),
-    enabled: !!id,
-    staleTime: 5 * 60 * 1000
+    enabled: !!id
   });
 };
 

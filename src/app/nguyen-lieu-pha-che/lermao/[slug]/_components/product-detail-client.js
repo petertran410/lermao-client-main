@@ -224,6 +224,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
     kiotviet_price,
     categoryHierarchy = [],
     category,
+    price_on,
     rate,
     slug
   } = productDetail;
@@ -376,7 +377,23 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
                 <FloatingBubble size="35px" top="50%" left="-10px" delay="1.5s" color="main.1" />
                 <FloatingBubble size="30px" top="-10px" left="30%" delay="2s" color="#ffbd66" />
 
-                {displayPrice && displayPrice > 0 ? (
+                {/* {displayPrice && displayPrice > 0 ? (
+                  <Flex align="center" gap="12px" position="relative" zIndex={1}>
+                    <Text fontSize={{ xs: '28px', lg: '36px' }} fontWeight={800} color="sub.2">
+                      {formatCurrency(displayPrice)}
+                    </Text>
+                  </Flex>
+                ) : (
+                  <Flex align="center" gap="12px" position="relative" zIndex={1}>
+                    <Box px="20px" py="8px" borderRadius="full" bg="main.1" color="white">
+                      <Text fontSize="18px" fontWeight={700}>
+                        Liên hệ để biết giá
+                      </Text>
+                    </Box>
+                  </Flex>
+                )} */}
+
+                {!price_on && displayPrice && displayPrice > 0 ? (
                   <Flex align="center" gap="12px" position="relative" zIndex={1}>
                     <Text fontSize={{ xs: '28px', lg: '36px' }} fontWeight={800} color="sub.2">
                       {formatCurrency(displayPrice)}

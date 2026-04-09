@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
 
   const { title: titleData, imagesUrl, title_meta, general_description } = data || {};
   const imageUrl = imagesUrl?.[0]?.replace('http://', 'https://') || '/images/preview.png';
-  const title = title_meta || `${titleData}`;
+  const title = title_meta || titleData || 'Nguyên liệu pha chế | Gấu Lermao';
   const description = general_description || META_DESCRIPTION;
   const canonicalUrl = `${META_URL}/nguyen-lieu-pha-che/lermao/${slug}`;
 
