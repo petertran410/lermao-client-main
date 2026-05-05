@@ -102,7 +102,7 @@ const Footer = () => {
             <Flex align="center" gap="8px">
               <Image src="/images/location.png" alt={IMG_ALT} w="24px" h="24px" />
               <Text color="#FFF" fontSize={13} fontWeight={400} _hover={{ color: '#FFF' }}>
-                Văn Phòng R&D Miền Nam: P1.2.24 Diamond Alnata, Block A3, Celadon City, Tân Phú, TP.HCM.
+                Văn Phòng R&D Miền Nam: Diamond Alnata, Block A3, Celadon City, Tân Sơn Nhì, Hồ Chí Minh.
               </Text>
             </Flex>
 
@@ -116,7 +116,7 @@ const Footer = () => {
             <Flex align="center" gap="8px">
               <Image src="/images/location.png" alt={IMG_ALT} w="24px" h="24px" />
               <Text color="#FFF" fontSize={13} fontWeight={400} mt="8px" _hover={{ color: '#FFF' }}>
-                Cửa Hàng Gấu LerMao: Số 42 Đường số 7, Phường 10, Quận Tân Bình, TP.HCM.
+                Cửa Hàng Gấu LerMao: Số 6/1 Nguyễn Văn Vịnh, Phú Thạnh, Tp. Hồ Chí Minh
               </Text>
             </Flex>
           </Flex>
