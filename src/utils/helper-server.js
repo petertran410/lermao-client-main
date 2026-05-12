@@ -23,7 +23,7 @@ export const convertSlugURL = (text) => {
 };
 
 export const formatCurrency = (price = 0) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND' }).format(Number(price));
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(price));
 
 const META_TITLE = 'Gấu LerMao | Giải Pháp Pha Chế Toàn Diện Tại Việt Nam';
 export const META_DESCRIPTION =

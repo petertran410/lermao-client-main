@@ -229,8 +229,6 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
     slug
   } = productDetail;
 
-  console.log(productDetail);
-
   const displayPrice = price || kiotviet_price;
 
   const breadcrumbData = [
