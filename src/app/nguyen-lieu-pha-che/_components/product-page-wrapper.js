@@ -186,7 +186,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
     if (searchTerm.trim()) {
       const term = searchTerm.trim().toLowerCase();
       items = items.filter((p) => {
-        const name = (p.title || p.kiotviet_name || '').toLowerCase();
+        const name = (p.title || p.posName || p.kiotviet_name || '').toLowerCase();
         return name.includes(term);
       });
     }
@@ -194,13 +194,18 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
     const sorted = [...items];
     switch (currentSort) {
       case 'price-low':
-        sorted.sort((a, b) => (a.price || a.kiotviet_price || 0) - (b.price || b.kiotviet_price || 0));
+        sorted.sort((a, b) => (a.price ?? a.kiotviet_price ?? 0) - (b.price ?? b.kiotviet_price ?? 0));
         break;
       case 'price-high':
-        sorted.sort((a, b) => (b.price || b.kiotviet_price || 0) - (a.price || a.kiotviet_price || 0));
+        sorted.sort((a, b) => (b.price ?? b.kiotviet_price ?? 0) - (a.price ?? a.kiotviet_price ?? 0));
         break;
       default:
-        sorted.sort((a, b) => (a.title || a.kiotviet_name || '').localeCompare(b.title || b.kiotviet_name || ''));
+        sorted.sort(
+          (a, b) =>
+            (a.title || a.posName || a.kiotviet_name || '').localeCompare(
+              b.title || b.posName || b.kiotviet_name || ''
+            )
+        );
         break;
     }
 
