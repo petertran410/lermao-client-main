@@ -32,9 +32,11 @@ const stripHtml = (html) => {
 const ProductCard = ({ product, index = 0 }) => {
   const {
     title,
+    posName,
     kiotviet_name,
     slug,
     imagesUrl,
+    posImages,
     kiotviet_images,
     price,
     kiotviet_price,
@@ -42,10 +44,11 @@ const ProductCard = ({ product, index = 0 }) => {
     general_description
   } = product || {};
 
-  const name = title || kiotviet_name || 'Sản phẩm';
-  const displayPrice = price || kiotviet_price;
+  const name = title || posName || kiotviet_name || 'Sản phẩm';
+  const displayPrice = price ?? kiotviet_price;
   const image =
     (Array.isArray(imagesUrl) && imagesUrl[0]?.replace('http://', 'https://')) ||
+    (Array.isArray(posImages) && posImages[0]?.replace('http://', 'https://')) ||
     (Array.isArray(kiotviet_images) && kiotviet_images[0]?.replace('http://', 'https://')) ||
     FALLBACK;
 

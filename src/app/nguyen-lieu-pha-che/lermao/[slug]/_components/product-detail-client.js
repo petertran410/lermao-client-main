@@ -31,7 +31,7 @@ import ProductItem from '../../../../../components/product-item';
 const FALLBACK_IMAGE = '/images/lermao.png';
 
 const resolveImages = (productDetail) => {
-  const { imagesUrl, kiotviet_images, kiotViet } = productDetail || {};
+  const { imagesUrl, posImages, kiotviet_images, kiotViet } = productDetail || {};
 
   // 1. Thử imagesUrl
   let images = [];
@@ -54,13 +54,19 @@ const resolveImages = (productDetail) => {
 
   if (images.length > 0) return images;
 
-  // 2. Fallback: kiotviet_images
+  // 2. Fallback: POS images
+  if (Array.isArray(posImages) && posImages.length > 0) {
+    const valid = posImages.filter((img) => img && typeof img === 'string' && img.startsWith('http'));
+    if (valid.length > 0) return valid;
+  }
+
+  // 3. Fallback: kiotviet_images
   if (Array.isArray(kiotviet_images) && kiotviet_images.length > 0) {
     const valid = kiotviet_images.filter((img) => img && typeof img === 'string' && img.startsWith('http'));
     if (valid.length > 0) return valid;
   }
 
-  // 3. Fallback: kiotViet.images
+  // 4. Fallback: kiotViet.images
   if (kiotViet?.images && Array.isArray(kiotViet.images) && kiotViet.images.length > 0) {
     const valid = kiotViet.images.filter((img) => img && typeof img === 'string' && img.startsWith('http'));
     if (valid.length > 0) return valid;
@@ -229,7 +235,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
     slug
   } = productDetail;
 
-  const displayPrice = price || kiotviet_price;
+  const displayPrice = price ?? kiotviet_price;
 
   const breadcrumbData = [
     { title: 'Trang Chủ', href: '/' },

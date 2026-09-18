@@ -8,11 +8,23 @@ import Link from 'next/link';
 const FALLBACK_IMAGE = '/images/lermao.png';
 
 const ProductItem = ({ item }) => {
-  const { id, title, title_en, kiotviet_name, kiotviet_price, imagesUrl, slug, kiotviet_images, price } = item || {};
+  const {
+    id,
+    title,
+    title_en,
+    posName,
+    posImages,
+    kiotviet_name,
+    kiotviet_price,
+    imagesUrl,
+    slug,
+    kiotviet_images,
+    price
+  } = item || {};
 
   const productSlug = slug;
-  const showName = title || kiotviet_name || 'Sản phẩm';
-  const displayPrice = price || kiotviet_price;
+  const showName = title || posName || kiotviet_name || 'Sản phẩm';
+  const displayPrice = price ?? kiotviet_price;
 
   const getProductImage = () => {
     // 1. imagesUrl từ API (đã parse sẵn thành array)
@@ -20,7 +32,12 @@ const ProductItem = ({ item }) => {
       return imagesUrl[0].replace('http://', 'https://');
     }
 
-    // 2. Fallback: kiotviet_images
+    // 2. Fallback: POS images
+    if (Array.isArray(posImages) && posImages.length > 0 && posImages[0]) {
+      return posImages[0].replace('http://', 'https://');
+    }
+
+    // 3. Fallback: kiotviet_images
     if (Array.isArray(kiotviet_images) && kiotviet_images.length > 0 && kiotviet_images[0]) {
       return kiotviet_images[0].replace('http://', 'https://');
     }
