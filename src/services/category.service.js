@@ -193,3 +193,51 @@ export const useQueryCategoryBySlug = (slug) => {
     staleTime: 10 * 60 * 1000
   });
 };
+
+const PRODUCT_BASE_PATH = '/nguyen-lieu-pha-che';
+const byPriorityThenName = (a, b) => (a.priority || 0) - (b.priority || 0) || (a.name || '').localeCompare(b.name || '', 'vi');
+
+// Dựng menu 2 cấp (cha → con) từ danh sách phẳng. Gom con theo parent_id bằng Map để O(n).
+export const buildMenuCategories = (categories) => {
+  if (!Array.isArray(categories)) return [];
+
+  const childrenByParent = new Map();
+  const roots = [];
+  for (const cat of categories) {
+    if (!cat?.slug) continue;
+    if (cat.parent_id == null) {
+      roots.push(cat);
+      continue;
+    }
+    const key = String(cat.parent_id);
+    const list = childrenByParent.get(key);
+    if (list) list.push(cat);
+    else childrenByParent.set(key, [cat]);
+  }
+
+  return roots.sort(byPriorityThenName).map((root) => {
+    const rootHref = `${PRODUCT_BASE_PATH}/${root.slug}`;
+    const children = (childrenByParent.get(String(root.id)) || []).sort(byPriorityThenName);
+    return {
+      id: root.id,
+      name: root.name,
+      href: rootHref,
+      children: children.map((child) => ({
+        id: child.id,
+        name: child.name,
+        href: `${rootHref}/${child.slug}`
+      }))
+    };
+  });
+};
+
+// Menu "Nguyên Liệu Pha Chế" trên header. API đã lọc theo site lermao và is_active=true.
+export const useQueryMenuCategories = () =>
+  useQuery({
+    queryKey: ['GET_MENU_CATEGORIES_CLIENT'],
+    queryFn: async () => {
+      const response = await API.request({ url: '/api/category/client/list' });
+      return buildMenuCategories(response?.data);
+    },
+    staleTime: 10 * 60 * 1000
+  });

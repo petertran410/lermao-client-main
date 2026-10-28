@@ -1,7 +1,16 @@
 'use client';
 
+import { Box } from '@chakra-ui/react';
 import parse from 'html-react-parser';
 import React from 'react';
+
+// Lấy text thuần từ children đã parse (bỏ span/strong + inline style 20px của CMS trong heading).
+const getPlainText = (node) => {
+  if (node == null || typeof node === 'boolean') return '';
+  if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(getPlainText).join('');
+  return getPlainText(node.props?.children);
+};
 
 const TableOfContents = ({ html }) => {
   const elements = parse(html);
@@ -17,7 +26,7 @@ const TableOfContents = ({ html }) => {
         const tag = element.type;
         if (/^h[1-6]$/.test(tag)) {
           let id = element.props.id || `heading-${idCounter++}`;
-          const text = element.props.children;
+          const text = getPlainText(element.props.children).trim();
           const depth = parseInt(tag.replace('h', ''), 10);
           headings.push({ id, text, depth });
         }
@@ -60,32 +69,24 @@ const TableOfContents = ({ html }) => {
               marginBottom: '6px'
             }}
           >
-            <a
+            {/* Hover bằng CSS (_hover) thay cho JS đổi style e.target — tránh kẹt gạch chân/màu ở thẻ con. */}
+            <Box
+              as="a"
               href={`#${heading.id}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScroll(heading.id);
               }}
-              style={{
-                fontWeight: 400,
-                fontSize: '15px',
-                color: '#333',
-                textDecoration: 'none',
-                lineHeight: '1.5',
-                display: 'inline-block',
-                transition: 'color 0.2s'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.color = '#00b7e9';
-                e.target.style.textDecoration = 'underline';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = '#333';
-                e.target.style.textDecoration = 'none';
-              }}
+              display="inline-block"
+              fontSize="15px"
+              lineHeight="1.5"
+              color="#065fd4"
+              textDecoration="underline"
+              transition="color 0.2s"
+              _hover={{ color: '#00b7e9' }}
             >
               {heading.text}
-            </a>
+            </Box>
           </li>
         ))}
       </ul>

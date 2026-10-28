@@ -139,7 +139,7 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
   if (!newsDetail) {
     return (
       <Flex pt={{ xs: '90px', lg: '160px' }} px={PX_ALL} direction="column" align="center" gap="16px" minH="400px">
-        <Image src="/images/lermao-run.gif" alt={IMG_ALT} w="80px" h="auto" opacity={0.5} />
+        <Image src="/images/lermao-run-transparent.webp" alt={IMG_ALT} w="80px" h="auto" opacity={0.5} />
         <Text color="#999">Không tìm thấy bài viết</Text>
       </Flex>
     );

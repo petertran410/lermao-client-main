@@ -258,3 +258,16 @@ a {
   background: white;
   padding: 16px;
 }
+
+/* Link trong nội dung CMS: màu + gạch chân giống dieptra-client.
+   Selector :hover / "a *" để thắng các rule ".html-content:hover span" phía trên (cùng specificity, khai báo sau). */
+.html-content a,
+.html-content:hover a {
+  color: #065fd4;
+  text-decoration: underline;
+}
+
+.html-content a *,
+.html-content:hover a * {
+  color: inherit;
+}

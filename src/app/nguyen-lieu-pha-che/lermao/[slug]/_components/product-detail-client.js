@@ -288,7 +288,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
       {/* ── Mascot peek ── */}
       <Image
         display={{ xs: 'none', xl: 'block' }}
-        src="/images/lermao-run.gif"
+        src="/images/lermao-run-transparent.webp"
         alt={IMG_ALT}
         w="100px"
         h="auto"
@@ -600,7 +600,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
             <Flex align="center" justify="center" gap="16px" mb="32px">
               <Box h="2px" flex={1} maxW="120px" bg="linear-gradient(90deg, transparent, #00b7e9)" />
               <HStack spacing="8px">
-                <Image src="/images/lermao-run.gif" alt={IMG_ALT} w="40px" h="auto" />
+                <Image src="/images/lermao-run-transparent.webp" alt={IMG_ALT} w="40px" h="auto" />
                 <Text
                   fontSize={{ xs: '22px', lg: '28px' }}
                   fontWeight={800}

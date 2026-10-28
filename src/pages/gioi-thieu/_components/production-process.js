@@ -69,7 +69,7 @@ const ProductProcess = () => {
           return (
             <Flex gap="8px" key={index} align="flex-end" pos="relative" zIndex={5}>
               <Flex direction="column" align="center" gap="12px">
-                {isActive && <Image src="/images/lermao-run.gif" w="80px" h="100px" alt={IMG_ALT} />}
+                {isActive && <Image src="/images/lermao-run-transparent.webp" w="80px" h="100px" alt={IMG_ALT} />}
                 <Button
                   color={isActive ? '#FFF' : '#00b7e9'}
                   w="86px"
@@ -105,7 +105,7 @@ const ProductProcess = () => {
       <Flex display={{ xs: 'flex', lg: 'none' }} px="18px" mt="20px" direction="column" justify="center">
         <Flex align="center" justify="center" gap="50px">
           <Image src="/images/fruit-pattern-left.png" w="90px" h="95px" alt={IMG_ALT} />
-          <Image src="/images/lermao-run.gif" alt={IMG_ALT} w="120px" h="140px" />
+          <Image src="/images/lermao-run-transparent.webp" alt={IMG_ALT} w="120px" h="140px" />
           <Image src="/images/fruit-pattern-right.png" w="90px" h="95px" alt={IMG_ALT} />
         </Flex>
 

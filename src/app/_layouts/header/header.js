@@ -17,12 +17,23 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { useQueryMenuCategories } from '@/services/category.service';
 import CartHeader from './_components/cart-header';
 import CartHeaderMobile from './_components/cart-header-mobile';
 
 const Header = () => {
   const pathname = usePathname();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // Title mục cấp 1 đang mở dropdown và id danh mục đang mở flyout cấp 2.
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openSubmenu, setOpenSubmenu] = useState(null);
+  const { data: menuCategories = [] } = useQueryMenuCategories();
+
+  const closeDropdown = () => {
+    setOpenDropdown(null);
+    setOpenSubmenu(null);
+  };
 
   const MENU_LIST = [
     {
@@ -35,7 +46,8 @@ const Header = () => {
     },
     {
       title: 'Nguyên Liệu Pha Chế',
-      href: '/nguyen-lieu-pha-che'
+      href: '/nguyen-lieu-pha-che',
+      dropdownItems: menuCategories
     },
     {
       title: 'Logo',
@@ -78,29 +90,119 @@ const Header = () => {
         {/* Left menu */}
         <Flex flex={1} justify="flex-end" gap="8px" pr="32px">
           {MENU_LIST.slice(0, 3).map((item) => {
-            const { title, href } = item;
+            const { title, href, dropdownItems } = item;
             const isActive = pathname === href;
+            const hasDropdown = dropdownItems?.length > 0;
             return (
-              <Link href={href} key={title}>
-                <Box
-                  px="18px"
-                  py="10px"
-                  borderBottom="1px solid"
-                  borderColor={isActive ? 'main.1' : 'transparent'}
-                  data-group
-                >
-                  <Text
-                    fontWeight={700}
-                    fontSize={16}
-                    color={isActive ? 'main.1' : undefined}
-                    _groupHover={{ color: 'main.1' }}
-                    transitionDuration="250ms"
-                    whiteSpace="nowrap"
+              <Box
+                key={title}
+                pos="relative"
+                onMouseEnter={hasDropdown ? () => setOpenDropdown(title) : undefined}
+                onMouseLeave={hasDropdown ? closeDropdown : undefined}
+              >
+                <Link href={href} onClick={hasDropdown ? closeDropdown : undefined}>
+                  <Box
+                    px="18px"
+                    py="10px"
+                    borderBottom="1px solid"
+                    borderColor={isActive ? 'main.1' : 'transparent'}
+                    data-group
                   >
-                    {title}
-                  </Text>
-                </Box>
-              </Link>
+                    <Text
+                      fontWeight={700}
+                      fontSize={16}
+                      color={isActive ? 'main.1' : undefined}
+                      _groupHover={{ color: 'main.1' }}
+                      transitionDuration="250ms"
+                      whiteSpace="nowrap"
+                    >
+                      {title}
+                    </Text>
+                  </Box>
+                </Link>
+
+                {/* Dropdown cấp 1: danh mục cha */}
+                {hasDropdown && openDropdown === title && (
+                  <Box
+                    pos="absolute"
+                    top="100%"
+                    left={0}
+                    bg="white"
+                    border="1px solid #e2e8f0"
+                    borderRadius="8px"
+                    boxShadow="0 10px 25px rgba(0,0,0,0.15)"
+                    py={2}
+                    minW="280px"
+                    zIndex={1001}
+                  >
+                    {dropdownItems.map((category) => {
+                      const hasSub = category.children.length > 0;
+                      return (
+                        <Box
+                          key={category.id}
+                          pos="relative"
+                          onMouseEnter={() => setOpenSubmenu(hasSub ? category.id : null)}
+                          onMouseLeave={() => setOpenSubmenu(null)}
+                        >
+                          <Link href={category.href} onClick={closeDropdown}>
+                            <Flex
+                              align="center"
+                              justify="space-between"
+                              px={4}
+                              py={3}
+                              color="gray.700"
+                              _hover={{ bg: 'gray.200', color: 'black' }}
+                              transition="all 0.2s ease"
+                            >
+                              <Text as="span" fontSize={16}>
+                                {category.name}
+                              </Text>
+                              {hasSub && (
+                                <Text as="span" ml={2} fontSize={14} color="gray.500">
+                                  ›
+                                </Text>
+                              )}
+                            </Flex>
+                          </Link>
+
+                          {/* Flyout cấp 2: danh mục con */}
+                          {hasSub && openSubmenu === category.id && (
+                            <Box
+                              pos="absolute"
+                              top={0}
+                              left="100%"
+                              bg="white"
+                              border="1px solid #e2e8f0"
+                              borderRadius="8px"
+                              boxShadow="0 10px 25px rgba(0,0,0,0.15)"
+                              py={2}
+                              minW="260px"
+                              maxH="400px"
+                              overflowY="auto"
+                              zIndex={1002}
+                            >
+                              {category.children.map((child) => (
+                                <Link key={child.id} href={child.href} onClick={closeDropdown}>
+                                  <Box
+                                    px={4}
+                                    py={3}
+                                    fontSize={16}
+                                    color="gray.700"
+                                    _hover={{ bg: 'gray.200', color: 'black' }}
+                                    transition="all 0.2s ease"
+                                  >
+                                    {child.name}
+                                  </Box>
+                                </Link>
+                              ))}
+                            </Box>
+                          )}
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                )}
+              </Box>
             );
           })}
         </Flex>
@@ -195,7 +297,7 @@ const Header = () => {
           <DrawerBody>
             <Flex direction="column">
               {MENU_LIST.map((item) => {
-                const { title, href } = item;
+                const { title, href, dropdownItems } = item;
                 const isActive = pathname === href;
 
                 if (title === 'Logo') {
@@ -203,25 +305,66 @@ const Header = () => {
                 }
 
                 return (
-                  <Link href={href} key={title} onClick={onClose}>
-                    <Box
-                      px="18px"
-                      py="10px"
-                      borderBottom="1px solid"
-                      borderColor={isActive ? 'main.1' : 'transparent'}
-                      data-group
-                    >
-                      <Text
-                        fontWeight={700}
-                        fontSize={16}
-                        color={isActive ? 'main.1' : undefined}
-                        _groupHover={{ color: 'main.1' }}
-                        transitionDuration="250ms"
+                  <Box key={title}>
+                    <Link href={href} onClick={onClose}>
+                      <Box
+                        px="18px"
+                        py="10px"
+                        borderBottom="1px solid"
+                        borderColor={isActive ? 'main.1' : 'transparent'}
+                        data-group
                       >
-                        {title}
-                      </Text>
-                    </Box>
-                  </Link>
+                        <Text
+                          fontWeight={700}
+                          fontSize={16}
+                          color={isActive ? 'main.1' : undefined}
+                          _groupHover={{ color: 'main.1' }}
+                          transitionDuration="250ms"
+                        >
+                          {title}
+                        </Text>
+                      </Box>
+                    </Link>
+
+                    {/* Danh mục cấp 1 + cấp 2 (thụt lề sâu hơn) */}
+                    {dropdownItems?.length > 0 && (
+                      <Flex direction="column" bg="#f9f9f9">
+                        {dropdownItems.map((category) => (
+                          <Box key={category.id}>
+                            <Link href={category.href} onClick={onClose}>
+                              <Box
+                                pl="32px"
+                                pr="18px"
+                                py="10px"
+                                fontSize={15}
+                                color={pathname === category.href ? 'main.1' : '#555'}
+                                _hover={{ bg: '#eef2f6', color: 'main.1' }}
+                                borderBottom="1px solid #e2e8f0"
+                              >
+                                {category.name}
+                              </Box>
+                            </Link>
+
+                            {category.children.map((child) => (
+                              <Link key={child.id} href={child.href} onClick={onClose}>
+                                <Box
+                                  pl="48px"
+                                  pr="18px"
+                                  py="8px"
+                                  fontSize={14}
+                                  color={pathname === child.href ? 'main.1' : '#888'}
+                                  _hover={{ bg: '#eef2f6', color: 'main.1' }}
+                                  borderBottom="1px solid #e2e8f0"
+                                >
+                                  {child.name}
+                                </Box>
+                              </Link>
+                            ))}
+                          </Box>
+                        ))}
+                      </Flex>
+                    )}
+                  </Box>
                 );
               })}
             </Flex>

@@ -21,7 +21,7 @@ const HomeIntro = () => {
 
         <Text mt="24px" fontSize={16} textAlign="justify">
           Gấu LerMao tự hào là thương hiệu dẫn đầu trong hoạt động cung cấp{' '}
-          <a target="_blank" rel="noopener" class="link" href="https://www.lermao.com/nguyen-lieu-pha-che">
+          <a target="_blank" rel="noopener" className="link" href="https://www.lermao.com/nguyen-lieu-pha-che">
             <span style={{ color: 'rgb(83, 29, 171)' }}>
               <strong fontSize="26px">nguyên liệu pha chế toàn diện</strong>
             </span>

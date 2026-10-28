@@ -198,7 +198,7 @@ const ArticleListTemplate = ({ type, title, basePath, pageSize = 12 }) => {
       {/* Empty */}
       {!isLoading && (!Array.isArray(content) || content.length === 0) && (
         <Flex direction="column" align="center" mt="60px" gap="16px">
-          <Image src="/images/lermao-run.gif" alt={IMG_ALT} w="80px" h="auto" opacity={0.5} />
+          <Image src="/images/lermao-run-transparent.webp" alt={IMG_ALT} w="80px" h="auto" opacity={0.5} />
           <Text color="#999" fontSize={16}>
             Không có dữ liệu
           </Text>

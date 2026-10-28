@@ -607,7 +607,7 @@ const FeaturedProducts = ({ featuredData = [], featuredCategories = [], allCateg
           }}
         >
           <Flex direction="column" align="center" gap="12px">
-            <Image src="/images/lermao-run.gif" alt={IMG_ALT} w="60px" h="auto" opacity={0.5} />
+            <Image src="/images/lermao-run-transparent.webp" alt={IMG_ALT} w="60px" h="auto" opacity={0.5} />
             <Text color="#999" fontSize="14px">
               Chưa có sản phẩm nổi bật trong danh mục này
             </Text>

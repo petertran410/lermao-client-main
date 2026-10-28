@@ -60,6 +60,9 @@ const Footer = () => {
     <Flex
       backgroundImage={isIntroPage ? 'url(/images/bg-footer-intro.png)' : 'url(/images/bg-footer.webp)'}
       bgSize="cover"
+      // Mobile: ảnh cover theo chiều cao nên chỉ thấy mép trái (sóng thấp ~45%) -> dời sang đỉnh sóng (~30%)
+      // để nền bao trọn tiêu đề. Từ md trở lên giữ mặc định 0% 0%.
+      bgPosition={isIntroPage ? undefined : { xs: '20% 0%', md: '0% 0%' }}
       bgColor={isIntroPage ? '#FFF' : 'transparent'}
       bgRepeat="no-repeat"
       align="flex-end"

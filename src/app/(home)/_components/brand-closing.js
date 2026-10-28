@@ -62,7 +62,7 @@ const BrandClosing = () => {
         {/* Left mascot — desktop only */}
         <Image
           display={{ xs: 'none', lg: 'block' }}
-          src="/images/lermao-run.gif"
+          src="/images/lermao-run-transparent.webp"
           alt={IMG_ALT}
           w="80px"
           h="auto"
@@ -79,7 +79,7 @@ const BrandClosing = () => {
           {/* Mobile mascot — above text */}
           <Image
             display={{ xs: 'block', lg: 'none' }}
-            src="/images/lermao-run.gif"
+            src="/images/lermao-run-transparent.webp"
             alt={IMG_ALT}
             w="64px"
             h="auto"
@@ -207,7 +207,7 @@ const BrandClosing = () => {
         {/* Right mascot — desktop only */}
         <Image
           display={{ xs: 'none', lg: 'block' }}
-          src="/images/lermao-run.gif"
+          src="/images/lermao-run-transparent.webp"
           alt={IMG_ALT}
           w="80px"
           h="auto"
