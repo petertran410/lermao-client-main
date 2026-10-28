@@ -7,7 +7,8 @@ import Link from 'next/link';
 
 const FALLBACK_IMAGE = '/images/lermao.png';
 
-const ProductItem = ({ item }) => {
+// titleAs: thẻ HTML cho tên sản phẩm (mặc định p; trang danh mục truyền 'h3').
+const ProductItem = ({ item, titleAs = 'p' }) => {
   const {
     id,
     title,
@@ -90,6 +91,7 @@ const ProductItem = ({ item }) => {
 
         <Flex direction="column" p="12px" gap="6px">
           <Text
+            as={titleAs}
             fontSize="17px"
             fontWeight={600}
             color="#333"

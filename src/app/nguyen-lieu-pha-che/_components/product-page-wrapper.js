@@ -427,7 +427,7 @@ const ProductPageWrapper = ({ categorySlug = [] }) => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.04, duration: 0.35, ease: 'easeOut' }}
                         >
-                          <ProductItem item={product} />
+                          <ProductItem item={product} titleAs="h3" />
                         </motion.div>
                       </GridItem>
                     ))}
