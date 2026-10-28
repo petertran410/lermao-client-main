@@ -1,5 +1,6 @@
 import { API } from '@/utils/API';
 import { META_DESCRIPTION, META_URL } from '@/utils/helper-server';
+import { pickProductCard, pickProductDetail } from '@/utils/product-fields';
 import { serverFetchJSON } from '@/utils/server-fetch';
 import { redirect } from 'next/navigation';
 import ProductDetailClient from './_components/product-detail-client';
@@ -76,7 +77,12 @@ const ProductDetail = async ({ params }) => {
     relatedProducts = [];
   }
 
-  return <ProductDetailClient productDetail={productDetail} relatedProducts={relatedProducts} />;
+  return (
+    <ProductDetailClient
+      productDetail={pickProductDetail(productDetail)}
+      relatedProducts={relatedProducts.map(pickProductCard)}
+    />
+  );
 };
 
 export default ProductDetail;

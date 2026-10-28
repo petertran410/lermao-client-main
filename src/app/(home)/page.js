@@ -1,5 +1,6 @@
 // src/app/(home)/page.js
 import { serverFetchJSON } from '@/utils/server-fetch';
+import { pickProductCard } from '@/utils/product-fields';
 import HomeContact from './_components/contact';
 import HomeIntro from './_components/intro';
 import ProductMarquee from './_components/product-marquee';
@@ -23,7 +24,9 @@ async function fetchProductsByCategory(categoryId) {
     });
     const res = await serverFetchJSON(`/api/product/client/get-all?${searchParams.toString()}`);
     const products = res?.content || [];
-    return products.filter((p) => Array.isArray(p.imagesUrl) && p.imagesUrl.length > 0 && p.imagesUrl[0]);
+    return products
+      .filter((p) => Array.isArray(p.imagesUrl) && p.imagesUrl.length > 0 && p.imagesUrl[0])
+      .map(pickProductCard);
   } catch (e) {
     console.error(`Failed to fetch products for category ${categoryId}:`, e.message);
     return [];
@@ -150,9 +153,9 @@ function groupFeaturedByRootCategory(featuredData, allCategories, rootCategories
 
     // Thêm products, loại trùng id
     const existingIds = new Set(existing.products.map((p) => Number(p.id)));
-    for (const product of group.products) {
+    for (const product of group.products || []) {
       if (!existingIds.has(Number(product.id))) {
-        existing.products.push(product);
+        existing.products.push(pickProductCard(product));
         existingIds.add(Number(product.id));
       }
     }

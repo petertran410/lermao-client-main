@@ -11,7 +11,6 @@ const ProductItem = ({ item }) => {
   const {
     id,
     title,
-    title_en,
     posName,
     posImages,
     kiotviet_name,
