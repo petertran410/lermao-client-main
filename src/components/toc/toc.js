@@ -208,6 +208,9 @@ const TableOfContents = ({ html }) => {
     );
   }
 
+  // Cấp heading lớn nhất có trong bài (h2 thường, có bài dùng h1/h3) -> chỉ mục cấp này có dấu chấm.
+  const topLevel = Math.min(...tocItems.map((item) => item.level));
+
   return (
     <VStack align="stretch" spacing={0.1} mt={3}>
       {tocItems.map((item) => {
@@ -228,15 +231,17 @@ const TableOfContents = ({ html }) => {
             alignItems="flex-start"
             gap="8px"
           >
-            {/* Dấu chấm phân biệt từng mục; khung cao = 1 dòng chữ (fontSize * lineHeight 1.4) để chấm luôn canh giữa dòng đầu. */}
+            {/* Dấu chấm chỉ cho mục lớn; mục con giữ khung trống 6px để chữ vẫn thụt so với mục cha.
+                Khung cao = 1 dòng chữ (fontSize * lineHeight 1.4) để chấm luôn canh giữa dòng đầu. */}
             <Box
               as="span"
               flexShrink={0}
               display="flex"
               alignItems="center"
+              w="6px"
               h={`${(item.level <= 2 ? 18 : 16) * 1.4}px`}
             >
-              <Box w="6px" h="6px" borderRadius="full" bg="currentColor" />
+              {item.level === topLevel && <Box w="6px" h="6px" borderRadius="full" bg="currentColor" />}
             </Box>
             <Text
               fontSize={item.level <= 2 ? 18 : 16}
