@@ -15,8 +15,22 @@ const HomeIntro = () => {
       justify="space-between"
     >
       <Flex flex={2 / 5} direction="column">
-        <TitleSpecial fontSize={{ xs: 28, lg: 32, '2xl': 32 }} textAlign={{ xs: 'center', lg: 'left' }}>
-          Gấu LerMao: Giải Pháp & Nguyên Liệu Pha Chế Toàn Diện
+        {/* Luôn đúng 2 dòng: ngắt cố định sau "&", không tự xuống dòng.
+            Cỡ chữ co theo màn hình để dòng 2 (~15.2em) vừa khoảng trống còn lại (đã đo 992–1920px). */}
+        <TitleSpecial
+          fontSize={{
+            xs: 'min(28px, calc((100vw - 40px) * 0.064))',
+            lg: 'min(32px, 2.2vw)',
+            xl: 'min(32px, 2.4vw)',
+            '2xl': 'min(32px, 1.75vw)'
+          }}
+          textAlign={{ xs: 'center', lg: 'left' }}
+          whiteSpace="nowrap"
+          // Tiêu đề nowrap không nới rộng cột chữ, chỉ tràn sang khoảng trống trước hình.
+          sx={{ contain: 'inline-size' }}
+        >
+          Gấu LerMao: Giải Pháp & <br />
+          Nguyên Liệu Pha Chế Toàn Diện
         </TitleSpecial>
 
         <Text mt="24px" fontSize={16} textAlign="justify">
