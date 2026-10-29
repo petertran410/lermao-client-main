@@ -74,8 +74,10 @@ const LatestArticlesSidebar = ({ type, currentId, basePath }) => {
               <Image
                 src={article.imagesUrl?.[0]?.replace('http://', 'https://') || '/images/news-default.png'}
                 w="150px"
-                h="100px"
+                h="auto"
                 minW="150px"
+                // Khung theo tỷ lệ ảnh bài viết (992x600) để không bị cắt 2 bên; ảnh khác tỷ lệ vẫn cover.
+                sx={{ aspectRatio: '992 / 600' }}
                 objectFit="cover"
                 borderRadius="8px"
                 alt={IMG_ALT}
@@ -171,7 +173,7 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
       <Flex flex={2 / 3} direction="column">
         <Breadcrumb data={breadcrumbData} />
 
-        <Text as="h1" fontSize={{ xs: 24, lg: 28 }} fontWeight={700} mt="20px" lineHeight="34px">
+        <Text as="h1" fontSize={{ xs: 24, lg: 28 }} fontWeight={600} mt="20px" lineHeight="34px">
           {title}
         </Text>
 
@@ -217,7 +219,7 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
             dangerouslySetInnerHTML={{ __html: processedHtml }}
             sx={{
               fontSize: '17px',
-              lineHeight: '1.9',
+              lineHeight: '1.6',
               color: '#333',
               // h2: { fontSize: '22px', fontWeight: 700, color: '#1d2128', mt: '32px', mb: '12px' },
               // h3: { fontSize: '19px', fontWeight: 700, color: '#1d2128', mt: '24px', mb: '12px' },

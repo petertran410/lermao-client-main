@@ -237,18 +237,24 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
 
   const displayPrice = price ?? kiotviet_price;
 
+  // Đường dẫn tích luỹ cha → con (categoryHierarchy từ backend đã theo thứ tự gốc → lá).
+  const categoryCrumbs = categoryHierarchy.reduce((acc, cat) => {
+    const prev = acc.length ? acc[acc.length - 1].href : '/nguyen-lieu-pha-che';
+    acc.push({ title: cat.name, href: `${prev}/${cat.slug}` });
+    return acc;
+  }, []);
+
   const breadcrumbData = [
     { title: 'Trang Chủ', href: '/' },
     { title: 'Nguyên Liệu Pha Chế', href: '/nguyen-lieu-pha-che' },
-    ...categoryHierarchy.map((cat, index) => ({
-      title: cat.name,
-      href: `/nguyen-lieu-pha-che/${categoryHierarchy
-        .slice(0, index + 1)
-        .map((c) => c.slug)
-        .join('/')}`
-    })),
+    ...categoryCrumbs,
     { title, href: '#', isActive: true }
   ];
+
+  // Badge danh mục dẫn về URL đầy đủ cha/con; fallback slug đơn nếu thiếu hierarchy.
+  const categoryHref = categoryCrumbs.length
+    ? categoryCrumbs[categoryCrumbs.length - 1].href
+    : `/nguyen-lieu-pha-che/${category?.slug}`;
 
   const hasDescription = description && description !== '<p></p>' && description !== '';
   const hasInstruction = instruction && instruction !== '<p></p>' && instruction !== '';
@@ -340,7 +346,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
             <VStack align="start" spacing="20px">
               {/* Category badge */}
               {category && (
-                <Link href={`/nguyen-lieu-pha-che/${category.slug}`}>
+                <Link href={categoryHref}>
                   <Badge
                     px="12px"
                     py="4px"
@@ -361,7 +367,7 @@ const ProductDetailClient = ({ productDetail, relatedProducts = [] }) => {
               {/* Title */}
               <Text
                 as="h1"
-                fontSize={{ xs: '26px', md: '32px', lg: '36px' }}
+                fontSize={{ xs: '24px', md: '28px', lg: '32px' }}
                 fontWeight={800}
                 color="#1d2128"
                 lineHeight="1.2"
