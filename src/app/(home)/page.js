@@ -35,7 +35,7 @@ async function fetchProductsByCategory(categoryId) {
 
 async function fetchRootCategories() {
   try {
-    const res = await serverFetchJSON('/api/category/for-cms');
+    const res = await serverFetchJSON('/api/category/client/list');
     const all = res?.data || [];
     return all
       .filter((cat) => !cat.parent_id)
@@ -55,7 +55,7 @@ async function fetchRootCategories() {
 
 async function fetchAllCategories() {
   try {
-    const res = await serverFetchJSON('/api/category/for-cms');
+    const res = await serverFetchJSON('/api/category/client/list');
     return res?.data || [];
   } catch (e) {
     console.error('Failed to fetch all categories:', e.message);

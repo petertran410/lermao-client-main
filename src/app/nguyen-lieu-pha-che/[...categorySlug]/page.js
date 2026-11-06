@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
   }
 
   try {
-    const data = await serverFetchJSON('/api/category/for-cms');
+    const data = await serverFetchJSON('/api/category/client/list');
     const categories = data?.data || [];
     const found = categories.find((cat) => cat.slug === targetSlug);
 
@@ -37,7 +37,7 @@ const CategoryProductsPage = async ({ params }) => {
 
   if (targetSlug) {
     try {
-      const data = await serverFetchJSON('/api/category/for-cms');
+      const data = await serverFetchJSON('/api/category/client/list');
       const categories = data?.data || [];
       const found = categories.find((cat) => cat.slug === targetSlug);
 

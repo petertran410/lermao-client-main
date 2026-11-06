@@ -271,3 +271,31 @@ a {
 .html-content:hover a * {
   color: inherit;
 }
+
+/* Bảng trong nội dung CMS: giống dieptra-client.
+   Chakra CSS reset đặt border-width: 0 cho mọi phần tử nên phải khai báo lại viền. */
+.html-content table {
+  border: 1px solid #e2e8f0 !important;
+  margin: 24px auto !important;
+  max-width: 90% !important;
+  width: auto !important;
+}
+
+.html-content table td,
+.html-content table th {
+  border: 2px solid #d1d5db !important;
+  text-align: center !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* Viền đậm phân cách header với body */
+.html-content table th {
+  border-bottom: 3px solid #9ca3af !important;
+}
+
+/* Header in đậm như dieptra: lermao có "* { font-weight: 400 }" ghi đè bold mặc định của th và <p> bên trong */
+.html-content table th,
+.html-content table th * {
+  font-weight: 700;
+}

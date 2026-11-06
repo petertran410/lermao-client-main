@@ -9,7 +9,7 @@ export const useQueryAllCategories = () => {
     queryKey,
     queryFn: async () => {
       const response = await API.request({
-        url: '/api/category/for-cms',
+        url: '/api/category/client/list',
         method: 'GET'
       });
 
@@ -62,7 +62,7 @@ export const useQueryTopLevelCategories = () => {
     queryKey,
     queryFn: async () => {
       const response = await API.request({
-        url: '/api/category/for-cms',
+        url: '/api/category/client/list',
         method: 'GET'
       });
 
@@ -95,7 +95,7 @@ export const useQueryCategoryPaths = (parentCategoryId) => {
     staleTime: 10 * 60 * 1000,
     queryFn: async () => {
       const response = await API.request({
-        url: '/api/category/for-cms',
+        url: '/api/category/client/list',
         method: 'GET'
       });
 
@@ -132,7 +132,7 @@ export const useQueryCategoryHierarchy = (parentCategoryId) => {
       if (!parentCategoryId || parentCategoryId === 'all') return [];
 
       const response = await API.request({
-        url: '/api/category/for-cms',
+        url: '/api/category/client/list',
         method: 'GET'
       });
 

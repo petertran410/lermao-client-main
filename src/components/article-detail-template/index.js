@@ -236,10 +236,8 @@ const ArticleDetailClient = ({ slug, type, basePath, breadcrumbTitle, backLabel 
                 my: '16px',
                 fontStyle: 'italic',
                 color: '#555'
-              },
-              table: { w: '100%', borderCollapse: 'collapse', my: '16px' },
-              'th, td': { border: '1px solid #ddd', p: '8px 12px', textAlign: 'left' },
-              th: { bgColor: '#f5f5f5', fontWeight: 600 }
+              }
+              // Style bảng dùng chung trong globals.css (.html-content table) — giống dieptra-client
             }}
           />
         )}
